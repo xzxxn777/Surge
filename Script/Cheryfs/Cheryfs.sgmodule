@@ -1,0 +1,10 @@
+#!name=好奇车生活
+#!desc=好奇车生活
+#!category=羊毛
+
+[Script]
+好奇车生活_获取token = type=http-request,pattern=^https:\/\/channel\.cheryfs\.cn\/archer\/activity-api\/common\/accountPointLeft,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/Cheryfs/Cheryfs.js,requires-body=1,max-size=0
+好奇车生活 = type=cron,cronexp="54 7,15 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/Cheryfs/Cheryfs.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% channel.cheryfs.cn

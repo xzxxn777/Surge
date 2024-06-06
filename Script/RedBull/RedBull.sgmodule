@@ -1,0 +1,10 @@
+#!name=红牛会员俱乐部
+#!desc=红牛会员俱乐部
+#!category=羊毛
+
+[Script]
+红牛会员俱乐部_获取token = type=http-response,pattern=^https:\/\/xiaodian\.miyatech\.com\/api\/user\/login\/wx-jc,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RedBull/RedBull.js,requires-body=1,max-size=0
+红牛会员俱乐部 = type=cron,cronexp="44 8,18 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RedBull/RedBull.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% xiaodian.miyatech.com

@@ -1,0 +1,12 @@
+#!name=统一
+#!desc=统一
+#!category=羊毛
+
+[Script]
+统一_获取token = type=http-response,pattern=^https:\/\/xapi\.weimob\.com\/api3\/onecrm\/user\/center\/usercenter\/queryUserInfo,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongYi/TongYi.js,requires-body=1,max-size=0
+统一 = type=cron,cronexp="25 8,12,18,20 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongYi/TongYi.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+茄皇_获取token = type=http-request,pattern=^https:\/\/qiehuang-apig\.xiaoyisz\.com\/qiehuangsecond\/ga\/public\/api\/login,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongYi/QieHuang.js,requires-body=1,max-size=0
+茄皇 = type=cron,cronexp="5 10-22/2 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongYi/QieHuang.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% xapi.weimob.com, qiehuang-apig.xiaoyisz.com

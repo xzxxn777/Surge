@@ -1,0 +1,10 @@
+#!name=哈根达斯
+#!desc=哈根达斯
+#!category=羊毛
+
+[Script]
+哈根达斯_获取token = type=http-response,pattern=^https:\/\/hgds-crm\.myaiwecom\.com\/api\/wxapp\/member\/getMemberDetail,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HGDS/HGDS.js,requires-body=1,max-size=0
+哈根达斯 = type=cron,cronexp="43 1,21 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HGDS/HGDS.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% hgds-crm.myaiwecom.com

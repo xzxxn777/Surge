@@ -1,0 +1,10 @@
+#!name=富连e充
+#!desc=富连e充
+#!category=羊毛
+
+[Script]
+富连e充_获取token = type=http-response,pattern=^https:\/\/api\.nblinks\.cn\/coreApi\/user\/consumer\/v1\/(aliPayAppLogin|weChatAppLogin),script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YongXin/YongXin.js,requires-body=1,max-size=0
+富连e充 = type=cron,cronexp="10 0,23 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YongXin/YongXin.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% api.nblinks.cn

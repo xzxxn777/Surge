@@ -1,0 +1,10 @@
+#!name=IQOO社区
+#!desc=IQOO社区
+#!category=羊毛
+
+[Script]
+IQOO社区_获取token = type=http-response,pattern=^https:\/\/bbs-api\.iqoo\.com\/api\/v3\/user\?userId=,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/IQOO/IQOO.js,requires-body=1,max-size=0
+IQOO社区 = type=cron,cronexp="25 2,20 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/IQOO/IQOO.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% bbs-api.iqoo.com

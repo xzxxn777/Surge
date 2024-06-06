@@ -1,0 +1,10 @@
+#!name=蒙牛超级会员
+#!desc=蒙牛超级会员
+#!category=羊毛
+
+[Script]
+蒙牛超级会员_获取token = type=http-response,pattern=^https:\/\/m\.pailifan\.com\/xcx\/m\/user,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MengNiu/MengNiu.js,requires-body=1,max-size=0
+蒙牛超级会员 = type=cron,cronexp="0 0,22 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MengNiu/MengNiu.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% m.pailifan.com

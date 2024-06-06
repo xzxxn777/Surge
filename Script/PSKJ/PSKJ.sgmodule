@@ -1,0 +1,10 @@
+#!name=攀升科技+
+#!desc=攀升科技+
+#!category=羊毛
+
+[Script]
+攀升科技+_获取token = type=http-response,pattern=^https:\/\/psjia\.ipason\.com\/api\/v2\/member\/memberinfo,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/PSKJ/PSKJ.js,requires-body=1,max-size=0
+攀升科技+ = type=cron,cronexp="33 2,20 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/PSKJ/PSKJ.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% psjia.ipason.com
