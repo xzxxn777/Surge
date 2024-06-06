@@ -20,8 +20,7 @@ async function main() {
         console.log(`用户：${mobile}开始任务`)
         console.log('开始签到')
         let getUserCheckin = await commonPost(`/getUserCheckin`,`token=${token}&user_id=${id}&pint=wx&sub=&pf=&uid=${id}&latitude=&longitude=`)
-        console.log(getUserCheckin.data)
-        let useCheckin = await commonPost(`/useCheckin`,`num=3&token=${token}&user_id=${id}&pint=wx&sub=&pf=&uid=${id}&latitude=&longitude=`)
+        let useCheckin = await commonPost(`/useCheckin`,`num=${getUserCheckin.data + 1}&token=${token}&user_id=${id}&pint=wx&sub=&pf=&uid=${id}&latitude=&longitude=`)
         if (useCheckin.code == 1) {
             console.log(`签到成功,获得：${useCheckin.pointsList[useCheckin.data - 1].integral}积分`)
         } else {
@@ -31,7 +30,7 @@ async function main() {
         console.log("开始观看视频")
         let reward = await commonGet(`/reward?uid=${id}&token=${token}`)
         if (reward.c == 0) {
-            console.log(`获得${reward.d,money}积分`)
+            console.log(`获得${reward.d.money}积分`)
         } else {
             console.log(reward.m)
         }
