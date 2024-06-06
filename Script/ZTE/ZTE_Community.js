@@ -42,14 +42,14 @@ async function main() {
         let index = await commonPost('/points/home/index','pageSize=4&')
         let nextOpenTime = index.data.nextOpenTime;
         let waitTime = nextOpenTime - Date.now() / 1000;
-        if (waitTime > 0) {
+        if (0 < waitTime < 300) {
             console.log(`等待${waitTime}秒后再开宝箱`)
             await $.wait(waitTime)
         }
         let openbox = await commonPost('/points/home/openBox')
         if (openbox.status == 200) {
             console.log(`打开宝箱获得：${openbox.data.energy}流星`)
-            let havingenergy = await commonPost('/points/home/havingEnergy',`energyId=1888122&`)
+            let havingenergy = await commonPost('/points/home/havingEnergy',`energyId=${openbox.data.energyId}&`)
             console.log(havingenergy.msg)
         } else {
             console.log(openbox.msg)
@@ -59,7 +59,6 @@ async function main() {
         let lotteryIndex = await commonGet(`/points/prize/index?aid=0&t=${Date.now()}&v=${Date.now()}`)
         for (let i = 0; i < lotteryIndex.data.surplus_num; i++) {
             let lottery = await commonPost('/points/prize/launch',`template_id=${lotteryIndex.data.template_id}&aid=0&`)
-            console.log(lottery)
             console.log(lottery.data.prize_desc)
         }
         console.log("————————————")
