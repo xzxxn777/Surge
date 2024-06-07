@@ -18,6 +18,11 @@ async function main() {
     for (const item of ZTE) {
         id = item.id;
         token = item.token;
+        let info = await commonGet(`method=member.index&format=json&v=v1`);
+        if (info.data.check_token) {
+            $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
+            continue
+        }
         let create = await commonGet('st_id=12&openid=1&tmplIds=%5B%22dNjQkGU9Q5bGelME3VKu3WvLq8SjAK6zvO8TqmVBNQY%22%2C%22z8iz5MrEFo7ebe5JfG8hnYhBdBizmlyRYYB3Dn92VE4%22%2C%22iUPjQBzMS5qa2gbluX5LSBT4pY_ZJfHaRjHmU4eqjz8%22%5D&method=shareTeaming.create.team&format=json&v=v1');
         if (create.errorcode == 0) {
             console.log(`创建队伍成功：${create.data.team_id}`)
