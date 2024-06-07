@@ -68,7 +68,6 @@ async function commonGet(url, signature) {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    await $.wait(2000)
                     resolve(JSON.parse(data));
                 }
             } catch (e) {
@@ -108,7 +107,6 @@ async function commonPost(url,body,signature) {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    await $.wait(2000)
                     resolve(JSON.parse(data));
                 }
             } catch (e) {
