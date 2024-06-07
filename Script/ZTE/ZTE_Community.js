@@ -41,10 +41,10 @@ async function main() {
         console.log("开宝箱")
         let index = await commonPost('/points/home/index','pageSize=4&')
         let nextOpenTime = index.data.nextOpenTime;
-        let waitTime = nextOpenTime - Date.now() / 1000;
+        let waitTime = Math.ceil(nextOpenTime - Date.now() / 1000);
         if (0 < waitTime && waitTime < 300) {
             console.log(`等待${waitTime}秒后再开宝箱`)
-            await $.wait(waitTime)
+            await $.wait(waitTime * 1000)
         } else if (waitTime > 300) {
             console.log("超过五分钟，下次再开宝箱")
         }
