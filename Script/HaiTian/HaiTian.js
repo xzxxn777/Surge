@@ -78,7 +78,7 @@ async function main() {
         console.log('天天抽奖')
         for (const shareCode of shareCodeArr) {
             let help = await helpPost(`/lucky/task/share/code/success/${shareCode}`)
-            if (help) {
+            if (help.message) {
                 console.log(help.message)
             } else {
                 console.log(`助力成功`)
