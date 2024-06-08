@@ -27,6 +27,10 @@ async function main() {
         console.log(`用户：${id}开始任务`)
         console.log('每日签到')
         let activityInfo = await commonGet('/sign/activity/code?activityCode=')
+        if (activityInfo.code == 403) {
+            $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
+            continue
+        }
         let memberInfo = await commonGet(`/sign/activity/member/info?activityCode=${activityInfo.activity_code}`)
         if (memberInfo.is_sign) {
             console.log('今日已签到')
@@ -48,6 +52,10 @@ async function main() {
         let list = await cmallwapPost('/haday/wx/blog/nolikeList?pageSize=10&pageNum=1&types=1&essence=1&showAllUser=1',{})
         let articleId = list.data.rows[0].id
         let adComment = await cmallwapPost('/haday/wx/comment/add',{"blogId":articleId,"comment":"每天一条走心评论。。。","pcommentId":"","pcommentUserId":"","pcommentUserName":"","pparentId":""})
+        if (adComment.statusCode == 403) {
+            $.msg($.name, `用户：${id}`, `hadayToken已过期，请重新获取`);
+            continue
+        }
         console.log(adComment.errorMsg)
         console.log('关注官号')
         let follow = await cmallwapPost('/haday/wx/like/follow',{"likeUserId":"2f03a8263da24c7dafb6afc703eadf2c"})
