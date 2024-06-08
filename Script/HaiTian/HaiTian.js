@@ -42,8 +42,8 @@ async function main() {
         let browsePage = await commonPost('/members/browsePage',{})
         console.log(browsePage.message)
         console.log('浏览社区')
-        let commnity = await commonPost('/members/commnity/brosing/duration/add?seconds=100',{})
-        console.log(commnity.message)
+        let commnity = await commnityPost('/members/commnity/brosing/duration/add?seconds=100',{})
+        console.log(commnity)
         console.log('走心评论')
         let list = await cmallwapPost('/haday/wx/blog/nolikeList?pageSize=10&pageNum=1&types=1&essence=1&showAllUser=1',{})
         let articleId = list.data.rows[0].id
@@ -232,6 +232,50 @@ async function commonPost(url, body) {
                 } else {
                     await $.wait(2000)
                     resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function commnityPost(url, body) {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://cmallapi.haday.cn/buyer-api${url}`,
+            headers : {
+                'Connection': 'keep-alive',
+                'authorization': token,
+                'uuid': uuid,
+                'content-type': 'application/json',
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.8(0x13080812) XWEB/1216',
+                'envVersion': 'release',
+                'accept': '*/*',
+                'Sec-Fetch-Site': 'cross-site',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Dest': 'empty',
+                'Referer': 'https://servicewechat.com/wx7a890ea13f50d7b6/597/page-frame.html',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Accept-Language': 'zh-CN,zh;q=0.9'
+            },
+            body: JSON.stringify(body)
+        }
+        $.post(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    if (data) {
+                        await $.wait(2000)
+                        resolve(data);
+                    } else {
+                        console.log(`${JSON.stringify(err)}`)
+                        console.log(`${$.name} API请求失败，请检查网路重试`)
+                    }
+                } else {
+                    await $.wait(2000)
+                    resolve(data);
                 }
             } catch (e) {
                 $.logErr(e, resp)
