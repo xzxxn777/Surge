@@ -262,6 +262,9 @@ async function helpPost(url) {
                     }
                 } else {
                     await $.wait(2000)
+                    if (data) {
+                        data = JSON.parse(data)
+                    }
                     resolve(data);
                 }
             } catch (e) {
