@@ -78,7 +78,7 @@ async function main() {
         console.log('天天抽奖')
         for (const shareCode of shareCodeArr) {
             let help = await helpPost(`/lucky/task/share/code/success/${shareCode}`)
-            if (help.message) {
+            if (help) {
                 console.log(help.message)
             } else {
                 console.log(`助力成功`)
@@ -255,7 +255,7 @@ async function helpPost(url) {
                 if (err) {
                     if (data) {
                         await $.wait(2000)
-                        resolve(data);
+                        resolve(JSON.parse(data));
                     } else {
                         console.log(`${JSON.stringify(err)}`)
                         console.log(`${$.name} API请求失败，请检查网路重试`)
