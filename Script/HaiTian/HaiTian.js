@@ -85,7 +85,7 @@ async function main() {
             let luckyDraw = await commonGet('/lucky/activity/extract?activityCode=jfcj0527')
             if (luckyDraw.lucky_record_vo) {
                 console.log(`抽奖获得：${luckyDraw.lucky_record_vo.prize_name}`)
-            } else {
+            } else if (luckyDraw.message) {
                 console.log(luckyDraw.message)
                 break
             }
@@ -289,6 +289,7 @@ async function commnityPost(url, body) {
 async function commonPut(url, body) {
     return new Promise(resolve => {
         const options = {
+            method: 'PUT',
             url: `https://cmallapi.haday.cn/buyer-api${url}`,
             headers : {
                 'Connection': 'keep-alive',
@@ -307,7 +308,7 @@ async function commonPut(url, body) {
             },
             body: JSON.stringify(body)
         }
-        $httpClient.put(options, async (err, resp, data) => {
+        $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
                     if (data) {
