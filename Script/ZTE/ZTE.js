@@ -97,7 +97,8 @@ async function main() {
         }
         console.log("————————————")
         console.log("刮刮乐")
-        let prize = await commonGet('scratchcard_id=186&last_modified_time=1717137598&method=promotion.scratchcard.prize.gen2&format=json&v=v1')
+        let detail = await commonGet('scratchcard_id=186&method=promotion.scratchcard.detail&format=json&v=v1')
+        let prize = await commonGet(`scratchcard_id=186&last_modified_time=${detail.data.scratchcard.modified_time}&method=promotion.scratchcard.prize.gen2&format=json&v=v1`)
         if (prize.data.success) {
             console.log(`刮刮乐获得：${prize.data.prizeInfo.bonus_desc}`)
             let scratchcard = await commonGet(`scratchcard_id=186&scratchcard_result_id=${prize.data.prizeInfo.result_id}&method=promotion.scratchcard.prize.issue2&format=json&v=v1`)
