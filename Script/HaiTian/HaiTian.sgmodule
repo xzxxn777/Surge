@@ -1,0 +1,11 @@
+#!name=海天美味馆
+#!desc=海天美味馆
+#!category=羊毛
+
+[Script]
+海天美味馆_获取token = type=http-response,pattern=^https:\/\/cmallapi\.haday\.cn\/buyer-api\/members,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiTian/HaiTian.js,requires-body=1,max-size=0
+海天美味馆_获取HadayToken = type=http-response,pattern=^https:\/\/cmallwap\.haday\.cn\/haday\/wx\/auth\/userInfo,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiTian/HaiTian.js,requires-body=1,max-size=0
+海天美味馆 = type=cron,cronexp="43 2,20 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiTian/HaiTian.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% cmallapi.haday.cn,cmallwap.haday.cn
