@@ -73,6 +73,7 @@ async function main() {
                     for (let i = task.today_obtained_task_number; i < task.today_available_task_number; i++) {
                         let redeem = await commonGet('/lucky/activity/redeem?activityCode=jfcj0527')
                         console.log('兑换成功')
+                        await $.wait(2000)
                     }
                 }
                 if (task.task_key == 'BROWSE_PAGE_TASK') {
