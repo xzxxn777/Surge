@@ -1,5 +1,6 @@
 const $ = new Env('海天美味馆')
 const HaiTian = ($.isNode() ? JSON.parse(process.env.HaiTian) : $.getjson("HaiTian")) || [];
+let shareCodeArr = ['UVFfue','rYVbea','ruyYzu']
 let token = ''
 let hadayToken = ''
 let uuid = ''
@@ -19,6 +20,20 @@ let notice = ''
 
 async function main() {
     console.log('作者：@xzxxn777\n频道：https://t.me/xzxxn777\n群组：https://t.me/xzxxn7777\n自用机场推荐：https://xn--diqv0fut7b.com\n')
+    for (const item of HaiTian) {
+        id = item.id;
+        token = item.token;
+        hadayToken = item.hadayToken;
+        uuid = item.uuid;
+        let activityInfo = await commonGet('/sign/activity/code?activityCode=')
+        if (activityInfo.code == 403) {
+            $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
+            continue
+        }
+        let shareCode = await commonGet('/lucky/task/share/code/jfcj0527')
+        console.log(`助力码：${shareCode.share_code}`)
+        shareCodeArr.push(shareCode.share_code)
+    }
     for (const item of HaiTian) {
         id = item.id;
         token = item.token;
@@ -61,6 +76,14 @@ async function main() {
         let follow = await cmallwapPost('/haday/wx/like/follow',{"likeUserId":"2f03a8263da24c7dafb6afc703eadf2c"})
         console.log(follow.errorMsg)
         console.log('天天抽奖')
+        for (const shareCode of shareCodeArr) {
+            let help = await helpPost(`/lucky/task/share/code/success/${shareCode}`)
+            if (help) {
+                console.log(help.message)
+            } else {
+                console.log(`助力成功`)
+            }
+        }
         let taskList = await commonGet('/lucky/task/package/jfcj0527')
         for (const task of taskList.task_list) {
             console.log(`任务：${task.task_name}`)
@@ -197,6 +220,49 @@ async function commonGet(url) {
                 } else {
                     await $.wait(2000)
                     resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function helpPost(url) {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://cmallapi.haday.cn/buyer-api${url}`,
+            headers : {
+                'Connection': 'keep-alive',
+                'authorization': token,
+                'uuid': uuid,
+                'content-type': 'application/x-www-form-urlencoded',
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.8(0x13080812) XWEB/1216',
+                'envVersion': 'release',
+                'accept': '*/*',
+                'Sec-Fetch-Site': 'cross-site',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Dest': 'empty',
+                'Referer': 'https://servicewechat.com/wx7a890ea13f50d7b6/597/page-frame.html',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Accept-Language': 'zh-CN,zh;q=0.9'
+            }
+        }
+        $.post(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    if (data) {
+                        await $.wait(2000)
+                        resolve(data);
+                    } else {
+                        console.log(`${JSON.stringify(err)}`)
+                        console.log(`${$.name} API请求失败，请检查网路重试`)
+                    }
+                } else {
+                    await $.wait(2000)
+                    resolve(data);
                 }
             } catch (e) {
                 $.logErr(e, resp)
