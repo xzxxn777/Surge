@@ -77,7 +77,7 @@ async function getCookie() {
     const newData = {"id": id, "token": token, "encryptionkey": encryptionkey, "unionId": unionId, "wxOpenId": wxOpenId, "secret":secret};
     const index = MengNiuVip.findIndex(e => e.id == newData.id);
     if (index !== -1) {
-        if (MengNiuVip[index].token == newData.token) {
+        if (MengNiuVip[index].token == newData.token && MengNiuVip[index].encryptionkey == newData.encryptionkey) {
             return
         } else {
             MengNiuVip[index] = newData;
