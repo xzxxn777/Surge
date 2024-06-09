@@ -66,10 +66,10 @@ async function getCookie() {
     }
     const requestBody = $.toObj($request.body);
     const secret = requestBody._secret;
-    const body = $.toObj($response.body);
-    const id = body.data.memberInfo.phone;
-    const unionId = body.data.memberInfo.unionId;
-    const wxOpenId = body.data.memberInfo.wxOpenId;
+    let responseBody = await commonPost('/client/member/getMemberInfo',requestBody);
+    const id = responseBody.data.memberInfo.phone;
+    const unionId = responseBody.data.memberInfo.unionId;
+    const wxOpenId = responseBody.data.memberInfo.wxOpenId;
     const newData = {"id": id, "token": token, "encryptionkey": encryptionkey, "unionId": unionId, "wxOpenId": wxOpenId, "secret":secret};
     const index = MengNiuVip.findIndex(e => e.id == newData.id);
     if (index !== -1) {
