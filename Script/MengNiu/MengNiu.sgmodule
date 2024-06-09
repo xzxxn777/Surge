@@ -5,6 +5,8 @@
 [Script]
 蒙牛超级会员_获取token = type=http-response,pattern=^https:\/\/m\.pailifan\.com\/xcx\/m\/user,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MengNiu/MengNiu.js,requires-body=1,max-size=0
 蒙牛超级会员 = type=cron,cronexp="0 0,22 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MengNiu/MengNiu.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+蒙牛营养生活家_获取token = type=http-request,pattern=^https:\/\/mp-isv\.youzanyun\.com\/activity\/get_sign_in_by_open_id_and_mobile,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MengNiu/MengNiuNutritionist.js,requires-body=1,max-size=0
+蒙牛营养生活家 = type=cron,cronexp="1 0,22 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MengNiu/MengNiuNutritionist.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
 
 [MITM]
-hostname = %APPEND% m.pailifan.com
+hostname = %APPEND% m.pailifan.com,mp-isv.youzanyun.com
