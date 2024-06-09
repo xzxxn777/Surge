@@ -30,6 +30,21 @@ async function main() {
                 let reward = await signGet(`/signinact/sendRewardResult/${sign.result.sendLogId}`)
                 for (const item of reward.result.list) {
                     console.log(`获得：${item.pointAmt} ${item.winningPrizeName}`)
+                    if (item.winningPrizeName == "签到抽奖") {
+                        let luckydrawTimes = await signLuckyDrawGet('/luckydraw/luckydrawtimes')
+                        for (let i = 0; i < luckydrawTimes.result.drawLimitUserLeft; i++) {
+                            let luckydraw = await signLuckyDrawGet(`/luckydraw/luckydraw/8BD41756E6154A38A253B53EAF3F2338`)
+                            console.log(luckydraw.result.message)
+                            if (luckydraw.result.result) {
+                                let luckydrawResult = await signLuckyDrawGet('/luckydraw/luckydrawResult/8BD41756E6154A38A253B53EAF3F2338')
+                                if (luckydrawResult.result.result == "true") {
+                                    console.log(`获得：${luckydrawResult.result.awardName}`)
+                                } else {
+                                    console.log(luckydrawResult.result.result)
+                                }
+                            }
+                        }
+                    }
                 }
             } else {
                 console.log(sign.result.message)
@@ -168,6 +183,36 @@ async function luckyDrawGet(url) {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF',
                 'tenantId': '619669306447261696',
                 'activityId': '620821692188483585',
+                'accountId': accountId,
+            },
+            timeout:time_out
+        }
+        $.get(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000)
+                    resolve((JSON.parse(data)));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function signLuckyDrawGet(url) {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://channel.cheryfs.cn/archer/activity-api${url}`,
+            headers : {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF',
+                'tenantId': '619669306447261696',
+                'activityId': '772254567680942081',
                 'accountId': accountId,
             },
             timeout:time_out
