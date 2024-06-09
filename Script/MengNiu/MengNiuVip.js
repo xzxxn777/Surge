@@ -19,6 +19,7 @@ async function main() {
         encryptionkey = item.encryptionkey;
         unionId = item.unionId;
         wxOpenId = item.wxOpenId;
+        secret = item.secret;
         console.log(`用户：${id}开始任务`)
         let list = await commonGet(`/user/center/protein/task/list?mobile=${id}&levelTemplateId=1&unionId=${unionId}`)
         for (const task of list.data) {
@@ -48,7 +49,7 @@ async function main() {
         }
         console.log("————————————")
         console.log("查询营养值")
-        let getMemberInfo = await commonPost('/client/member/getMemberInfo',{"mobile":id,"_secret":"B3A309741022044774EC6E07C820B512","unionId":unionId})
+        let getMemberInfo = await commonPost('/client/member/getMemberInfo',{"mobile":id,"_secret":secret,"unionId":unionId})
         console.log(`拥有营养值：${getMemberInfo.data.memberInfo.extInfo.data.proteinBalance}\n`)
         notice += `用户：${id} 拥有营养值: ${getMemberInfo.data.memberInfo.extInfo.data.proteinBalance}\n`
     }
@@ -63,11 +64,13 @@ async function getCookie() {
     if (!token || !encryptionkey) {
         return
     }
+    const requestBody = $.toObj($request.body);
+    const secret = requestBody._secret;
     const body = $.toObj($response.body);
     const id = body.data.memberInfo.phone;
     const unionId = body.data.memberInfo.unionId;
     const wxOpenId = body.data.memberInfo.wxOpenId;
-    const newData = {"id": id, "token": token, "encryptionkey": encryptionkey, "unionId": unionId, "wxOpenId": wxOpenId};
+    const newData = {"id": id, "token": token, "encryptionkey": encryptionkey, "unionId": unionId, "wxOpenId": wxOpenId, "secret":secret};
     const index = MengNiuVip.findIndex(e => e.id == newData.id);
     if (index !== -1) {
         if (MengNiuVip[index].token == newData.token) {
