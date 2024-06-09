@@ -1,6 +1,6 @@
 const $ = new Env('海天美味馆')
 const HaiTian = ($.isNode() ? JSON.parse(process.env.HaiTian) : $.getjson("HaiTian")) || [];
-let shareCodeArr = ['UVFfue','rYVbea','ruyYzu']
+let shareCodeArr = []
 let token = ''
 let hadayToken = ''
 let uuid = ''
