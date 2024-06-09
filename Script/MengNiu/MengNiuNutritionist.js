@@ -41,7 +41,7 @@ async function main() {
 
 async function getCookie() {
     const token = $request.headers["isv-token"] || $request.headers["Isv-Token"];
-    const encryptionkey = $request.headers["encryptionkey"] || $request.headers["Encryptionkey"];
+    const encryptionkey = $request.headers["encryptionkey"] || $request.headers["encryptionKey"];
     if (!token || !encryptionkey) {
         return
     }
