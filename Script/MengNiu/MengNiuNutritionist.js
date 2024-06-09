@@ -53,7 +53,7 @@ async function getCookie() {
     const newData = {"id": id, "token": token, "encryptionkey": encryptionkey, "openId": openId, "storeId": storeId, "totalId": totalId};
     const index = MengNiuNutritionist.findIndex(e => e.id == newData.id);
     if (index !== -1) {
-        if (MengNiuNutritionist[index].token == newData.token) {
+        if (MengNiuNutritionist[index].token == newData.token && MengNiuNutritionist[index].encryptionkey == newData.encryptionkey) {
             return
         } else {
             MengNiuNutritionist[index] = newData;
