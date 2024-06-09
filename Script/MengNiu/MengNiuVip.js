@@ -22,6 +22,10 @@ async function main() {
         secret = item.secret;
         console.log(`用户：${id}开始任务`)
         let list = await commonGet(`/user/center/protein/task/list?mobile=${id}&levelTemplateId=1&unionId=${unionId}`)
+        if (!list) {
+            $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
+            continue
+        }
         for (const task of list.data) {
             console.log(`任务：${task.taskName}`)
             if (task.taskFinishStatus == 1) {
