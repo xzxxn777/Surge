@@ -2,7 +2,7 @@ const $ = new Env('中兴手机商城');
 const ZTE = ($.isNode() ? JSON.parse(process.env.ZTE) : $.getjson("ZTE")) || [];
 let token = ''
 let  id = ''
-let teamIdArr = ['0e8effcc5dae56e66eaf91e11758eeb9','33c123619ef9bb5c62da971f1074b3e5','3f74bb7a54fbafc4d472de0eadd2754a','9349300c3c0a4a49eef69cbbd5485ad9','975bd7181aa0e2fd71a43f6d84e84840']
+let teamIdArr = ['a03e677094ec0c611dc790c85ac38bb8']
 let notice = '';
 !(async () => {
 
