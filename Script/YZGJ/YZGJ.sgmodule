@@ -1,0 +1,10 @@
+#!name=云筑工匠
+#!desc=云筑工匠
+#!category=羊毛
+
+[Script]
+云筑工匠_获取cookie = type=http-response,pattern=^https:\/\/lwapp\.yzw\.cn\/api\/Home\/GetWorkerInfo,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YZGJ/YZGJ.js,requires-body=1,max-size=0
+云筑工匠 = type=cron,cronexp="8 8,16 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YZGJ/YZGJ.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% lwapp.yzw.cn
