@@ -15,6 +15,7 @@ async function main() {
     for (const item of YZGJ) {
         id = item.id;
         cookie = item.cookie;
+        console.log(`用户：${id}开始任务`)
         while (true) {
             let record = await commonPost();
             if (record.code === 200) {
