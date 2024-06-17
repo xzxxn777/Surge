@@ -68,7 +68,7 @@ async function main() {
         console.log(`拥有积分: ${getPoint.data.points}\n`)
         let giftCard = await mPost(`/xhr/giftCard/list.json`,'giftCardGroup=0');
         console.log(`拥有礼品卡: ${giftCard.data.balance}\n`)
-        notice += `用户：${userId}拥有积分: ${getPoint.data.points} 礼品卡: ${giftCard.data.balance}\n`
+        notice += `用户：${userId} 拥有积分: ${getPoint.data.points} 礼品卡: ${giftCard.data.balance}\n`
     }
     if (notice) {
         $.msg($.name, '', notice);
