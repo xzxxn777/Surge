@@ -1,5 +1,5 @@
 const $ = new Env('网易严选');
-let WYYX = ($.isNode() ? process.env.WYYX : $.getjson("WYYX")) || [];
+let WYYX = ($.isNode() ? JSON.parse(process.env.WYYX) : $.getjson("WYYX")) || [];
 let cookie=''
 let notice = '';
 !(async () => {
@@ -66,7 +66,9 @@ async function main() {
         console.log("积分查询")
         let getPoint = await commonGet(`/act-attendance/att/v4/index`);
         console.log(`拥有积分: ${getPoint.data.points}\n`)
-        notice += `用户：${userId}拥有积分: ${getPoint.data.points}\n`
+        let giftCard = await mPost(`/xhr/giftCard/list.json`,'giftCardGroup=0');
+        console.log(`拥有礼品卡: ${giftCard.data.balance}\n`)
+        notice += `用户：${userId}拥有积分: ${getPoint.data.points} 礼品卡: ${giftCard.data.balance}\n`
     }
     if (notice) {
         $.msg($.name, '', notice);
@@ -138,6 +140,43 @@ async function commonPost(url,body = {}) {
                 'Accept' : `application/json, text/javascript, */*; q=0.01`
             },
             body:JSON.stringify(body)
+        }
+        $.post(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000);
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function mPost(url,body = {}) {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://m.you.163.com${url}`,
+            headers: {
+                'X-Requested-With' : `XMLHttpRequest`,
+                'x-csrf-token' : ``,
+                'Connection' : `keep-alive`,
+                'Accept-Encoding' : `gzip, deflate, br`,
+                'Content-Type' : `application/x-www-form-urlencoded; charset=UTF-8`,
+                'Origin' : `https://m.you.163.com`,
+                'User-Agent' : `Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 yanxuan/7.6.8 device-id/ed179fedbfda9a7c5c9d462616c7bd96 app-chan-id/AppStore trustId/ios_trustid_781b2e99fe3a488eab858e05e4d48d63`,
+                'Cookie' :cookie,
+                'Referer' : `https://m.you.163.com/giftCard/list`,
+                'Accept-Language' : `zh-CN,zh-Hans;q=0.9`,
+                'Accept' : `application/json, text/javascript, */*; q=0.01`
+            },
+            body: body
         }
         $.post(options, async (err, resp, data) => {
             try {
