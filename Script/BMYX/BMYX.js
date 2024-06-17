@@ -17,11 +17,11 @@ async function main() {
         token = item.token;
         console.log(`用户：${id}开始任务`)
         console.log('开始签到')
-        let sign = await commonPost('sign',`token=363435974&company_id=1`);
+        let sign = await commonPost('sign',`token=${token}&company_id=1`);
         console.log(sign.msg)
         console.log("————————————")
         console.log("积分查询")
-        let getPoint = await commonPost('member_center_info',`token=363435974&action=current&company_id=1`);
+        let getPoint = await commonPost('member_center_info',`token=${token}&action=current&company_id=1`);
         console.log(`拥有积分: ${getPoint.data.memberInfo.memberPoints}\n`)
         notice += `用户：${id} 拥有积分: ${getPoint.data.memberInfo.memberPoints}\n`
     }
