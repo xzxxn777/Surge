@@ -31,7 +31,7 @@ async function main() {
 }
 
 async function getCookie() {
-    const requestBody = toString($response.body);
+    const requestBody = toString($request.body);
     if (!requestBody) {
         return
     }
