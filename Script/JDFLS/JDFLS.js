@@ -90,7 +90,7 @@ async function commonPost(url,body = {}) {
                 'content-type': 'application/json;charset=UTF-8',
                 'xweb_xhr': '1',
                 'PROJECT-ID': projectId,
-                'Authorization': token,
+                'KUMI-TOKEN': token,
                 'PLATFORM': 'KUMI_KINDER',
                 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.7(0x13080712) XWEB/1191',
                 'accept': '*/*',
