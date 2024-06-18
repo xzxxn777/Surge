@@ -19,6 +19,10 @@ async function main() {
         console.log(`用户：${id}开始任务`)
         console.log('开始签到')
         let sign = await commonPost(`/user/${userId}/sign-activity/23/sign`);
+        if (sign.code == 401) {
+            $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
+            continue
+        }
         if (sign.error) {
             console.log(sign.tips)
         } else {

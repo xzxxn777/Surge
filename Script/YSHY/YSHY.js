@@ -19,6 +19,10 @@ async function main() {
         console.log(`用户：${id}开始任务`)
         console.log('开始签到')
         let signInStatus = await commonGet(`/signIn/getSignInWeek`);
+        if (signInStatus.code == 401) {
+            $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
+            continue
+        }
         if (signInStatus.data.signInStatus == 1) {
             console.log('今日已签到')
         } else {
