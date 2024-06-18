@@ -25,6 +25,20 @@ async function main() {
             console.log('签到成功')
         }
         console.log("————————————")
+        console.log("互动有奖")
+        let articles = await commonGet(`/forum/feeds?filters={"examine_status":"pass","status":"!0"}&relations=user&sorts=-status,type&limit=20&offset=1`);
+        for (let article of articles.data.items) {
+            console.log(`分享文章`)
+            let share = await commonPost(`/user/273175/forum/feeds/${article.id}/share`);
+            console.log(share.data)
+            console.log(`点赞文章`)
+            let like = await commonPost(`/user/${userId}/forum/likes`,{"biz_type":"feed","biz_id":article.id});
+            console.log(like.data)
+            console.log(`取消点赞`)
+            let unlike = await commonPost(`/user/${userId}/forum/likes`,{"biz_type":"feed","biz_id":article.id});
+            console.log(unlike.data)
+        }
+        console.log("————————————")
         console.log("积分查询")
         let getPoint = await commonGet('/me');
         console.log(`拥有积分: ${getPoint.data.user.credit}\n`)
