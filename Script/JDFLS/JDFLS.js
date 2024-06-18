@@ -42,7 +42,7 @@ async function main() {
         }
         console.log("————————————")
         console.log("积分查询")
-        let getPoint = await commonGet('/scrm/home/info/get');
+        let getPoint = await commonPost('/scrm/home/info/get');
         console.log(`拥有积分: ${getPoint.data.point}\n`)
         notice += `用户：${id} 拥有积分: ${getPoint.data.point}\n`
     }
