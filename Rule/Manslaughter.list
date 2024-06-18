@@ -6,4 +6,4 @@ DOMAIN-SUFFIX,40017.cn
 # 魅族
 DOMAIN-SUFFIX,volcvideo.com
 # 臭宝乐园
-bags.s3.cn-northwest-1.amazonaws.com.cn
+DOMAIN,bags.s3.cn-northwest-1.amazonaws.com.cn
