@@ -43,7 +43,7 @@ async function main() {
         let listRetroactiveCard = await commonGet('/MallRetroactiveCard/listRetroactiveCard');
         console.log(`拥有补签卡：${listRetroactiveCard.data.count}`)
         for (let i = 0; i < listRetroactiveCard.data.count; i++) {
-            let getSignInMonth = await commonGet('/signIn/getSignInMonth?year=2024&month=6');
+            let getSignInMonth = await commonGet(`/signIn/getSignInMonth?year=${new Date().getFullYear()}&month=${new Date().getMonth() + 1}`);
             let date = null;
             for (const data of getSignInMonth.data.month) {
                 if (data.status === -1) {
