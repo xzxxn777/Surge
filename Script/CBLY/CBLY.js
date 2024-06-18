@@ -17,11 +17,18 @@ async function main() {
         token = item.token;
         console.log(`用户：${id}开始任务`)
         console.log('开始签到')
-        let sign = await commonPost('/daySign');
+        let sign = await commonPost('/memberUser/daySign');
         console.log(sign.msg)
         console.log("————————————")
+        console.log("转盘抽奖")
+        let drawCount = await commonPost('/memberUser/getMemberUser');
+        if (drawCount.data.remainDrawCount > 0) {
+            let lottery = await commonPost('/activity/drawOnline');
+            console.log(lottery.msg)
+        }
+        console.log("————————————")
         console.log("嗦粉币查询")
-        let getPoint = await commonPost('/getMemberUser');
+        let getPoint = await commonPost('/memberUser/getMemberUser');
         console.log(`拥有嗦粉币: ${getPoint.data.points}\n`)
         notice += `用户：${id} 拥有嗦粉币: ${getPoint.data.points}\n`
     }
@@ -61,7 +68,7 @@ async function getCookie() {
 async function commonPost(url,body = {}) {
     return new Promise(resolve => {
         const options = {
-            url: `https://cb-bags-slb.weinian.com.cn/wnuser/v1/memberUser${url}`,
+            url: `https://cb-bags-slb.weinian.com.cn/wnuser/v1${url}`,
             headers: {
                 'content-type': 'application/json',
                 'xweb_xhr': '1',
