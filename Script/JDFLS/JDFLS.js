@@ -18,6 +18,7 @@ async function main() {
     for (const item of JDFLS) {
         id = item.id;
         memberId = item.memberId;
+        projectId = item.projectId;
         token = item.token;
         console.log(`用户：${id}开始任务`)
         console.log('开始签到')
