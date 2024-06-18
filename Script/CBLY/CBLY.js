@@ -1,4 +1,4 @@
-const $ = new Env('白马严选相册');
+const $ = new Env('臭宝乐园');
 let CBLY = ($.isNode() ? JSON.parse(process.env.CBLY) : $.getjson("CBLY")) || [];
 let token=''
 let notice = ''
