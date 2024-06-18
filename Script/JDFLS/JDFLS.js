@@ -31,7 +31,7 @@ async function main() {
         console.log("————————————")
         console.log("转盘抽奖")
         let chance = await commonPost(`/lottery/v1/lottery/chance/get`,{"lotteryId":lotteryId});
-        for (let i = chance.data.items[1].availableCount; i < 10; i++) {
+        for (let i = chance.data.items[1].availableChance; i < 10; i++) {
             let share = await commonPost(`/lottery/v1/lottery/share`,{"lotteryId":lotteryId,"memberId":memberId});
             console.log(`分享获得一次抽奖机会`)
         }
