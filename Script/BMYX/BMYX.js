@@ -18,6 +18,10 @@ async function main() {
         console.log(`用户：${id}开始任务`)
         console.log('开始签到')
         let sign = await commonPost('sign',`token=${token}&company_id=1`);
+        if (sign.status == 404) {
+            $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
+            continue
+        }
         console.log(sign.msg)
         console.log("————————————")
         console.log("积分查询")
