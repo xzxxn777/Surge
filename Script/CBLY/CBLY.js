@@ -47,6 +47,9 @@ async function getCookie() {
         return
     }
     const id = body.data.mobile;
+    if (!id) {
+        return
+    }
     const newData = {"id": id, "token": token};
     const index = CBLY.findIndex(e => e.id == newData.id);
     if (index !== -1) {
