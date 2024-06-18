@@ -36,7 +36,7 @@ async function main() {
         console.log("开始抽奖")
         let pageInfo = await commonPost("/mp-decoration/web/page/queryPageInfo",{"appid":"wx532ecb3bdaaf92f9","basicInfo":{"vid":6013753979957,"vidType":2,"bosId":4020112618957,"productId":1,"productInstanceId":3171023957,"productVersionId":"30044","merchantId":2000020692957,"tcode":"weimob","cid":176205957},"extendInfo":{"wxTemplateId":7526,"childTemplateIds":[{"customId":90004,"version":"crm@0.1.11"},{"customId":90002,"version":"ec@42.3"},{"customId":90006,"version":"hudong@0.0.201"},{"customId":90008,"version":"cms@0.0.419"}],"analysis":[],"quickdeliver":{"enable":false},"bosTemplateId":1000001420,"youshu":{"enable":false},"source":1,"channelsource":5,"refer":"cms-design","mpScene":1089},"queryParameter":{"tracePromotionId":"100039234","tracepromotionid":"100039234"},"i18n":{"language":"zh","timezone":"8"},"pid":"4020112618957","storeId":"0","bosId":4020112618957,"requestType":1,"pageSize":10,"pageNum":1,"exParams":{"pageId":"13906063"},"jsonSwitch":true,"pageId":"13906063","tracePromotionId":"100039234","tracepromotionid":"100039234","$level":1})
         for (const item of pageInfo.data.pageModuleInfoList[1].moduleJSON.content.items) {
-            if (item.link.h5Url) {
+            if (item.link.h5Url && item.link.linkType == 1) {
                 console.log(`活动：${item.link.linkName}`)
                 const urlStr = item.link.h5Url.split('?')[1];
                 let result = {};

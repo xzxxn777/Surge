@@ -57,6 +57,10 @@ async function main() {
                 console.log(sign.message)
             }
         }
+        console.log('答题')
+        let getTodayQuizQuestion = await commonGet('/quiz/getTodayQuizQuestion?id=13')
+        let answers = getTodayQuizQuestion.data.answers;
+        let doAnswer = await commonPost(`/quiz/doAnswer?quiz_id=${getTodayQuizQuestion.data.quiz_id}&quiz_question_id=${getTodayQuizQuestion.data.id}&answer=0,1,2,3`,{})
         console.log('浏览页面')
         let browsePage = await commonPost('/members/browsePage',{})
         console.log(browsePage.message)
