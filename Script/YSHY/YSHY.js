@@ -26,6 +26,34 @@ async function main() {
             console.log(signIn.data)
         }
         console.log("————————————")
+        console.log("互动任务")
+        let taskList = await commonGet('/appletTask/getTask?isdefault=0');
+        for (const task of taskList.data) {
+            console.log(`任务：${task.taskName}`)
+            if (task.taskStatus == 0) {
+                console.log(`开始任务`)
+                let doTask = await commonGet(`/appletTask/doTask?taskId=${task.id}`);
+                console.log(doTask.msg)
+            } else {
+                console.log(`任务已完成`)
+            }
+        }
+        console.log("————————————")
+        console.log("补签")
+        let listRetroactiveCard = await commonGet('/MallRetroactiveCard/listRetroactiveCard');
+        console.log(`拥有补签卡：${listRetroactiveCard.data.count}`)
+        for (let i = 0; i < listRetroactiveCard.data.count; i++) {
+            let getSignInMonth = await commonGet('/signIn/getSignInMonth?year=2024&month=6');
+            let date = null;
+            for (const data of getSignInMonth.data.month) {
+                if (data.status === -1) {
+                    date = data.date;
+                }
+            }
+            let useCountersign = await commonGet(`/MallRetroactiveCard/useCountersign?useTime=${date}`);
+            console.log(useCountersign.data)
+        }
+        console.log("————————————")
         console.log("积分查询")
         let getPoint = await commonGet('/convert/getMemberScore');
         console.log(`拥有积分: ${getPoint.data}\n`)
