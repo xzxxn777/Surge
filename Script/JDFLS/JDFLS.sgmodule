@@ -1,0 +1,10 @@
+#!name=健达福利社
+#!desc=健达福利社
+#!category=羊毛
+
+[Script]
+健达福利社_获取token = type=http-response,pattern=^https:\/\/mole\.ferrero\.com\.cn\/boss\/boss\/scrm\/home\/info\/get,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JDFLS/JDFLS.js,requires-body=1,max-size=0
+健达福利社 = type=cron,cronexp="10 10,20 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JDFLS/JDFLS.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% mole.ferrero.com.cn
