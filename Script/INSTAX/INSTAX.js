@@ -105,8 +105,16 @@ async function commonPost(url,body = {}) {
         $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                    if (data) {
+                        data = JSON.parse(data);
+                        if (data.code == 422) {
+                            await $.wait(2000)
+                            resolve(data);
+                        }
+                    } else {
+                        console.log(`${JSON.stringify(err)}`)
+                        console.log(`${$.name} API请求失败，请检查网路重试`)
+                    }
                 } else {
                     await $.wait(2000)
                     resolve(JSON.parse(data));
