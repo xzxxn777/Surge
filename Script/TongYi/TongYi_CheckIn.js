@@ -1,6 +1,5 @@
 const $ = new Env('统一打卡有惊喜')
 const TongYi_CheckIn = ($.isNode() ? JSON.parse(process.env.TongYi_CheckIn) : $.getjson("TongYi_CheckIn")) || [];
-let componentId = '001e5d2b-b0fe-4af8-9824-f2582b7b3f11'
 let token = ''
 let notice = ''
 !(async () => {
@@ -18,15 +17,22 @@ async function main() {
         token = item.token;
         console.log(`用户：${id}开始任务`)
         console.log('开始签到')
-        let sign = await commonPost('/pluginnormal/signin/sign',{"componentId":componentId})
+        let sign = await commonPost('/pluginnormal/signin/sign',{"componentId":"001e5d2b-b0fe-4af8-9824-f2582b7b3f11"})
+        if (sign.code == 5000) {
+            $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
+            continue
+        }
         console.log(sign.msg)
         console.log("————————————")
         console.log("抽奖")
         let getLotteryTimes = await commonGet('/pluginlottery/lottery/getLotteryTimes?appId=4dd29da0-dc3b-4aff-aa0c-a8d31ae13a73&componentId=8b274718-a8ca-4782-b39a-b82c6692f25b')
         for (let i = 0; i < getLotteryTimes.data.count; i++) {
             let lottery = await commonGet('/pluginlottery/lottery/playerLotteryV2?componentId=8b274718-a8ca-4782-b39a-b82c6692f25b&lca=')
-            console.log(`抽奖获得：${lottery.data.originalResult.awardName}`)
-            console.log(lottery)
+            if (lottery.code == 200) {
+                console.log(`抽奖获得：${lottery.data.originalResult.awardName}`)
+            } else {
+                console.log(lottery.msg)
+            }
         }
         console.log("————————————")
         console.log("查询积分")
@@ -83,6 +89,9 @@ async function commonPost(url,body) {
                 'Sec-Fetch-Dest': 'empty',
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Accept-Language': 'zh-CN,zh;q=0.9',
+                'X-Verify-Signature': 'c2c6d4a973f9e531b95ea0025e6c56a9',
+                'X-Verify-appId': '4dd29da0-dc3b-4aff-aa0c-a8d31ae13a73',
+                'X-Verify-orgId': '3347de4f-f872-425b-9321-897f45b84820'
             },
             body: JSON.stringify(body)
         }
@@ -120,6 +129,9 @@ async function commonGet(url) {
                 'Sec-Fetch-Dest': 'empty',
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Accept-Language': 'zh-CN,zh;q=0.9',
+                'X-Verify-Signature': 'c2c6d4a973f9e531b95ea0025e6c56a9',
+                'X-Verify-appId': '4dd29da0-dc3b-4aff-aa0c-a8d31ae13a73',
+                'X-Verify-orgId': '3347de4f-f872-425b-9321-897f45b84820'
             }
         }
         $.get(options, async (err, resp, data) => {
@@ -138,13 +150,6 @@ async function commonGet(url) {
             }
         })
     })
-}
-
-function getCurrentMonth() {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    return `${year}-${month}`;
 }
 
 // prettier-ignore
