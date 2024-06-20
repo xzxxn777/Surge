@@ -1,5 +1,6 @@
 const $ = new Env('君品荟');
 const JunPinHui = ($.isNode() ? JSON.parse(process.env.JunPinHui) : $.getjson("JunPinHui")) || [];
+let token = '';
 let notice = '';
 !(async () => {
     if (typeof $request != "undefined") {
@@ -18,6 +19,10 @@ async function main() {
         //签到
         console.log("开始签到")
         let checkTodaySignIn = await commonPost(`/customer/daily/checkTodaySignIn`,{})
+        if (checkTodaySignIn.code == 401) {
+            $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
+            continue
+        }
         if (checkTodaySignIn.data) {
             console.log("已签到")
         } else {
