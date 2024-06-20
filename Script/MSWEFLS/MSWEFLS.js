@@ -44,13 +44,22 @@ async function main() {
             console.log(UserShare.msg)
         }
         console.log("————————————")
-        console.log("农场浇水")
+        console.log("农场详情")
         params = getSign();
-        let watering = await commonPost('/JDEMaxwellApi/UserWatering',{"doNotRepeat":true,"through":true,"openId":openId,"timestamp":params.time,"sign":params.sign});
-        if (watering.state) {
-            console.log(`浇水成功`)
-        } else {
-            console.log(watering.msg)
+        let GetUserFarmInitData = await commonPost('/JDEMaxwellApi/GetUserFarmInitData',{"openId":openId,"timestamp":params.time,"sign":params.sign});
+        console.log(`拥有水滴：${GetUserFarmInitData.data1.canUseWaters}`)
+        console.log(`当前状态：${GetUserFarmInitData.data.statusName}期 进度：${GetUserFarmInitData.data.progressBar}%`)
+        console.log("————————————")
+        console.log("农场浇水")
+        let max = Math.floor(GetUserFarmInitData.data1.canUseWaters/20);
+        for (let i = 0; i < max; i++) {
+            params = getSign();
+            let watering = await commonPost('/JDEMaxwellApi/UserWatering',{"doNotRepeat":true,"through":true,"openId":openId,"timestamp":params.time,"sign":params.sign});
+            if (watering.state) {
+                console.log(`浇水成功`)
+            } else {
+                console.log(watering.msg)
+            }
         }
         console.log("————————————")
         console.log("积分查询")
