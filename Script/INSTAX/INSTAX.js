@@ -1,5 +1,6 @@
 const $ = new Env('富士instax玩拍由我俱乐部');
 let INSTAX = ($.isNode() ? JSON.parse(process.env.INSTAX) : $.getjson("INSTAX")) || [];
+let comments = ['冲呀','不错','赞','顶']
 let token=''
 let notice = ''
 !(async () => {
@@ -43,6 +44,9 @@ async function main() {
             console.log(`取消点赞`)
             let unlike = await commonPost(`/user/${userId}/forum/likes`,{"biz_type":"feed","biz_id":article.id});
             console.log(unlike.data)
+            console.log(`评论文章`)
+            let randomComment = comments[Math.floor(Math.random() * comments.length)];
+            let comment = await commonPost(`/user/${userId}/forum/comments`,{"content":randomComment,"biz_type":"feed","biz_id":article.id,"feed_id":article.id});
         }
         console.log("————————————")
         console.log("积分查询")

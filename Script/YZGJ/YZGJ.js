@@ -17,7 +17,7 @@ async function main() {
         cookie = item.cookie;
         console.log(`用户：${id}开始任务`)
         while (true) {
-            let record = await commonPost();
+            let record = await commonPost('/record',{"adId":"adunit-9827a6d4b25ac116","adKey":""});
             if (record.code === 200) {
                 console.log(`获得金砖：${record.data.coinAmount}`)
                 await $.wait(2000)
@@ -31,6 +31,11 @@ async function main() {
         let info = await commonGet();
         console.log(`拥有金砖：${info.data.coinIncome} 现金：${info.data.cashIncome}\n`)
         notice += `用户：${id} 拥有金砖：${info.data.coinIncome} 现金：${info.data.cashIncome}\n`
+        if(info.data.cashIncome >= 1) {
+            console.log("余额大于1元，开始提现")
+            let withdraw = await commonPost('/withdraw',{"value":1});
+            console.log(withdraw.message)
+        }
     }
     if (notice) {
         $.msg($.name, '', notice);
@@ -65,10 +70,10 @@ async function getCookie() {
     $.setjson(YZGJ, "YZGJ");
 }
 
-async function commonPost() {
+async function commonPost(url,body) {
     return new Promise(resolve => {
         const options = {
-            url: `https://db-api.yzw.cn/appc/v1/activity/ad/record`,
+            url: `https://db-api.yzw.cn/appc/v1/activity/ad${url}`,
             headers : {
                 'x-application-type': 'miniapp',
                 'accept': 'application/json, text/plain, */*',
@@ -86,7 +91,7 @@ async function commonPost() {
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Accept-Language': 'zh-CN,zh;q=0.9',
             },
-            body: JSON.stringify({"adId":"adunit-9827a6d4b25ac116","adKey":""})
+            body: JSON.stringify(body)
         }
         $.post(options, async (err, resp, data) => {
             try {
