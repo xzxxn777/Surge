@@ -26,6 +26,13 @@ async function main() {
         let share = await commonPost('/JDEMaxwellApi/ShareDailyScore',{"through":true,"openId":openId,"timestamp":params.time,"sign":params.sign});
         console.log(share.msg)
         console.log("————————————")
+        console.log("助力")
+        for (const item of MSWEFLS) {
+            params = getSign();
+            let InApplateByShare = await commonPost('/JDEMaxwellApi/InApplateByShare',{"qrGid":md5(item.openId),"openId":openId,"timestamp":params.time,"sign":params.sign});
+            console.log(InApplateByShare.state)
+        }
+        console.log("————————————")
         console.log("农场签到")
         params = getSign();
         let UserSign = await commonPost('/JDEMaxwellApi/UserSign',{"openId":openId,"timestamp":params.time,"sign":params.sign});
@@ -80,6 +87,9 @@ async function getCookie() {
     }
     const  openId = body.data.user.openId;
     const id = body.data.user.mobile;
+    if (!id) {
+        return
+    }
     const newData = {"id": id, "openId": openId};
     const index = MSWEFLS.findIndex(e => e.id == newData.id);
     if (index !== -1) {
