@@ -27,7 +27,7 @@ async function main() {
             + 'DjzKAnTgD3Zn3sNQlqQCxpyTNTP2T+/OZxet1nrbbOAPAi4TrEA61wMO+dnP7IbONmCqg3lDcgiu+b7imOjPxNOGMoeTHGVD2L7tq4S9HuC01Ru3WprVRwIDAQAB'
         encryptor.setPublicKey(pubKey);
         const encrypted = encryptor.encrypt(pwd)
-        let login = await commonPost('/login/phoneLogin', {"phone": phone, "channelCode": "xj_mall_wx_applet", "password": encrypted});
+        let login = await commonPost('/api/login/phoneLogin', {"phone": phone, "channelCode": "xj_mall_wx_applet", "password": encrypted});
         if (login.code != 10000) {
             $.msg($.name, `用户：${phone}`, login.message);
             continue
@@ -35,13 +35,16 @@ async function main() {
         token = login.data.token;
         //签到
         console.log("开始签到")
-        let checkTodaySignIn = await commonPost(`/customer/daily/checkTodaySignIn`,{})
+        let checkTodaySignIn = await commonPost(`/api/customer/daily/checkTodaySignIn`,{})
         if (checkTodaySignIn.data) {
             console.log("已签到")
         } else {
-            let sign = await commonPost(`/customer/daily/signIn`,{"channelCode":"xj_mall_wx_applet"})
+            let sign = await commonPost(`/api/customer/daily/signIn`,{"channelCode":"xj_mall_wx_applet"})
             console.log(`签到获得：${sign.data.pointValue}积分`)
         }
+        //关注
+        let follow = await commonPost(`/media/video/addInterest`,{"shopId":206})
+        console.log(follow.success)
         //抽奖
         console.log("————————————")
         console.log("开始抽奖")
@@ -80,7 +83,7 @@ async function main() {
         //查询积分
         console.log("————————————")
         console.log("查询积分")
-        let getMemberInfo = await commonPost("/customer/accoutInter/token",{"checkLevelExist":true});
+        let getMemberInfo = await commonPost("/api/customer/accoutInter/token",{"checkLevelExist":true});
         console.log(`拥有积分：${getMemberInfo.data.points}\n`)
         notice += `用户：${phone} 积分：${getMemberInfo.data.points}\n`
     }
@@ -92,7 +95,7 @@ async function main() {
 async function commonPost(url,body = {}) {
     return new Promise(resolve => {
         const options = {
-            url: `https://fm.exijiu.com/api${url}`,
+            url: `https://fm.exijiu.com${url}`,
             headers : {
                 'Connection': 'keep-alive',
                 'dataType': 'json',
