@@ -1,25 +1,26 @@
 const $ = new Env('统一打卡有惊喜')
-const TongYi_CheckIn = ($.isNode() ? JSON.parse(process.env.TongYi_CheckIn) : $.getjson("TongYi_CheckIn")) || [];
+const TongYi = ($.isNode() ? JSON.parse(process.env.TongYi) : $.getjson("TongYi")) || [];
 let token = ''
 let notice = ''
 !(async () => {
-    if (typeof $request != "undefined") {
-        await getCookie();
-    } else {
-        await main();
-    }
+    await main();
 })().catch((e) => {$.log(e)}).finally(() => {$.done({});});
 
 async function main() {
     console.log('作者：@xzxxn777\n频道：https://t.me/xzxxn777\n群组：https://t.me/xzxxn7777\n自用机场推荐：https://xn--diqv0fut7b.com\n')
-    for (const item of TongYi_CheckIn) {
-        id = item.id;
-        token = item.token;
-        console.log(`用户：${id}开始任务`)
+    for (const item of TongYi) {
+        memberId = item.memberId;
+        wid = item.wid;
+        openid = item.openid;
+        console.log(`用户：${memberId}开始任务`)
+        console.log('获取token')
+        let initAudid = await initAudidPost({"pfid": "be_MA2zrEnzz", "appid": "4dd29da0-dc3b-4aff-aa0c-a8d31ae13a73", "openid": openid, "apptype": "multipage", "contenttype": "NULL", "distinctid": openid, "identitys": [{"identityType": "wid", "identityValue": wid, "mpid": "OL37rfUJs9TQl-lmq6NyxxSUpCk"}, {"identityType": "openid", "identityValue": openid, "mpid": "OL37rfUJs9TQl-lmq6NyxxSUpCk"}], "isWeChatEcosystem": true})
+        let generateToken = await tuzhanPost({"appId": "4dd29da0-dc3b-4aff-aa0c-a8d31ae13a73", "orgId": "3347de4f-f872-425b-9321-897f45b84820", "audid": initAudid.data.audid, "identityToken": initAudid.data.identityToken, "saudid": "", "isWorkWechat": false, "authType": "other", "orgWsId": "aeb69447-11a8-4ac6-9edf-7a7d1ea89ae0", "pfid": "be_MA2zrEnzz", "environment": "WX_MINI_PROGRAM", "sui": "", "stepid": "", "steptype": "", "mpid": "", "cnl": "", "cnlTypeList": "", "apptype": "multipage", "browser": "Weixin6.8.0", "deviceOs": "Mac OS X10.15.7", "deviceBrand": "", "device": "Mac OS X", "browser_ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.8(0x13080812) XWEB/1216", "cnlId": "", "cnlDeptId": "", "splayRecordId": ""})
+        token = generateToken.data
         console.log('开始签到')
         let sign = await commonPost('/pluginnormal/signin/sign',{"componentId":"001e5d2b-b0fe-4af8-9824-f2582b7b3f11"})
         if (sign.code == 5000) {
-            $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
+            $.msg($.name, `用户：${memberId}`, `token已过期，请重新获取`);
             continue
         }
         console.log(sign.msg)
@@ -38,39 +39,11 @@ async function main() {
         console.log("查询积分")
         let myPoints = await commonGet('/pluginnormal/points/myPoints?componentId=4e64bfcd-dbee-4506-8668-f960e495ef24')
         console.log(`拥有积分：${myPoints.data}\n`)
-        notice += `用户：${id} 拥有积分: ${myPoints.data}\n`
+        notice += `用户：${memberId} 拥有积分: ${myPoints.data}\n`
     }
     if (notice) {
         $.msg($.name, '', notice);
     }
-}
-
-async function getCookie() {
-    const token = $request.headers["Authorization"] || $request.headers["authorization"];
-    if (!token) {
-        return
-    }
-    const body = $.toObj($response.body);
-    if (!body || !body.data) {
-        return
-    }
-    const id = body.data.wxNickname;
-    const newData = {"id": id, "token": token};
-    const index = TongYi_CheckIn.findIndex(e => e.id == newData.id);
-    if (index !== -1) {
-        if (TongYi_CheckIn[index].token == newData.token) {
-            return
-        } else {
-            TongYi_CheckIn[index] = newData;
-            console.log(newData.token)
-            $.msg($.name, `🎉用户${newData.id}更新token成功!`, ``);
-        }
-    } else {
-        TongYi_CheckIn.push(newData)
-        console.log(newData.token)
-        $.msg($.name, `🎉新增用户${newData.id}成功!`, ``);
-    }
-    $.setjson(TongYi_CheckIn, "TongYi_CheckIn");
 }
 
 async function commonPost(url,body) {
@@ -135,6 +108,77 @@ async function commonGet(url) {
             }
         }
         $.get(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000)
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function initAudidPost(body) {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://sdkapi.fibodata.com/api/sdk/init/initAudid`,
+            headers : {
+                'content-type': 'application/json;charset=UTF-8',
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.7(0x13080712) XWEB/1191',
+                'accept': '*/*',
+                'Origin': 'https://tuzhan.ioutu.cn',
+                'Sec-Fetch-Site': 'cross-site',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Dest': 'empty',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Accept-Language': 'zh-CN,zh;q=0.9',
+            },
+            body: JSON.stringify(body)
+        }
+        $.post(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000)
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function tuzhanPost(body) {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://tuzhan.ioutu.cn/api2/plugin/generateToken`,
+            headers : {
+                'Connection': 'keep-alive',
+                'content-type': 'application/json',
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.7(0x13080712) XWEB/1191',
+                'accept': 'application/json',
+                'Origin': 'https://tuzhan.ioutu.cn',
+                'Sec-Fetch-Site': 'same-origin',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Dest': 'empty',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Accept-Language': 'zh-CN,zh;q=0.9',
+            },
+            body: JSON.stringify(body)
+        }
+        $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)

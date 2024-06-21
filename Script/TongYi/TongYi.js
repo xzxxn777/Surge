@@ -194,6 +194,8 @@ async function getCookie() {
     const body = $.toObj($response.body);
     const memberId = body.data.nickname;
     const wid = body.data.wid;
+    let index = body.data.sourceObjectList.findIndex(e => e.source == 1);
+    const openid = body.data.sourceObjectList[index].sourceOpenId;
     const i = TongYi_Help.findIndex(e => e == wid);
     if (i == -1) {
         TongYi_Help.push(wid)
@@ -201,8 +203,8 @@ async function getCookie() {
         $.msg($.name, `🎉新增助力码${wid}成功!`, ``);
         $.setjson(TongYi_Help, "TongYi_Help");
     }
-    const newData = {"memberId": memberId, "token": token}
-    const index = TongYi.findIndex(e => e.memberId == newData.memberId);
+    const newData = {"memberId": memberId, "token": token, "wid": wid, "openid": openid};
+    index = TongYi.findIndex(e => e.memberId == newData.memberId);
     if (index !== -1) {
         if (TongYi[index].token == newData.token) {
             return
