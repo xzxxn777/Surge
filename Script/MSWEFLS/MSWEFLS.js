@@ -66,6 +66,13 @@ async function main() {
                 console.log(`浇水成功`)
             } else {
                 console.log(watering.msg)
+                if (watering.msg == '请先选择目标奖励') {
+                    params = getSign();
+                    let GetFarmGoodsList = await commonPost('/JDEMaxwellApi/GetFarmGoodsList',{"userFarmStatus":1,"source":1,"doNotRepeat":true,"openId":openId,"timestamp":params.time,"sign":params.sign});
+                    params = getSign();
+                    let SaveFarmGoods = await commonPost('/JDEMaxwellApi/SaveFarmGoods',{"productno":GetFarmGoodsList.data.farmgoodslist[0].productno,"doNotRepeat":true,"openId":openId,"timestamp":params.time,"sign":params.sign});
+                    console.log(SaveFarmGoods.state)
+                }
             }
         }
         console.log("————————————")
