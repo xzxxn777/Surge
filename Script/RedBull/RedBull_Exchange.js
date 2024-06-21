@@ -16,10 +16,13 @@ let notice = '';
             itemId = item.itemId;
         }
     }
-    for (let i = 0; i < 30; i++) {
-        let exchange = await commonPost('/order/center/order/submit', {"businessType":"POINTS_MALL","pointMallSubmitRequest":{"exchangeActivityId":activityNo,"productBizNo":itemId,"discountType":"VIRTUAL"}});
-        console.log(exchange);
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 3; j++) {
+            commonPost('/order/center/order/submit', {"businessType":"POINTS_MALL","pointMallSubmitRequest":{"exchangeActivityId":activityNo,"productBizNo":itemId,"discountType":"VIRTUAL"}});
+        }
+        await $.wait(100);
     }
+    await $.wait(60000);
 })().catch((e) => {$.log(e)}).finally(() => {$.done({});});
 
 async function commonPost(url,body = {}) {
@@ -61,12 +64,11 @@ async function commonPost(url,body = {}) {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    resolve(JSON.parse(data));
+                    console.log(data);
                 }
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve();
             }
         })
     })
