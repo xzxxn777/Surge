@@ -12,6 +12,7 @@
 |     IQOO社区      |            [IQOO](https://github.com/xzxxn777/Surge/blob/main/Script/IQOO)             | ✅(2024/05/04) |     ✅️      |
 |     健达福利社      |            [JDFLS](https://github.com/xzxxn777/Surge/blob/main/Script/JDFLS)             | ✅(2024/06/20) |     ✅️      |
 |     蒙牛      |         [MengNiu](https://github.com/xzxxn777/Surge/blob/main/Script/MengNiu)          | ✅(2024/04/24) |      ✅      |
+|     麦斯威尔福利社      |         [MSWEFLS](https://github.com/xzxxn777/Surge/blob/main/Script/MSWEFLS)          | ✅(2024/06/21) |      ✅      |
 |      攀升科技+      |            [PSKJ](https://github.com/xzxxn777/Surge/blob/main/Script/PSKJ)             | ✅(2024/05/06) |     ✅️      |
 |        红牛会员俱乐部         |         [RedBull](https://github.com/xzxxn777/Surge/blob/main/Script/RedBull)          | ✅(2024/05/25) |     ✅️      |
 |       太平通       |     [TaiPingTong](https://github.com/xzxxn777/Surge/blob/main/Script/TaiPingTong)      | ✅(2024/04/24) |      ❌       |
