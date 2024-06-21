@@ -156,7 +156,7 @@ async function drawPost(url,body = {}) {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    await $.wait(4000);
+                    await $.wait(6000);
                     resolve(JSON.parse(data));
                 }
             } catch (e) {
