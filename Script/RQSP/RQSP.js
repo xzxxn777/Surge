@@ -45,7 +45,7 @@ async function main() {
         let config = await gamePost(`ac=config`,body('ac=config'));
         let score = config.data.userInfo.score;
         console.log(`当前得分：${score}`)
-        if (config.data.userInfo.playNum > 0 && score > 0) {
+        if (config.data.userInfo.playNum > 0) {
             score += getRandomInt(3000, 4000);
             if (score >= 20000) {
                 console.log(`得分大于最高限制得分`)
