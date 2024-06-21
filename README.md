@@ -15,8 +15,9 @@
 |     麦斯威尔福利社      |         [MSWEFLS](https://github.com/xzxxn777/Surge/blob/main/Script/MSWEFLS)          | ✅(2024/06/21) |      ✅      |
 |      攀升科技+      |            [PSKJ](https://github.com/xzxxn777/Surge/blob/main/Script/PSKJ)             | ✅(2024/05/06) |     ✅️      |
 |        红牛会员俱乐部         |         [RedBull](https://github.com/xzxxn777/Surge/blob/main/Script/RedBull)          | ✅(2024/05/25) |     ✅️      |
+|        日清食品体验馆         |         [RQSP](https://github.com/xzxxn777/Surge/blob/main/Script/RQSP)          | ✅(2024/06/21) |     ✅️      |
 |       太平通       |     [TaiPingTong](https://github.com/xzxxn777/Surge/blob/main/Script/TaiPingTong)      | ✅(2024/04/24) |      ❌       |
-|       统一        |          [TongYi](https://github.com/xzxxn777/Surge/blob/main/Script/TongYi)           | ✅(2022/11/28) |      ✅      |
+|       统一        |          [TongYi](https://github.com/xzxxn777/Surge/blob/main/Script/TongYi)           | ✅(2023/11/28) |      ✅      |
 |       茄皇        |   [QieHuang](https://github.com/xzxxn777/Surge/blob/main/Script/TongYi/QieHuang.js)    | ✅(2024/04/24) |     ✅️      |
 |       浓五的酒馆        |       [WuLiangYe](https://github.com/xzxxn777/Surge/blob/main/Script/WuLiangYe)        | ✅(2024/04/24) |     ✅️      |
 |      网易严选       |            [WYYX](https://github.com/xzxxn777/Surge/blob/main/Script/WYYX)             | ✅(2024/04/24) |     ✅️      |
