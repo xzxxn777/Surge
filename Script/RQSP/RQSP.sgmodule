@@ -1,0 +1,10 @@
+#!name=日清食品体验馆
+#!desc=日清食品体验馆
+#!category=羊毛
+
+[Script]
+日清食品体验馆_获取token = type=http-response,pattern=^https:\/\/prod-api\.nissinfoodium\.com\.cn\/gw-shop\/app\/v1\/user\/detail,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RQSP/RQSP.js,requires-body=1,max-size=0
+日清食品体验馆 = type=cron,cronexp="25 5,15 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RQSP/RQSP.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% prod-api.nissinfoodium.com.cn
