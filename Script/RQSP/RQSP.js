@@ -57,7 +57,11 @@ async function main() {
                 console.log(play.message)
                 await $.wait(10000)
                 let gameover = await gamePost(`ac=gameover`,`param=${AesEncode(body('ac=gameover',score))}`);
-                console.log(`游戏得分：${gameover.data.score}`)
+                if (gameover.code == 0) {
+                    console.log(`游戏得分：${gameover.data.score}`)
+                } else {
+                    console.log(gameover.message)
+                }
             }
         }
         let rank = await gamePost(`ac=rank`,body('ac=rank'));
