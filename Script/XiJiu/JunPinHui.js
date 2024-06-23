@@ -35,12 +35,11 @@ async function main() {
         token = login.data.token;
         //签到
         console.log("开始签到")
-        let checkTodaySignIn = await commonPost(`/api/customer/daily/checkTodaySignIn`,{})
-        if (checkTodaySignIn.data) {
-            console.log("已签到")
+        let signIn = await commonPost(`/api/customer/daily/signIn`,{"channelCode":"xj_mall_wx_applet"})
+        if (signIn.data.pointValue) {
+            console.log(`签到获得：${signIn.data.pointValue}积分`)
         } else {
-            let sign = await commonPost(`/api/customer/daily/signIn`,{"channelCode":"xj_mall_wx_applet"})
-            console.log(`签到获得：${sign.data.pointValue}积分`)
+            console.log("今日已签到")
         }
         //关注
         let follow = await commonPost(`/media/video/addInterest`,{"shopId":206})
