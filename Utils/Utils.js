@@ -9,9 +9,9 @@ async function loadUtils() {
     console.log(`🚀 ${$.name}: 开始下载Utils代码`)
     return new Promise(async (resolve) => {
         $.getScript(
-            'https://raw.githubusercontent.com/xzxxn777/Surge/main/Utils/Utils.js'
+            'https://cdn.jsdelivr.net/gh/xzxxn777/Surge@main/Utils/Utils.js'
         ).then((fn) => {
-            $.setdata(fn, Utils_Code)
+            $.setdata(fn, "Utils_Code")
             eval(fn)
             console.log(`✅ Utils加载成功, 请继续`)
             resolve(creatUtils())
