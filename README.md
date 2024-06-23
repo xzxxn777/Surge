@@ -4,6 +4,7 @@
 |:---------------:|:--------------------------------------------------------------------------------------:|:-------------:|:-----------:|
 |        安徽电信         |    [AnHuiTelecom](https://github.com/xzxxn777/Surge/blob/main/Script/AnHuiTelecom)     | ✅(2024/06/15) |     ✅️      |
 |        好奇车生活         |         [Cheryfs](https://github.com/xzxxn777/Surge/blob/main/Script/Cheryfs)          | ✅(2024/06/03) |     ✅️      |
+|        Github监控         |         [Github](https://github.com/xzxxn777/Surge/blob/main/Script/Github)          | ✅(2024/06/23) |     ✅️      |
 |      古井贡酒       |          [GuJing](https://github.com/xzxxn777/Surge/blob/main/Script/GuJing)           | ✅(2024/04/24) |      ✅      |
 |        海天美味馆         |         [HaiTian](https://github.com/xzxxn777/Surge/blob/main/Script/HaiTian)          | ✅(2024/06/15) |     ✅️      |
 |       喜茶        |          [HeyTea](https://github.com/xzxxn777/Surge/blob/main/Script/HeyTea)           | ✅(2024/04/24) |      ❌      |
