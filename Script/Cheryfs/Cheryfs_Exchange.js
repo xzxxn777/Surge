@@ -23,10 +23,10 @@ async function main() {
     let exchangeNeedPoints = queryByPointsMallCardId.result.exchangePointsValue;
     let exchangeNeedMoney = queryByPointsMallCardId.result.exchangeMoneyValue;
     for (let i = 0; i < 20; i++) {
-        for (let j = 0; j < 3; j++) {
+        for (let j = 0; j < 2; j++) {
             let exchange = commonGet(`/pointsmall/exchangeCard?pointsMallCardId=${pointsMallCardId}&exchangeCount=${exchangeCount}&mallOrderInputVoStr=%7B%22person%22:%22%22,%22phone%22:%22%22,%22province%22:%22%22,%22city%22:%22%22,%22area%22:%22%22,%22address%22:%22%22,%22remark%22:%22%22%7D&channel=1&exchangeType=${exchangeType}&exchangeNeedPoints=${exchangeNeedPoints}&exchangeNeedMoney=${exchangeNeedMoney}&cardGoodsItemIds=`)
         }
-        await $.wait(60)
+        await $.wait(50)
     }
     await $.wait(60000)
 }
