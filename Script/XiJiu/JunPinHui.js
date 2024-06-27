@@ -56,6 +56,9 @@ async function main() {
         let taskList = await drawPost(`/mission/completeState?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appkey":appkey,"sign":sign,"timestamp":time},"admJson":{"id":getId.data.data.id,"actId":actId}}})
         for (const task of taskList.data.data) {
             console.log(`任务：${task.missionName}`)
+            if (task.type == "inviteJoinMember" || task.type == "payOrder") {
+                continue
+            }
             if (task.isComplete) {
                 console.log("已完成")
             } else {
