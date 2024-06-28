@@ -39,6 +39,7 @@ async function main() {
         //幸运抽奖
         console.log("————————————")
         console.log("幸运抽奖")
+        time = Math.floor(Date.now() / 1e3)
         let getCount = await commonGet('/v3/today.draw.count',getSign('GET','/api/v3/today.draw.count',{}));
         if (getCount.Data.count == 0) {
             let draw = await commonPost('/v3/luck.draw',{},getSign('POST','/api/v3/luck.draw',{}));
@@ -49,6 +50,7 @@ async function main() {
         console.log("————————————")
         console.log("开始做任务")
         //获取帖子参数
+        time = Math.floor(Date.now() / 1e3)
         let threadList = await commonGet('/v3/thread.list?scope=5&page=1&perPage=10&filter[sort]=4&filter[essence]=1&sequence=0',getSign('GET','/api/v3/thread.list',{"filter[essence]":1,"filter[sort]":4,"page":1,"perPage":10,"scope":5,"sequence":0}));
         let threadId = threadList.Data.pageData[0].threadId
         let postId = threadList.Data.pageData[0].postId
@@ -170,6 +172,7 @@ async function main() {
         //查询酷币
         console.log("————————————")
         console.log("查询酷币")
+        time = Math.floor(Date.now() / 1e3)
         let user = await commonGet(`/v3/user?userId=${id}`,getSign('GET','/api/v3/user',{"userId":id}));
         console.log(`拥有酷币: ${user.Data.score}\n`)
         notice += `用户：${id} 拥有酷币: ${user.Data.score}\n`

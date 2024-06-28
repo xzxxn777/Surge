@@ -5,6 +5,7 @@ let token = ''
 let hadayToken = ''
 let uuid = ''
 let notice = ''
+let activityId = 'jfcj0627'
 !(async () => {
     if (typeof $request != "undefined") {
         if ($request.url.includes('cmallapi')) {
@@ -30,7 +31,7 @@ async function main() {
             $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
             continue
         }
-        let shareCode = await commonGet('/lucky/task/share/code/jfcj0527')
+        let shareCode = await commonGet(`/lucky/task/share/code/${activityId}`)
         console.log(`助力码：${shareCode.share_code}`)
         shareCodeArr.push(shareCode.share_code)
     }
@@ -88,25 +89,25 @@ async function main() {
                 console.log(`助力成功`)
             }
         }
-        let taskList = await commonGet('/lucky/task/package/jfcj0527')
+        let taskList = await commonGet(`/lucky/task/package/${activityId}`)
         for (const task of taskList.task_list) {
             console.log(`任务：${task.task_name}`)
             if (task.today_obtained_task_number < task.today_available_task_number) {
                 if (task.task_key == 'LOGIN') {
-                    let finish = await commonPut('/lucky/task/getLoginOpporturnity/jfcj0527',{})
+                    let finish = await commonPut(`/lucky/task/getLoginOpporturnity/${activityId}`,{})
                     console.log(finish)
                 }
                 if (task.task_key == 'POINT_EXCHANGE') {
                     for (let i = task.today_obtained_task_number; i < task.today_available_task_number; i++) {
-                        let redeem = await commonGet('/lucky/activity/redeem?activityCode=jfcj0527')
+                        let redeem = await commonGet(`/lucky/activity/redeem?activityCode=${activityId}`)
                         console.log('兑换成功')
                         await $.wait(2000)
                     }
                 }
                 if (task.task_key == 'BROWSE_PAGE_TASK') {
-                    let start = await commonGet(`/lucky/task/browse/page/start/jfcj0527?pageUrl=${task.link}`)
+                    let start = await commonGet(`/lucky/task/browse/page/start/${activityId}?pageUrl=${task.link}`)
                     await $.wait(10000)
-                    let end = await commonGet(`/lucky/task/browse/page/end/jfcj0527?pageUrl=${task.link}`)
+                    let end = await commonGet(`/lucky/task/browse/page/end/${activityId}?pageUrl=${task.link}`)
                     if (end) {
                         console.log(end.message)
                     } else {
@@ -118,7 +119,7 @@ async function main() {
             }
         }
         while (true) {
-            let luckyDraw = await commonGet('/lucky/activity/extract?activityCode=jfcj0527')
+            let luckyDraw = await commonGet(`/lucky/activity/extract?activityCode=${activityId}`)
             if (luckyDraw.lucky_record_vo) {
                 console.log(`抽奖获得：${luckyDraw.lucky_record_vo.prize_name}`)
             } else if (luckyDraw.message) {
