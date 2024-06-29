@@ -92,7 +92,7 @@ async function main() {
         console.log("————————————")
         console.log("查询积分")
         body = {"memberid":memberId,"token":token,"coordinate":"","platform":"WECHAT","nickName":CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(nickName)),"openId":openId,"fromid":"71672","deviceId":deviceId}
-        let getPoint = await commonJsonPost('/activity_execute/rest/membergoldbean/mainPage',{"enc":true,"encData":encrypt(JSON.stringify(body))})
+        let getPoint = await commonJsonSignPost('/activity_execute/rest/membergoldbean/mainPage',{"enc":true,"encData":encrypt(JSON.stringify(body))})
         console.log(`拥有积分：${getPoint.data.allbeans}\n`)
         notice += `用户：${nickName} 拥有积分: ${getPoint.data.allbeans}\n`
     }
