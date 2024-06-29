@@ -1,0 +1,10 @@
+#!name=泰康在线
+#!desc=泰康在线
+#!category=羊毛
+
+[Script]
+泰康在线_获取token = type=http-response,pattern=^https:\/\/m\.tk\.cn\/wechat_item\/rest\/xcx\/login,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TKZX/TKZX.js,requires-body=1,max-size=0
+泰康在线 = type=cron,cronexp="8 8,22 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TKZX/TKZX.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% m.tk.cn
