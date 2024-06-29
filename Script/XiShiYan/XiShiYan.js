@@ -11,6 +11,10 @@ let phone_number = ''
 let password = ''
 let ua = ''
 let commonUa = ''
+let deviceId = ''
+let jinhuaKey = '35c782a2'
+let jinhuaToken = ''
+let lottery = false
 !(async () => {
     await main();
 })().catch((e) => {$.log(e)}).finally(() => {$.done({});});
@@ -29,6 +33,7 @@ async function main() {
         let randomUA = generateRandomUA();
         ua = randomUA.ua;
         commonUa = randomUA.commonUa;
+        deviceId = randomUA.uuid;
         console.log(ua)
         console.log(commonUa)
         phone_number = item.split("&")[0]
@@ -51,6 +56,80 @@ async function main() {
         console.log('登录成功')
         accountId = login.data.session.account_id;
         sessionId = login.data.session.id;
+        console.log("————————————")
+        console.log('阅读抽奖')
+        console.log("获取id")
+        let buoyList = await commonGet('/api/buoy/list')
+        let url = buoyList.data.new_down.icon_list[0].turn_to.url;
+        let urlStr = url.split('?')[1];
+        let result = {};
+        let paramsArr = urlStr.split('&')
+        for(let i = 0,len = paramsArr.length;i < len;i++){
+            let arr = paramsArr[i].split('=')
+            result[arr[0]] = arr[1];
+        }
+        let articleId = result.id;
+        console.log(articleId)
+        let articleDetail = await commonGet(`/api/article/detail?id=${articleId}`)
+        url = articleDetail.data.article.share_url;
+        urlStr = url.split('?')[1];
+        result = {};
+        paramsArr = urlStr.split('&')
+        for(let i = 0,len = paramsArr.length;i < len;i++){
+            let arr = paramsArr[i].split('=')
+            result[arr[0]] = arr[1];
+        }
+        let id = result.id;
+        console.log(id)
+        console.log("获取key和token")
+        let jinhuaLogin = await jinhuaPost('/api/member/login',{"debug":0,"userId":""})
+        jinhuaKey = jinhuaLogin.data.key;
+        jinhuaToken = "Bearer " + jinhuaLogin.data.token;
+        console.log(jinhuaKey)
+        console.log(jinhuaToken)
+        console.log("获取抽奖id")
+        let jinhuaDetail = await jinhuaGet(`/api/study/detail?id=${id}`,{"id":id})
+        let lotteryId = jinhuaDetail.data.lottery.lottery_id;
+        console.log(lotteryId)
+        console.log("开始阅读")
+        for (const item of jinhuaDetail.data.levels) {
+            let level = await jinhuaGet(`/api/study/level?id=${item.id}`,{"id":item.id})
+            console.log(level.data.level.name)
+            if (level.data.level.task_num == level.data.completedTasks.length) {
+                console.log(`已完成`)
+                continue
+            }
+            for (const task of level.data.tasks) {
+                let complete = await jinhuaPost(`/api/study/task/complete`,{"id":task.id})
+                console.log(complete.message)
+            }
+        }
+        if (lottery) {
+            let lotteryCount = await jinhuaPost(`/api/lotterybigwheel/_ac_lottery_count`,{"id":lotteryId,"module":"study"})
+            for (let i = 0; i < lotteryCount.data.count; i++) {
+                let lottery = await jinhuaPost(`/api/lotterybigwheel/_ac_lottery`,{"id":lotteryId,"app_id":"uhzfzpj5l78yq6di","module":"study","optionHash":""})
+                if (lottery.code == 10000) {
+                    console.log(lottery.message)
+                    let captcha =  await jinhuaPost(`/api/captcha/get`,{"activity_id":lotteryId,"module":"bigWheel"})
+                    let jigsawImageUrl = captcha.data.jigsawImageUrl;
+                    let originalImageUrl = captcha.data.originalImageUrl;
+                    let captchaToken = captcha.data.token;
+                    let secretKey = captcha.data.secretKey;
+                    let getXpos = await slidePost('huakuai.xzxxn7.live',{'gap': jigsawImageUrl, 'bg': originalImageUrl})
+                    if (!getXpos) {
+                        console.log('滑块验证失败')
+                        continue;
+                    }
+                    let point = aesEncrypt(JSON.stringify({x: getXpos.x_coordinate, y: 5}), secretKey)
+                    let check = await jinhuaPost(`/api/captcha/check`,{"activity_id":lotteryId,"module":"bigWheel","cap_token":captchaToken,"point":point})
+                    console.log(check)
+                    lottery = await jinhuaPost(`/api/lotterybigwheel/_ac_lottery`,{"id":lotteryId,"app_id":"uhzfzpj5l78yq6di","module":"study","optionHash":""})
+                    console.log(`抽奖获得：${lottery.data.title}`)
+                } else {
+                    console.log(`抽奖获得：${lottery.data.title}`)
+                }
+            }
+        }
         console.log("————————————")
         console.log("开始签到")
         let sign = await commonGet('/api/user_mumber/sign')
@@ -246,6 +325,137 @@ async function commonPost(url,body) {
     })
 }
 
+async function jinhuaPost(url,body) {
+    let params = getJinhuaParams(body);
+    return new Promise(resolve => {
+        const options = {
+            url: `https://op-api.cloud.jinhua.com.cn${url}`,
+            headers : {
+                'access-type': 'app',
+                'access-module': 'study',
+                'access-device-id': deviceId,
+                'access-auth-id': accountId,
+                'access-api-signature': params.signature,
+                'access-nonce-str': params.uuid,
+                'authorization': jinhuaToken,
+                'access-app-id': 'uhzfzpj5l78yq6di',
+                'access-timestamp': params.time,
+                'access-api-token': sessionId,
+                'accept': 'application/json, text/plain, */*',
+                'user-agent': 'Mozilla/5.0 (Linux; Android 11; 21091116AC Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/94.0.4606.85 Mobile Safari/537.36;xsb_zhuji;xsb_zhuji;1.3.2;native_app;6.10.0',
+                'content-type': 'application/json; charset=UTF-8',
+                'origin': 'https://op-h5.cloud.jinhua.com.cn',
+                'x-requested-with': 'com.zjonline.zhuji',
+                'sec-fetch-site': 'same-site',
+                'sec-fetch-mode': 'cors',
+                'sec-fetch-dest': 'empty',
+                'referer': 'https://op-h5.cloud.jinhua.com.cn/',
+                'accept-encoding': 'gzip, deflate',
+                'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+            },
+            body: JSON.stringify(body)
+        }
+        $.post(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000)
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function jinhuaGet(url,body) {
+    let params = getJinhuaParams(body);
+    return new Promise(resolve => {
+        const options = {
+            url: `https://op-api.cloud.jinhua.com.cn${url}`,
+            headers : {
+                'access-type': 'app',
+                'access-module': 'study',
+                'access-device-id': deviceId,
+                'access-auth-id': accountId,
+                'access-api-signature': params.signature,
+                'access-nonce-str': params.uuid,
+                'authorization': jinhuaToken,
+                'access-app-id': 'uhzfzpj5l78yq6di',
+                'access-timestamp': params.time,
+                'access-api-token': sessionId,
+                'accept': 'application/json, text/plain, */*',
+                'user-agent': 'Mozilla/5.0 (Linux; Android 11; 21091116AC Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/94.0.4606.85 Mobile Safari/537.36;xsb_zhuji;xsb_zhuji;1.3.2;native_app;6.10.0',
+                'origin': 'https://op-h5.cloud.jinhua.com.cn',
+                'x-requested-with': 'com.zjonline.zhuji',
+                'sec-fetch-site': 'same-site',
+                'sec-fetch-mode': 'cors',
+                'sec-fetch-dest': 'empty',
+                'referer': 'https://op-h5.cloud.jinhua.com.cn/',
+                'accept-encoding': 'gzip, deflate',
+                'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+            }
+        }
+        $.get(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000)
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function slidePost(url,body) {
+    return new Promise(resolve => {
+        const options = {
+            url: `http://${url}/detect_slider_position`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(body)
+        }
+        $.post(options, (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+function aesEncrypt(e, r) {
+    CryptoJS = Utils.createCryptoJS();
+    var n = CryptoJS.enc.Utf8.parse(r)
+        , o = CryptoJS.enc.Utf8.parse(e)
+        , s = CryptoJS.AES.encrypt(o, n, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    return s.toString()
+}
+
 function getBody() {
     const key = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD6XO7e9YeAOs+cFqwa7ETJ+WXizPqQeXv68i5vqw9pFREsrqiBTRcg7wB0RIp3rJkDpaeVJLsZqYm5TW7FWx/iOiXFc+zCPvaKZric2dXCw27EvlH5rq+zwIPDAJHGAfnn1nmQH7wR3PCatEIb8pz5GFlTHMlluw4ZYmnOwg+thwIDAQAB';
     const encryptor = new (Utils.loadJSEncrypt());
@@ -259,6 +469,29 @@ function getBody() {
     const hash = CryptoJS.HmacSHA256(str, signature_key);
     let signature = CryptoJS.enc.Hex.stringify(hash);
     return {"uuid":uuid,"signature":signature,"body":body};
+}
+
+function getJinhuaParams(params) {
+    let uuid = generateUUID();
+    let time = Date.now();
+    let config = {
+        app_id: 'uhzfzpj5l78yq6di',
+        device_id: deviceId,
+        nonce_str: uuid,
+        source_type: 'app',
+        timestamp: time,
+        auth_id: accountId,
+        token: sessionId
+    };
+    Object.entries(params).forEach(([key, value]) => {
+        config[key] = value;
+    });
+    let sortedKeys = Object.keys(config).sort();
+    let result = sortedKeys.map(key => `${key}=${config[key]}`).join('&&');
+    result = result + '&&' + jinhuaKey;
+    CryptoJS = Utils.createCryptoJS();
+    let signature = CryptoJS.SHA256(result).toString();
+    return {"uuid":uuid,"time":time,"signature":signature};
 }
 
 function getParams(url) {
@@ -322,7 +555,7 @@ function generateRandomUA() {
 
     let ua = `${os.toUpperCase()};${osVersion};50;${version};1.0;null;${deviceId}`
     let commonUa = `${version};${uuid};${device};${os};${osVersion};${osType};${appVersion}`
-    return {"ua": ua, "commonUa": commonUa};
+    return {"ua": ua, "commonUa": commonUa,"uuid":uuid};
 }
 
 async function loadUtils() {
