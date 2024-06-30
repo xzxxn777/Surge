@@ -137,7 +137,9 @@ async function main() {
         console.log(`签到获得：${sign.data.signIntegral}积分`)
         console.log("————————————")
         console.log("开始任务")
-        let isFinish = true;
+        let readFinish = true;
+        let likeFinish = true;
+        let shareFinish = true;
         let taskList = await commonGet('/api/user_center/task?type=1&current=1&size=20')
         for (let task of taskList.data.list) {
             console.log(`任务：${task.name}`)
@@ -152,31 +154,43 @@ async function main() {
                     console.log(`任务完成获得：${doTask.data.score_notify.integral}积分`)
                 }
             }
-            if (task.name == '分享资讯给好友' || task.name == '新闻资讯阅读' || task.name == '新闻资讯点赞') {
-                isFinish = false;
+            if (task.name == '新闻资讯阅读') {
+                readFinish = false;
+            }
+            if (task.name == '新闻资讯点赞') {
+                likeFinish = false;
+            }
+            if (task.name == '分享资讯给好友') {
+                shareFinish = false;
             }
         }
-        if (!isFinish) {
+        if (!readFinish || !likeFinish || !shareFinish) {
             let articleList = await commonGet('/api/article/channel_list?channel_id=5de768411b011b48a65b772f&isDiFangHao=false&is_new=true&list_count=0&size=30')
             for (const article of articleList.data.article_list) {
                 let articleId = article.id;
-                let read = await commonGet(`/api/article/read_time?channel_article_id=${articleId}&is_end=true&read_time=3051`)
-                if (read.data.score_notify) {
-                    console.log(`阅读获得：${read.data.score_notify.integral}积分`)
-                } else {
-                    console.log(`文章已经阅读过了`)
+                if (!readFinish) {
+                    let read = await commonGet(`/api/article/read_time?channel_article_id=${articleId}&is_end=true&read_time=3051`)
+                    if (read.data.score_notify) {
+                        console.log(`阅读获得：${read.data.score_notify.integral}积分`)
+                    } else {
+                        console.log(`文章已经阅读过了`)
+                    }
                 }
-                let like = await commonPost(`/api/favorite/like`,`action=true&id=${articleId}`)
-                if (like.data) {
-                    console.log(`点赞获得：${like.data.score_notify.integral}积分`)
-                } else {
-                    console.log(`文章已经点赞过了`)
+                if (!likeFinish) {
+                    let like = await commonPost(`/api/favorite/like`,`action=true&id=${articleId}`)
+                    if (like.data) {
+                        console.log(`点赞获得：${like.data.score_notify.integral}积分`)
+                    } else {
+                        console.log(`文章已经点赞过了`)
+                    }
                 }
-                let share = await commonPost(`/api/user_mumber/doTask`,`memberType=3&member_type=3&target_id==${articleId}`)
-                if (share.data.score_notify) {
-                    console.log(`分享获得：${share.data.score_notify.integral}积分`)
-                } else {
-                    console.log(`文章已经分享过了`)
+                if (!shareFinish) {
+                    let share = await commonPost(`/api/user_mumber/doTask`,`memberType=3&member_type=3&target_id==${articleId}`)
+                    if (share.data.score_notify) {
+                        console.log(`分享获得：${share.data.score_notify.integral}积分`)
+                    } else {
+                        console.log(`文章已经分享过了`)
+                    }
                 }
             }
         }
