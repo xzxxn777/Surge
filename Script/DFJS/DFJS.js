@@ -51,7 +51,7 @@ async function getCookie() {
         return
     }
     const body = $.toObj($response.body);
-    if (!body || !body.data) {
+    if (!body || !body.data || !body.data.mobile) {
         return
     }
     const id = body.data.mobile;
