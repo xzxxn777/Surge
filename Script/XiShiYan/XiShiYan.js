@@ -111,8 +111,11 @@ async function main() {
                 let captcha =  await jinhuaPost(`/api/captcha/get`,{"activity_id":lotteryId,"module":"bigWheel"})
                 let jigsawImageUrl = captcha.data.jigsawImageUrl;
                 let originalImageUrl = captcha.data.originalImageUrl;
+                console.log(`滑块：${jigsawImageUrl}`)
+                console.log(`背景：${jigsawImageUrl}`)
                 let captchaToken = captcha.data.token;
                 let secretKey = captcha.data.secretKey;
+                console.log(`秘钥：${secretKey}`)
                 let getXpos = await slidePost('huakuai.xzxxn7.live',{'gap': jigsawImageUrl, 'bg': originalImageUrl})
                 if (!getXpos) {
                     console.log('滑块验证失败')
