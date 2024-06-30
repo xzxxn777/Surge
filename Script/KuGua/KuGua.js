@@ -64,7 +64,7 @@ async function main() {
 }
 
 async function getCookie() {
-    const body = $.toObj($request.body);
+    const body = $.toObj($response.body);
     if (!body || !body.data) {
         return
     }
