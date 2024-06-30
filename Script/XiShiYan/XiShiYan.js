@@ -14,7 +14,6 @@ let commonUa = ''
 let deviceId = ''
 let jinhuaKey = '35c782a2'
 let jinhuaToken = ''
-let lottery = false
 !(async () => {
     await main();
 })().catch((e) => {$.log(e)}).finally(() => {$.done({});});
@@ -104,30 +103,30 @@ async function main() {
                 console.log(complete.message)
             }
         }
-        if (lottery) {
-            let lotteryCount = await jinhuaPost(`/api/lotterybigwheel/_ac_lottery_count`,{"id":lotteryId,"module":"study"})
-            for (let i = 0; i < lotteryCount.data.count; i++) {
-                let lottery = await jinhuaPost(`/api/lotterybigwheel/_ac_lottery`,{"id":lotteryId,"app_id":"uhzfzpj5l78yq6di","module":"study","optionHash":""})
-                if (lottery.code == 10000) {
-                    console.log(lottery.message)
-                    let captcha =  await jinhuaPost(`/api/captcha/get`,{"activity_id":lotteryId,"module":"bigWheel"})
-                    let jigsawImageUrl = captcha.data.jigsawImageUrl;
-                    let originalImageUrl = captcha.data.originalImageUrl;
-                    let captchaToken = captcha.data.token;
-                    let secretKey = captcha.data.secretKey;
-                    let getXpos = await slidePost('huakuai.xzxxn7.live',{'gap': jigsawImageUrl, 'bg': originalImageUrl})
-                    if (!getXpos) {
-                        console.log('滑块验证失败')
-                        continue;
-                    }
-                    let point = aesEncrypt(JSON.stringify({x: getXpos.x_coordinate, y: 5}), secretKey)
-                    let check = await jinhuaPost(`/api/captcha/check`,{"activity_id":lotteryId,"module":"bigWheel","cap_token":captchaToken,"point":point})
-                    console.log(check)
-                    lottery = await jinhuaPost(`/api/lotterybigwheel/_ac_lottery`,{"id":lotteryId,"app_id":"uhzfzpj5l78yq6di","module":"study","optionHash":""})
-                    console.log(`抽奖获得：${lottery.data.title}`)
-                } else {
-                    console.log(`抽奖获得：${lottery.data.title}`)
+        let lotteryCount = await jinhuaPost(`/api/lotterybigwheel/_ac_lottery_count`,{"id":lotteryId,"module":"study"})
+        for (let i = 0; i < lotteryCount.data.count; i++) {
+            let lottery = await jinhuaPost(`/api/lotterybigwheel/_ac_lottery`,{"id":lotteryId,"app_id":"uhzfzpj5l78yq6di","module":"study","optionHash":""})
+            if (lottery.code == 10000) {
+                console.log(lottery.message)
+                let captcha =  await jinhuaPost(`/api/captcha/get`,{"activity_id":lotteryId,"module":"bigWheel"})
+                let jigsawImageUrl = captcha.data.jigsawImageUrl;
+                let originalImageUrl = captcha.data.originalImageUrl;
+                let captchaToken = captcha.data.token;
+                let secretKey = captcha.data.secretKey;
+                let getXpos = await slidePost('huakuai.xzxxn7.live',{'gap': jigsawImageUrl, 'bg': originalImageUrl})
+                if (!getXpos) {
+                    console.log('滑块验证失败')
+                    continue;
                 }
+                console.log(getXpos)
+                let point = aesEncrypt(JSON.stringify({x: getXpos.x_coordinate, y: 5}), secretKey)
+                console.log(point)
+                let check = await jinhuaPost(`/api/captcha/check`,{"activity_id":lotteryId,"module":"bigWheel","cap_token":captchaToken,"point":point})
+                console.log(check)
+                lottery = await jinhuaPost(`/api/lotterybigwheel/_ac_lottery`,{"id":lotteryId,"app_id":"uhzfzpj5l78yq6di","module":"study","optionHash":""})
+                console.log(`抽奖获得：${lottery.data.title}`)
+            } else {
+                console.log(`抽奖获得：${lottery.data.title}`)
             }
         }
         console.log("————————————")
