@@ -1,7 +1,8 @@
 const $ = new Env('酷瓜好物')
 const KuGua = ($.isNode() ? JSON.parse(process.env.KuGua) : $.getjson("KuGua")) || [];
 let token = ''
-let appId = ''
+let refreshToken = ''
+let appId = 'wx1f9fc8e79fcbce16'
 let openId = ''
 let notice = ''
 !(async () => {
@@ -15,14 +16,14 @@ let notice = ''
 async function main() {
     console.log('作者：@xzxxn777\n频道：https://t.me/xzxxn777\n群组：https://t.me/xzxxn7777\n自用机场推荐：https://xn--diqv0fut7b.com\n')
     for (const item of KuGua) {
-        token = item.token;
-        appId = item.appid;
-        openId = item.openid;
-        console.log(`用户：${openId}开始任务`)
-        // console.log('刷新token')
-        // let refreshToken = await commonPost('/refreshToken', {"refresh_token":token})
-        // token = refreshToken.data.token;
-        // console.log(token)
+        id = item.id;
+        refreshToken = item.refreshToken;
+        openId = item.openId;
+        console.log(`用户：${id}开始任务`)
+        console.log('刷新token')
+        let refresh = await commonPost('/refreshToken', {"refresh_token":refreshToken})
+        token = refresh.data.token;
+        console.log(token)
         console.log('开始签到')
         let sign = await commonPost('/inflatedv3/popUpRedEnvelopes', {"type":1,"invite_id":"","code_ticket":"","count":"","token":token,"appid":appId,"openid":openId})
         if (sign.data.dialog) {
@@ -55,7 +56,7 @@ async function main() {
             amount = inflatedAmount.data.userAmount;
         }
         console.log('剩余现金：' + amount)
-        notice += `用户：${openId} 剩余现金: ${amount}\n`
+        notice += `用户：${id} 剩余现金: ${amount}\n`
     }
     if (notice) {
         $.msg($.name, '', notice);
@@ -64,22 +65,26 @@ async function main() {
 
 async function getCookie() {
     const body = $.toObj($request.body);
-    if (!body || !body.openid) {
+    if (!body || !body.data) {
         return
     }
-    const index = KuGua.findIndex(e => e.openid == body.openid);
+    const id = body.data.user.mobile;
+    const openId = body.data.user.openid;
+    const refreshToken = body.data.user.refresh_token;
+    const newData = {"id": id, "openId": openId, "refreshToken": refreshToken};
+    const index = KuGua.findIndex(e => e.id == newData.id);
     if (index !== -1) {
-        if (KuGua[index].token == body.token) {
+        if (KuGua[index].refreshToken == newData.refreshToken) {
             return
         } else {
-            KuGua[index] = body;
-            console.log(body.token)
-            $.msg($.name, `🎉用户${body.openid}更新token成功!`, ``);
+            KuGua[index] = newData;
+            console.log(newData.refreshToken)
+            $.msg($.name, `🎉用户${newData.id}更新token成功!`, ``);
         }
     } else {
-        KuGua.push(body)
-        console.log(body.token)
-        $.msg($.name, `🎉新增用户${body.openid}成功!`, ``);
+        KuGua.push(newData)
+        console.log(newData.refreshToken)
+        $.msg($.name, `🎉新增用户${newData.id}成功!`, ``);
     }
     $.setjson(KuGua, "KuGua");
 }
