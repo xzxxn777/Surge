@@ -19,10 +19,10 @@ async function main() {
         appId = item.appid;
         openId = item.openid;
         console.log(`用户：${openId}开始任务`)
-        console.log('刷新token')
-        let refreshToken = await commonPost('/refreshToken', {"refresh_token":token})
-        token = refreshToken.data.token;
-        console.log(token)
+        // console.log('刷新token')
+        // let refreshToken = await commonPost('/refreshToken', {"refresh_token":token})
+        // token = refreshToken.data.token;
+        // console.log(token)
         console.log('开始签到')
         let sign = await commonPost('/inflatedv3/popUpRedEnvelopes', {"type":1,"invite_id":"","code_ticket":"","count":"","token":token,"appid":appId,"openid":openId})
         if (sign.data.dialog) {
@@ -49,8 +49,13 @@ async function main() {
         console.log("体现")
         let withdraw = await commonPost('/withdrawal/withdrawal', {"withdrawalId":24,"token":token,"appid":appId,"openid":openId})
         console.log(withdraw.codemsg)
-        console.log('剩余现金：' + withdraw.data.amount)
-        notice += `用户：${openId} 剩余现金: ${withdraw.data.amount}\n`
+        let amount = withdraw.data.amount;
+        if (!amount) {
+            let inflatedAmount = await commonPost('/inflatedv3/inflatedAmount', {"token":token,"appid":appId,"openid":openId})
+            amount = inflatedAmount.data.userAmount;
+        }
+        console.log('剩余现金：' + amount)
+        notice += `用户：${openId} 剩余现金: ${amount}\n`
     }
     if (notice) {
         $.msg($.name, '', notice);
