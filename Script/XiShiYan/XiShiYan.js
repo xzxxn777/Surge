@@ -125,8 +125,9 @@ async function main() {
                 let point = aesEncrypt(JSON.stringify({x: getXpos.x_coordinate, y: 5}), secretKey)
                 console.log(point)
                 let check = await jinhuaPost(`/api/captcha/check`,{"activity_id":lotteryId,"module":"bigWheel","cap_token":captchaToken,"point":point})
-                console.log(check)
+                console.log(JSON.stringify(check))
                 lottery = await jinhuaPost(`/api/lotterybigwheel/_ac_lottery`,{"id":lotteryId,"app_id":"uhzfzpj5l78yq6di","module":"study","optionHash":""})
+                console.log(JSON.stringify(lottery))
                 console.log(`抽奖获得：${lottery.data.title}`)
             } else {
                 console.log(`抽奖获得：${lottery.data.title}`)
