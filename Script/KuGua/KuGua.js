@@ -64,7 +64,7 @@ async function main() {
 
 async function getCookie() {
     const body = $.toObj($request.body);
-    if (!body) {
+    if (!body || !body.openid) {
         return
     }
     const index = KuGua.findIndex(e => e.openid == body.openid);
