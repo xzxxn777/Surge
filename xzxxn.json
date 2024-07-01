@@ -332,6 +332,35 @@
         "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XiShiYan/XiShiYan.png",
         "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XiShiYan/XiShiYan.png"
       ]
+    },
+    {
+      "id": "WangChao",
+      "name": "望潮",
+      "keys": [
+        "WangChao"
+      ],
+      "scripts": [
+        {
+          "name": "望潮-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "WangChao",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.png"
+      ]
     }
   ]
 }
