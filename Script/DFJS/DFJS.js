@@ -37,6 +37,13 @@ async function main() {
         console.log("————————————")
         console.log("查询积分")
         let info = await commonGet('/user/info')
+        let amount = info.data.remaining_fruits;
+        if (amount >= 0.3) {
+            console.log('提现')
+            let user_withdraw = await commonPost('/user.user_withdraw/apply',{"pay_gateway": "wechat", "fruit_withdraw_amount": amount.toString()})
+            console.log(user_withdraw.msg)
+        }
+        info = await commonGet('/user/info')
         console.log(`拥有能量：${info.data.remaining_energies} 果子：${info.data.remaining_fruits}\n`)
         notice += `用户：${id} 拥有能量：${info.data.remaining_energies} 果子：${info.data.remaining_fruits}\n`
     }
