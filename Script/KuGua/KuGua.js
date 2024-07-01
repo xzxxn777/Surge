@@ -28,6 +28,9 @@ async function main() {
         let sign = await commonPost('/inflatedv3/popUpRedEnvelopes', {"type":1,"invite_id":"","code_ticket":"","count":"","token":token,"appid":appId,"openid":openId})
         if (sign.data.dialog) {
             console.log(`签到成功，获得现金：${sign.data.amount}`)
+            let dialogId = sign.data.dialogId;
+            let receiveRedEnvelopes = await commonPost('/inflatedv3/receiveRedEnvelopes', {"dialogId":dialogId,"token":token,"appid":appId,"openid":openId})
+            console.log(receiveRedEnvelopes.codemsg)
         } else {
             console.log(sign.data.tips)
         }
@@ -48,7 +51,7 @@ async function main() {
         }
         console.log("————————————")
         console.log("体现")
-        let withdraw = await commonPost('/withdrawal/withdrawal', {"withdrawalId":24,"token":token,"appid":appId,"openid":openId})
+        let withdraw = await commonPost('/withdrawal/withdrawal', {"withdrawalId":8,"token":token,"appid":appId,"openid":openId})
         console.log(withdraw.codemsg)
         let amount = withdraw.data.amount;
         if (!amount) {
