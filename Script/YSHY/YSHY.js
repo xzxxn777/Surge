@@ -54,8 +54,10 @@ async function main() {
                     date = data.date;
                 }
             }
-            let useCountersign = await commonGet(`/MallRetroactiveCard/useCountersign?useTime=${date}`);
-            console.log(useCountersign.data)
+            if (date) {
+                let useCountersign = await commonGet(`/MallRetroactiveCard/useCountersign?useTime=${date}`);
+                console.log(useCountersign.msg)
+            }
         }
         console.log("————————————")
         console.log("积分查询")
