@@ -46,7 +46,7 @@ async function getCookie() {
         return
     }
     const body = $.toObj($response.body);
-    if (!body.data || !body.data.member_id) {
+    if (!body.data || !body.data.phone) {
         return
     }
     const id = body.data.phone;
