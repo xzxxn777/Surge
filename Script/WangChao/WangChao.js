@@ -5,6 +5,7 @@ let tenantId = '64'
 let commonUa = ''
 let deviceId = ''
 let readCookie = ''
+let lotteryCookie = ''
 let accountId = ''
 let signatureSalt = "FR*r!isE5W"
 let sessionId = ''
@@ -110,10 +111,13 @@ async function main() {
                 let time = Date.now();
                 let signature = Utils.md5(`&&${article.id}&&TlGFQAOlCIVxnKopQnW&&${time}`)
                 let read = await readGet(`/prod-api/already-read/article?articid=${article.id}&timestamp=${time}&signature=${signature}`);
-                console.log(read)
+                console.log(read.msg)
             }
         }
         let lotteryCount = await readGet(`/prod-api/user-read-count/count/${getCurrentDate()}`);
+        lotteryCookie = await lotteryLoginGet(`/tzrb/user/loginWC?accountId=${accountId}&sessionId=${sessionId}`)
+        console.log('获取抽奖cookie')
+        console.log(lotteryCookie)
         let priceList = await lotteryGet('/tzrb/awardUpgrade/list?activityId=67');
         let priceArr = priceList.data;
         for (let i = 0; i < lotteryCount.data; i++) {
@@ -231,12 +235,12 @@ async function loginGet(url) {
                 } else {
                     await $.wait(2000)
                     if ($.isNode()) {
-                        cookie = resp.headers['set-cookie'][0];
+                        readCookie = resp.headers['set-cookie'][0];
                     } else {
-                        cookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
+                        readCookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
                     }
-                    cookie = cookie.split(';')[0];
-                    resolve(cookie);
+                    readCookie = readCookie.split(';')[0];
+                    resolve(readCookie);
                 }
             } catch (e) {
                 $.logErr(e, resp)
@@ -283,6 +287,48 @@ async function readGet(url) {
     })
 }
 
+async function lotteryLoginGet(url) {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://srv-app.taizhou.com.cn${url}`,
+            headers : {
+                'Connection': 'Keep-Alive',
+                'Accept': '*/*',
+                'Sec-Fetch-Site': 'same-origin',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Dest': 'empty',
+                'cookie': lotteryCookie,
+                'Referer': 'https://xmt.taizhou.com.cn/readingLuck-v1/',
+                'X-Requested-With': 'com.shangc.tiennews.taizhou',
+                'Accept-Encoding': 'gzip, deflate',
+                'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+                'user-agent': 'Mozilla/5.0 (Linux; Android 11; 21091116AC Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/94.0.4606.85 Mobile Safari/537.36;xsb_wangchao;xsb_wangchao;6.0.2;native_app;6.10.0',
+            }
+        }
+        $.get(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000)
+                    if ($.isNode()) {
+                        lotteryCookie = resp.headers['set-cookie'][0];
+                    } else {
+                        lotteryCookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
+                    }
+                    lotteryCookie = lotteryCookie.split(';')[0];
+                    resolve(lotteryCookie);
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
 async function lotteryGet(url) {
     return new Promise(resolve => {
         const options = {
@@ -293,6 +339,7 @@ async function lotteryGet(url) {
                 'Sec-Fetch-Site': 'same-origin',
                 'Sec-Fetch-Mode': 'cors',
                 'Sec-Fetch-Dest': 'empty',
+                'cookie': lotteryCookie,
                 'Referer': 'https://xmt.taizhou.com.cn/readingLuck-v1/',
                 'X-Requested-With': 'com.shangc.tiennews.taizhou',
                 'Accept-Encoding': 'gzip, deflate',
@@ -329,6 +376,7 @@ async function lotteryPost(url,body) {
                 'Sec-Fetch-Site': 'same-origin',
                 'Sec-Fetch-Mode': 'cors',
                 'Sec-Fetch-Dest': 'empty',
+                'cookie': lotteryCookie,
                 'Referer': 'https://xmt.taizhou.com.cn/readingLuck-v1/',
                 'X-Requested-With': 'com.shangc.tiennews.taizhou',
                 'Accept-Encoding': 'gzip, deflate',
