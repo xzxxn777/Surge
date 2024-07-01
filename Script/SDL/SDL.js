@@ -31,7 +31,7 @@ async function main() {
         }
         console.log("————————————")
         console.log("查询积分")
-        let info = await commonGet('/user/member/info')
+        let info = await commonPost('/user/member/info',{})
         console.log(`拥有积分：${info.data.currentScore}\n`)
         notice += `用户：${id} 拥有积分: ${info.data.currentScore}\n`
     }
