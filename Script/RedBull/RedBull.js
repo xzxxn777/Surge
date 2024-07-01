@@ -68,6 +68,10 @@ async function getCookie() {
     if (!body || !body.data) {
         return
     }
+    const appID = $request.headers["HH-APP"];
+    if (appID != 'wx5549b5fa9842e321') {
+        return
+    }
     const token = body.data.tokenInfo.access_token;
     const refreshToken = body.data.tokenInfo.refresh_token;
     const id = body.data.thirdUsrIf.phone;
