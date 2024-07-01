@@ -8,6 +8,7 @@ let readCookie = ''
 let accountId = ''
 let signatureSalt = "FR*r!isE5W"
 let sessionId = ''
+let notice = ''
 !(async () => {
     await main();
 })().catch((e) => {$.log(e)}).finally(() => {$.done({});});
@@ -229,7 +230,12 @@ async function loginGet(url) {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     await $.wait(2000)
-                    cookie = resp.headers['set-cookie'][0].split(';')[0];
+                    if ($.isNode()) {
+                        cookie = resp.headers['set-cookie'][0];
+                    } else {
+                        cookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
+                    }
+                    cookie = cookie.split(';')[0];
                     resolve(cookie);
                 }
             } catch (e) {
