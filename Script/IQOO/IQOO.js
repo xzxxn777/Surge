@@ -21,9 +21,9 @@ async function main() {
         token = item.token;
         xVisitor = item.xVisitor;
         console.log(`用户：${id}开始任务`)
-        time = Math.floor(Date.now() / 1e3)
         //签到
         console.log("开始签到")
+        time = Math.floor(Date.now() / 1e3)
         let sign = await commonPost('/v3/sign',{"from":""},getSign('POST','/api/v3/sign',{"from":""}));
         if (sign.Code == -4011) {
             $.msg($.name, `用户：${id}`, `token已过期，请重新获取`);
@@ -42,6 +42,7 @@ async function main() {
         time = Math.floor(Date.now() / 1e3)
         let getCount = await commonGet('/v3/today.draw.count',getSign('GET','/api/v3/today.draw.count',{}));
         if (getCount.Data.count == 0) {
+            time = Math.floor(Date.now() / 1e3)
             let draw = await commonPost('/v3/luck.draw',{},getSign('POST','/api/v3/luck.draw',{}));
             console.log(`抽奖获得：${draw.Data.prize_name}`)
         } else {
@@ -54,6 +55,7 @@ async function main() {
         let threadList = await commonGet('/v3/thread.list?scope=5&page=1&perPage=10&filter[sort]=4&filter[essence]=1&sequence=0',getSign('GET','/api/v3/thread.list',{"filter[essence]":1,"filter[sort]":4,"page":1,"perPage":10,"scope":5,"sequence":0}));
         let threadId = threadList.Data.pageData[0].threadId
         let postId = threadList.Data.pageData[0].postId
+        time = Math.floor(Date.now() / 1e3)
         let tasksList = await commonGet('/v3/user.score.rule',getSign('GET','/api/v3/user.score.rule',{}));
         //新手任务
         for (const task of tasksList.Data.newbieData) {
@@ -104,6 +106,7 @@ async function main() {
                             }
                             text = `<p>${text}</p>`
                             let body = {"title":"毒鸡汤","categoryId":27,"content":{"text":text},"position":{},"price":0,"freeWords":0,"attachmentPrice":0,"draft":0,"anonymous":0,"topicId":"","source":"","videoId":""}
+                            time = Math.floor(Date.now() / 1e3)
                             let create = await commonPost('/v3/thread.create',body,getSign('POST','/api/v3/thread.create',{"title":"毒鸡汤","categoryId":27,"content":{"text":text},"position":{},"price":0,"freeWords":0,"attachmentPrice":0,"draft":0,"anonymous":0,"topicId":"","source":"","videoId":""}));
                             if (create.Meta) {
                                 for (const item of create.Meta.tips) {
@@ -123,6 +126,7 @@ async function main() {
                 } else {
                     console.log(`完成进度：${task.isFinal}/${parseInt(task.upper_limit)}`)
                     for (let i = 0; i < count; i++) {
+                        time = Math.floor(Date.now() / 1e3)
                         let view = await commonGet(`/v3/view.count?threadId=${threadId}&type=0`, getSign('GET', '/api/v3/view.count', {"threadId": threadId, "type": 0}));
                         if (view.Meta) {
                             for (const item of view.Meta.tips) {
@@ -140,6 +144,7 @@ async function main() {
                     console.log(`完成进度：${task.isFinal}/${parseInt(task.upper_limit)}`)
                     for (let i = 0; i < count; i++) {
                         //点赞
+                        time = Math.floor(Date.now() / 1e3)
                         let like = await commonPost('/v3/posts.update',{"id":threadId,"postId":postId,"data":{"attributes":{"isLiked":true}}},getSign('POST','/api/v3/posts.update',{"id":threadId,"postId":postId,"data":{"attributes":{"isLiked":true}}}));
                         if (like.Meta) {
                             for (const item of like.Meta.tips) {
@@ -147,6 +152,7 @@ async function main() {
                             }
                         }
                         //取消点赞
+                        time = Math.floor(Date.now() / 1e3)
                         let unLike = await commonPost('/v3/posts.update',{"id":threadId,"postId":postId,"data":{"attributes":{"isLiked":false}}},getSign('POST','/api/v3/posts.update',{"id":threadId,"postId":postId,"data":{"attributes":{"isLiked":false}}}));
                         console.log(unLike)
                     }
@@ -159,6 +165,7 @@ async function main() {
                 } else {
                     console.log(`完成进度：${task.isFinal}/${parseInt(task.upper_limit)}`)
                     for (let i = 0; i < count; i++) {
+                        time = Math.floor(Date.now() / 1e3)
                         let share =  await commonPost('/v3/thread.share',{"threadId":threadId},getSign('POST','/api/v3/thread.share',{"threadId":threadId}));
                         if (share.Meta) {
                             for (const item of share.Meta.tips) {
