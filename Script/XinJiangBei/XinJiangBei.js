@@ -91,7 +91,7 @@ async function main() {
                 let orderId = lottery.orderId;
                 let result = 0;
                 while (result == 0) {
-                    let getOrderStatus = await commonPost(`/hdtool/getOrderStatus?_=${Date.now()}`,`orderId=${orderId}&adslotId=`)
+                    let getOrderStatus = await activityPost(`/hdtool/getOrderStatus?_=${Date.now()}`,`orderId=${orderId}&adslotId=`)
                     result = getOrderStatus.result;
                     if (result == 0) {
                         console.log(getOrderStatus.message)
@@ -167,7 +167,7 @@ async function main() {
                 if (!readFinish) {
                     let read = await commonGet(`/api/article/read_time?channel_article_id=${articleId}&is_end=true&read_time=3051`)
                     if (read.data) {
-                        console.log(`阅读获得：${read.data.score_notify.integral}积分`)
+                        console.log(`阅读获得：${read.data?.score_notify?.integral}积分`)
                     } else {
                         console.log(`文章已经阅读过了`)
                     }
@@ -175,7 +175,7 @@ async function main() {
                 if (!likeFinish) {
                     let like = await commonPost(`/api/favorite/like`,`action=true&id=${articleId}`)
                     if (like.data) {
-                        console.log(`点赞获得：${like.data.score_notify.integral}积分`)
+                        console.log(`点赞获得：${like.data?.score_notify?.integral}积分`)
                     } else {
                         console.log(`文章已经点赞过了`)
                     }
@@ -183,7 +183,7 @@ async function main() {
                 if (!shareFinish) {
                     let share = await commonPost(`/api/user_mumber/doTask`,`memberType=3&member_type=3&target_id==${articleId}`)
                     if (share.data.score_notify) {
-                        console.log(`分享获得：${share.data.score_notify.integral}积分`)
+                        console.log(`分享获得：${share.data?.score_notify?.integral}积分`)
                     } else {
                         console.log(`文章已经分享过了`)
                     }
@@ -469,7 +469,7 @@ async function activityCookieGet(url) {
 async function activityPost(url,body) {
     return new Promise(resolve => {
         const options = {
-            url: `https://92261.activity-42.m.duiba.com.cn${url}`,
+            url: `https://92261.activity-14.m.duiba.com.cn${url}`,
             headers : {
                 'accept': 'application/json',
                 'user-agent': 'Mozilla/5.0 (Linux; Android 11; 21091116AC Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/94.0.4606.85 Mobile Safari/537.36;xsb_xinjiangbei;xsb_xinjiangbei;1.7.0;native_app;6.9.0',
