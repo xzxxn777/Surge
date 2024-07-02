@@ -33,7 +33,9 @@ async function main() {
                 console.log(`浏览成功，获得${articleView.data.task.point}积分`)
             } else {
                 console.log(articleView.data.task.error)
-                break
+                if (articleView.data.task.error == '用户任务执行次数已达到上限') {
+                    break
+                }
             }
         }
         console.log("————————————")
