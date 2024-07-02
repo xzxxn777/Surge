@@ -144,7 +144,14 @@ async function imageGet(url) {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    let image = resp.rawBody.toString('base64')
+                    let image = ''
+                    if ($.isNode()) {
+                        image = resp.rawBody.toString('base64')
+                    } else if ($.isQuanX()) {
+                       image = uint8ArrayToBase64(new Uint8Array(resp.bodyBytes));
+                    } else {
+                        image = binaryToBase64(data);
+                    }
                     resolve(image);
                 }
             } catch (e) {
@@ -287,6 +294,39 @@ function generateRandomUA() {
 
 function getRandomElement(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function binaryToBase64(binaryData) {
+    const base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let base64 = "";
+    let padding = "";
+    const len = binaryData.length;
+    for (let i = 0; i < len; i += 3) {
+        let triplet = (binaryData[i] << 16) | (binaryData[i + 1] << 8) | binaryData[i + 2];
+        base64 += base64Chars[(triplet >> 18) & 0x3F];
+        base64 += base64Chars[(triplet >> 12) & 0x3F];
+        base64 += base64Chars[(triplet >> 6) & 0x3F];
+        base64 += base64Chars[triplet & 0x3F];
+    }
+
+    if (len % 3 === 1) {
+        base64 = base64.slice(0, -2) + "==";
+    } else if (len % 3 === 2) {
+        base64 = base64.slice(0, -1) + "=";
+    }
+    return base64;
+}
+
+function uint8ArrayToBase64(uint8Array) {
+    // 将Uint8Array转换为字符串
+    let binaryString = '';
+    for (let i = 0; i < uint8Array.length; i++) {
+        binaryString += String.fromCharCode(uint8Array[i]);
+    }
+
+    // 将字符串转换为Base64编码
+    const base64String = btoa(binaryString);
+    return base64String;
 }
 
 async function loadUtils() {
