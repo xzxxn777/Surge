@@ -337,21 +337,37 @@
       "id": "WangChao",
       "name": "望潮",
       "keys": [
-        "WangChao"
+        "WangChao_Phone",
+        "WangChao_smsCode"
       ],
       "scripts": [
         {
-          "name": "望潮-手动执行",
+          "name": "发送验证码（填手机号, 保存, 执行）",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChaoSendSms.js"
+        },
+        {
+          "name": "用验证码登录（填手机号, 验证码, 保存, 执行 ⚠️ 执行后 记得刷新）",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChaoSms.js"
+        },
+        {
+          "name": "手动执行",
           "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.js"
         }
       ],
       "settings": [
         {
-          "id": "WangChao",
-          "name": "账号密码",
+          "id": "WangChao_Phone",
+          "name": "手机号",
           "val": "",
           "type": "text",
-          "desc": "格式:手机号&密码 手机号&密码"
+          "desc": "手机号"
+        },
+        {
+          "id": "WangChao_smsCode",
+          "name": "验证码",
+          "val": "",
+          "type": "text",
+          "desc": "验证码"
         }
       ],
       "author": "@xzxxn777",

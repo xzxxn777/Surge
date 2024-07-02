@@ -1,170 +1,69 @@
-const $ = new Env('望潮')
-let WangChao = ($.isNode() ? JSON.stringify(process.env.WangChao) : $.getjson("WangChao")) || [];
+const $ = new Env('望潮-验证码登录')
+let phone = ($.isNode() ? process.env.WangChao_Phone : $.getdata("WangChao_Phone")) || "";
+let smsCode = ($.isNode() ? process.env.WangChao_smsCode : $.getdata("WangChao_smsCode")) || "";
 let Utils = undefined;
+let signature_key = ''
 let tenantId = '64'
+let ua = ''
 let commonUa = ''
-let deviceId = ''
-let readCookie = ''
-let lotteryCookie = ''
 let accountId = ''
+let cookie = ''
 let signatureSalt = "FR*r!isE5W"
 let sessionId = ''
 let notice = ''
 !(async () => {
-    await main();
+    if (phone === "" || smsCode === "") {
+        console.log("请输入手机号和验证码")
+    } else {
+        await main();
+    }
 })().catch((e) => {$.log(e)}).finally(() => {$.done({});});
 
 async function main() {
     console.log('作者：@xzxxn777\n频道：https://t.me/xzxxn777\n群组：https://t.me/xzxxn7777\n自用机场推荐：https://xn--diqv0fut7b.com\n')
     Utils = await loadUtils();
-    for (const item of WangChao) {
-        id = item.id;
-        accountId = item.accountId;
-        sessionId = item.sessionId;
-        console.log(`用户：${id}开始任务`)
-        console.log("随机生成UA")
-        let randomUA = generateRandomUA();
-        commonUa = randomUA.commonUa;
-        deviceId = randomUA.uuid;
-        console.log(commonUa)
-        console.log("————————————")
-        console.log("开始签到")
-        let sign = await commonGet('/api/user_mumber/sign')
-        console.log(`签到获得：${sign.data.signExperience}积分`)
-        console.log("————————————")
-        console.log("开始任务")
-        let readFinish = true;
-        let likeFinish = true;
-        let shareFinish = true;
-        let taskList = await commonGet('/api/user_center/task?type=1&current=1&size=20')
-        for (let task of taskList.data.list) {
-            console.log(`任务：${task.name}`)
-            if (task.completed == 1) {
-                console.log(`任务已完成`)
-                continue;
-            }
-            console.log(`任务进度：${task.finish_times}/${task.frequency}`)
-            if (task.name == '使用本地服务') {
-                for (let i = task.finish_times; i < task.frequency; i++) {
-                    let doTask = await commonPost(`/api/user_mumber/doTask`,`memberType=6&member_type=6`)
-                    console.log(`任务完成获得：${doTask.data.score_notify.integral}积分`)
-                }
-            }
-            if (task.name == '新闻资讯阅读') {
-                readFinish = false;
-            }
-            if (task.name == '新闻资讯点赞') {
-                likeFinish = false;
-            }
-            if (task.name == '分享资讯给好友') {
-                shareFinish = false;
-            }
-        }
-        if (!readFinish || !likeFinish || !shareFinish) {
-            let articleList = await commonGet('/api/article/channel_list?channel_id=639abec5e305b418fc469e3b&isDiFangHao=false&is_new=true&list_count=0&size=20')
-            for (const article of articleList.data.article_list) {
-                let articleId = article.id;
-                if (!readFinish) {
-                    let read = await commonGet(`/api/article/read_time?channel_article_id=${articleId}&is_end=true&read_time=3051`)
-                    if (read.data) {
-                        console.log(`阅读成功`)
-                    } else {
-                        console.log(`文章已经阅读过了`)
-                    }
-                }
-                if (!likeFinish) {
-                    let like = await commonPost(`/api/favorite/like`,`action=true&id=${articleId}`)
-                    if (like.data) {
-                        console.log(`点赞成功`)
-                    } else {
-                        console.log(`文章已经点赞过了`)
-                    }
-                }
-                if (!shareFinish) {
-                    let share = await commonPost(`/api/user_mumber/doTask`,`memberType=3&member_type=3&target_id==${articleId}`)
-                    if (share.data) {
-                        console.log(`分享成功`)
-                    } else {
-                        console.log(`文章已经分享过了`)
-                    }
-                }
-            }
-        }
-        console.log("————————————")
-        console.log('阅读抽奖')
-        readCookie = await loginGet(`/prod-api/user-read/app/login?id=${accountId}&sessionId=${sessionId}&deviceId=${deviceId}`)
-        console.log('获取登录cookie')
-        console.log(readCookie)
-        let readList = await readGet(`/prod-api/user-read/list/${getCurrentDate()}`)
-        if (readList.data.completedCount == readList.data.sum) {
-            console.log('阅读已经完成')
-        } else {
-            for (const article of readList.data.articleIsReadList) {
-                if (article.isRead) {
-                    continue
-                }
-                let time = Date.now();
-                let signature = Utils.md5(`&&${article.id}&&TlGFQAOlCIVxnKopQnW&&${time}`)
-                let read = await readGet(`/prod-api/already-read/article?articid=${article.id}&timestamp=${time}&signature=${signature}`);
-                console.log(read.msg)
-            }
-        }
-        let lotteryCount = await readGet(`/prod-api/user-read-count/count/${getCurrentDate()}`);
-        lotteryCookie = await lotteryLoginGet(`/tzrb/user/loginWC?accountId=${accountId}&sessionId=${sessionId}`)
-        console.log('获取抽奖cookie')
-        console.log(lotteryCookie)
-        let priceList = await lotteryGet('/tzrb/awardUpgrade/list?activityId=67');
-        let priceArr = priceList.data;
-        for (let i = 0; i < lotteryCount.data; i++) {
-            let lottery = await lotteryPost(`/tzrb/userAwardRecordUpgrade/saveUpdate`,'activityId=67&sessionId=undefined&sig=undefined&token=undefined')
-            const index = priceArr.findIndex(e => e.id == lottery.data);
-            console.log(`抽奖获得：${priceArr[index].title}`)
-        }
-        console.log("————————————")
-        console.log("查询积分")
-        let detail = await commonGet('/api/user_mumber/account_detail')
-        console.log(`拥有积分：${detail.data.rst.total_integral}\n`)
-        notice += `用户：${id} 积分：${detail.data.rst.total_integral}\n`
-    }
-    if (notice) {
-        $.msg($.name, '', notice);
-    }
-}
+    console.log("随机生成UA")
+    let randomUA = generateRandomUA();
+    ua = randomUA.ua;
+    commonUa = randomUA.commonUa;
+    console.log(ua)
+    console.log(commonUa)
+    console.log(`用户：${phone}开始任务`)
+    console.log("获取sessionId")
+    let initSession = await commonPost('/api/account/init');
+    sessionId = initSession.data.session.id;
+    console.log(sessionId)
+    console.log("获取signature_key")
+    let init = await initGet('/web/init?client_id=10019')
+    signature_key = init.data.client.signature_key;
+    console.log(signature_key)
+    console.log("获取code")
+    let verify = await passportPost('/web/oauth/security_code_auth',`client_id=10019&phone_number=${phone}&security_code=${smsCode}`);
+    let code = verify.data.authorization_code.code;
+    console.log(code)
+    console.log("登录")
+    let login = await commonPost('/api/zbtxz/login',`check_token=&code=${code}&token=&type=-1&union_id=`)
+    console.log('登录成功')
+    accountId = login.data.session.account_id;
+    sessionId = login.data.session.id;
 
-async function commonGet(url) {
-    let params = getParams(url);
-    return new Promise(resolve => {
-        const options = {
-            url: `https://vapp.taizhou.com.cn${url}`,
-            headers : {
-                'Connection': 'Keep-Alive',
-                'X-TIMESTAMP': params.time,
-                'X-SESSION-ID': sessionId,
-                'X-REQUEST-ID': params.uuid,
-                'X-SIGNATURE': params.signature,
-                'X-TENANT-ID': tenantId,
-                'X-ACCOUNT-ID': accountId,
-                'Cache-Control': 'no-cache',
-                'Accept-Encoding': 'gzip',
-                'user-agent': commonUa,
-            }
+    let WangChao = ($.isNode() ? JSON.stringify(process.env.WangChao) : $.getjson("WangChao")) || [];
+    const newData = {"id": phone, "accountId": accountId, "sessionId": sessionId};
+    const index = WangChao.findIndex(e => e.id == newData.id);
+    if (index !== -1) {
+        if (WangChao[index].sessionId == newData.sessionId) {
+            return
+        } else {
+            WangChao[index] = newData;
+            console.log(newData.sessionId)
+            $.msg($.name, `🎉用户${newData.id}更新token成功!`, ``);
         }
-        $.get(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
-                } else {
-                    await $.wait(2000)
-                    resolve(JSON.parse(data));
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
-            }
-        })
-    })
+    } else {
+        WangChao.push(newData)
+        console.log(newData.sessionId)
+        $.msg($.name, `🎉新增用户${newData.id}成功!`, ``);
+    }
+    $.setjson(WangChao, "WangChao");
 }
 
 async function commonPost(url,body) {
@@ -204,22 +103,16 @@ async function commonPost(url,body) {
     })
 }
 
-async function loginGet(url) {
+async function initGet(url) {
     return new Promise(resolve => {
         const options = {
-            url: `https://xmt.taizhou.com.cn${url}`,
+            url: `https://passport.tmuyun.com${url}`,
             headers : {
                 'Connection': 'Keep-Alive',
-                'Accept': '*/*',
-                'Cookie': readCookie,
-                'Sec-Fetch-Site': 'same-origin',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Dest': 'empty',
-                'Referer': 'https://xmt.taizhou.com.cn/readingLuck-v1/',
-                'X-Requested-With': 'com.shangc.tiennews.taizhou',
-                'Accept-Encoding': 'gzip, deflate',
-                'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-                'user-agent': 'Mozilla/5.0 (Linux; Android 11; 21091116AC Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/94.0.4606.85 Mobile Safari/537.36;xsb_wangchao;xsb_wangchao;6.0.2;native_app;6.10.0',
+                'Cache-Control': 'no-cache',
+                'X-REQUEST-ID': generateUUID(),
+                'Accept-Encoding': 'gzip',
+                'user-agent': ua,
             }
         }
         $.get(options, async (err, resp, data) => {
@@ -228,49 +121,14 @@ async function loginGet(url) {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    await $.wait(2000)
                     if ($.isNode()) {
-                        readCookie = resp.headers['set-cookie'][0];
+                        let cookieArr = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
+                        for (let i = 0; i < cookieArr.length; i++) {
+                            cookie += cookieArr[i].split(';')[0] + ';'
+                        }
                     } else {
-                        readCookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
+                        cookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
                     }
-                    readCookie = readCookie.split(';')[0];
-                    resolve(readCookie);
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
-            }
-        })
-    })
-}
-
-async function readGet(url) {
-    return new Promise(resolve => {
-        const options = {
-            url: `https://xmt.taizhou.com.cn${url}`,
-            headers : {
-                'Connection': 'Keep-Alive',
-                'Accept': '*/*',
-                'Cookie': readCookie,
-                'Sec-Fetch-Site': 'same-origin',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Dest': 'empty',
-                'Referer': 'https://xmt.taizhou.com.cn/readingLuck-v1/',
-                'X-Requested-With': 'com.shangc.tiennews.taizhou',
-                'Accept-Encoding': 'gzip, deflate',
-                'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-                'user-agent': 'Mozilla/5.0 (Linux; Android 11; 21091116AC Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/94.0.4606.85 Mobile Safari/537.36;xsb_wangchao;xsb_wangchao;6.0.2;native_app;6.10.0',
-            }
-        }
-        $.get(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
-                } else {
-                    await $.wait(2000)
                     resolve(JSON.parse(data));
                 }
             } catch (e) {
@@ -282,103 +140,22 @@ async function readGet(url) {
     })
 }
 
-async function lotteryLoginGet(url) {
+async function passportPost(url,body) {
+    let params = getBody(url, body);
     return new Promise(resolve => {
         const options = {
-            url: `https://srv-app.taizhou.com.cn${url}`,
+            url: `https://passport.tmuyun.com${url}`,
             headers : {
                 'Connection': 'Keep-Alive',
-                'Accept': '*/*',
-                'Sec-Fetch-Site': 'same-origin',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Dest': 'empty',
-                'cookie': lotteryCookie,
-                'Referer': 'https://xmt.taizhou.com.cn/readingLuck-v1/',
-                'X-Requested-With': 'com.shangc.tiennews.taizhou',
-                'Accept-Encoding': 'gzip, deflate',
-                'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-                'user-agent': 'Mozilla/5.0 (Linux; Android 11; 21091116AC Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/94.0.4606.85 Mobile Safari/537.36;xsb_wangchao;xsb_wangchao;6.0.2;native_app;6.10.0',
-            }
-        }
-        $.get(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
-                } else {
-                    await $.wait(2000)
-                    if ($.isNode()) {
-                        lotteryCookie = resp.headers['set-cookie'][0];
-                    } else {
-                        lotteryCookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
-                    }
-                    lotteryCookie = lotteryCookie.split(';')[0];
-                    resolve(lotteryCookie);
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
-            }
-        })
-    })
-}
-
-async function lotteryGet(url) {
-    return new Promise(resolve => {
-        const options = {
-            url: `https://srv-app.taizhou.com.cn${url}`,
-            headers : {
-                'Connection': 'Keep-Alive',
-                'Accept': '*/*',
-                'Sec-Fetch-Site': 'same-origin',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Dest': 'empty',
-                'cookie': lotteryCookie,
-                'Referer': 'https://xmt.taizhou.com.cn/readingLuck-v1/',
-                'X-Requested-With': 'com.shangc.tiennews.taizhou',
-                'Accept-Encoding': 'gzip, deflate',
-                'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-                'user-agent': 'Mozilla/5.0 (Linux; Android 11; 21091116AC Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/94.0.4606.85 Mobile Safari/537.36;xsb_wangchao;xsb_wangchao;6.0.2;native_app;6.10.0',
-            }
-        }
-        $.get(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`)
-                    console.log(`${$.name} API请求失败，请检查网路重试`)
-                } else {
-                    await $.wait(2000)
-                    resolve(JSON.parse(data));
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
-            }
-        })
-    })
-}
-
-async function lotteryPost(url,body) {
-    return new Promise(resolve => {
-        const options = {
-            url: `https://srv-app.taizhou.com.cn${url}`,
-            headers : {
-                'Connection': 'Keep-Alive',
-                'Accept': '*/*',
-                'Content-type': 'application/x-www-form-urlencoded',
-                'Sec-Fetch-Site': 'same-origin',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Dest': 'empty',
-                'cookie': lotteryCookie,
-                'Referer': 'https://xmt.taizhou.com.cn/readingLuck-v1/',
-                'X-Requested-With': 'com.shangc.tiennews.taizhou',
-                'Accept-Encoding': 'gzip, deflate',
-                'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-                'user-agent': 'Mozilla/5.0 (Linux; Android 11; 21091116AC Build/RP1A.200720.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/94.0.4606.85 Mobile Safari/537.36;xsb_wangchao;xsb_wangchao;6.0.2;native_app;6.10.0',
+                'X-REQUEST-ID': params.uuid,
+                'X-SIGNATURE': params.signature,
+                'Cache-Control': 'no-cache',
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                'Accept-Encoding': 'gzip',
+                'user-agent': ua,
+                'Cookie': cookie
             },
-            body: body
+            body:body
         }
         $.post(options, async (err, resp, data) => {
             try {
@@ -386,7 +163,6 @@ async function lotteryPost(url,body) {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    await $.wait(2000)
                     resolve(JSON.parse(data));
                 }
             } catch (e) {
@@ -396,6 +172,15 @@ async function lotteryPost(url,body) {
             }
         })
     })
+}
+
+function getBody(url,body) {
+    let uuid = generateUUID();
+    const str = `post%%${url}?${body}%%${uuid}%%`;
+    CryptoJS = Utils.createCryptoJS();
+    const hash = CryptoJS.HmacSHA256(str, signature_key);
+    let signature = CryptoJS.enc.Hex.stringify(hash);
+    return {"uuid":uuid,"signature":signature};
 }
 
 function getParams(url) {
@@ -415,14 +200,6 @@ function generateUUID() {
         const v = c === 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
     });
-}
-
-function getCurrentDate() {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    const day = String(currentDate.getDate()).padStart(2, '0');
-    return `${year}${month}${day}`;
 }
 
 function generateRandomUA() {
@@ -458,11 +235,12 @@ function generateRandomUA() {
     const device = "Xiaomi " + deviceId;
     const os = "Android";
     const osVersion = "11";
-    const osType = "xiaomi";
+    const osType = "Release";
     const appVersion = "6.10.0";
 
+    let ua = `${os.toUpperCase()};${osVersion};10019;${version};1.0;null;${deviceId}`
     let commonUa = `${version};${uuid};${device};${os};${osVersion};${osType};${appVersion}`
-    return {"commonUa": commonUa,"uuid": uuid};
+    return {"ua": ua, "commonUa": commonUa,"uuid":uuid};
 }
 
 function getRandomElement(arr) {
