@@ -377,6 +377,35 @@
         "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.png",
         "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.png"
       ]
+    },
+    {
+      "id": "XinJiangBei",
+      "name": "新江北",
+      "keys": [
+        "XinJiangBei"
+      ],
+      "scripts": [
+        {
+          "name": "新江北-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XinJiangBei/XinJiangBei.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "XinJiangBei",
+          "name": "账号密码姓名",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码&姓名 手机号&密码&姓名"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XinJiangBei/XinJiangBei.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XinJiangBei/XinJiangBei.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XinJiangBei/XinJiangBei.png"
+      ]
     }
   ]
 }

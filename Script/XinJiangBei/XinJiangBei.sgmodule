@@ -1,0 +1,6 @@
+#!name=新江北
+#!desc=新江北
+#!category=羊毛
+
+[Script]
+新江北 = type=cron,cronexp="10 0,12 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XinJiangBei/XinJiangBei.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
