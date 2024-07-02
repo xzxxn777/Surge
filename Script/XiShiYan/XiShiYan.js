@@ -171,7 +171,7 @@ async function main() {
                 if (!readFinish) {
                     let read = await commonGet(`/api/article/read_time?channel_article_id=${articleId}&is_end=true&read_time=3051`)
                     if (read.data.score_notify) {
-                        console.log(`阅读获得：${read.data.score_notify.integral}积分`)
+                        console.log(`阅读获得：${read.data?.score_notify?.integral}积分`)
                     } else {
                         console.log(`文章已经阅读过了`)
                     }
@@ -179,7 +179,7 @@ async function main() {
                 if (!likeFinish) {
                     let like = await commonPost(`/api/favorite/like`,`action=true&id=${articleId}`)
                     if (like.data) {
-                        console.log(`点赞获得：${like.data.score_notify.integral}积分`)
+                        console.log(`点赞获得：${like.data?.score_notify?.integral}积分`)
                     } else {
                         console.log(`文章已经点赞过了`)
                     }
@@ -187,7 +187,7 @@ async function main() {
                 if (!shareFinish) {
                     let share = await commonPost(`/api/user_mumber/doTask`,`memberType=3&member_type=3&target_id==${articleId}`)
                     if (share.data.score_notify) {
-                        console.log(`分享获得：${share.data.score_notify.integral}积分`)
+                        console.log(`分享获得：${share.data?.score_notify?.integral}积分`)
                     } else {
                         console.log(`文章已经分享过了`)
                     }
