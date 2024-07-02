@@ -144,12 +144,7 @@ async function imageGet(url) {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    let image = ''
-                    if ($.isNode()) {
-                        image = resp.rawBody.toString('base64')
-                    } else {
-                        image = data
-                    }
+                    let image = resp.rawBody.toString('base64')
                     resolve(image);
                 }
             } catch (e) {
