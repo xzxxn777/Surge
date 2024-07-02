@@ -34,6 +34,7 @@ async function main() {
     console.log(sessionId)
     console.log("获取signature_key")
     let init = await initGet('/web/init?client_id=10019')
+    console.log(cookie)
     signature_key = init.data.client.signature_key;
     console.log(signature_key)
     console.log("发送验证码")
@@ -112,6 +113,7 @@ async function initGet(url) {
                         }
                     } else {
                         cookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
+                        cookie = formatCookies(cookie);
                     }
                     resolve(JSON.parse(data));
                 }
@@ -327,6 +329,15 @@ function uint8ArrayToBase64(uint8Array) {
     // 将字符串转换为Base64编码
     const base64String = btoa(binaryString);
     return base64String;
+}
+
+function formatCookies(cookieString) {
+    const cookies = cookieString.split(', ');
+    const formattedCookies = cookies.map(cookie => {
+        const keyValue = cookie.split(';')[0];
+        return keyValue.trim();
+    });
+    return formattedCookies.join(';');
 }
 
 async function loadUtils() {
