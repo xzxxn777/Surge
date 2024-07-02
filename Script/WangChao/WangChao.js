@@ -92,6 +92,7 @@ async function main() {
         }
         console.log("————————————")
         console.log('阅读抽奖')
+        readCookie = ''
         readCookie = await loginGet(`/prod-api/user-read/app/login?id=${accountId}&sessionId=${sessionId}&deviceId=${deviceId}`)
         console.log('获取登录cookie')
         console.log(readCookie)
@@ -110,6 +111,7 @@ async function main() {
             }
         }
         let lotteryCount = await readGet(`/prod-api/user-read-count/count/${getCurrentDate()}`);
+        lotteryCookie = ''
         lotteryCookie = await lotteryLoginGet(`/tzrb/user/loginWC?accountId=${accountId}&sessionId=${sessionId}`)
         console.log('获取抽奖cookie')
         console.log(lotteryCookie)
