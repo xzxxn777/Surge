@@ -1,0 +1,12 @@
+#!name=蒙牛
+#!desc=蒙牛
+#!category=羊毛
+
+[Script]
+蒙牛营养生活家_获取token = type=http-request,pattern=^https:\/\/mp-isv\.youzanyun\.com\/activity\/get_sign_in_by_open_id_and_mobile,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MengNiu/MengNiuNutritionist.js,requires-body=1,max-size=0
+蒙牛营养生活家 = type=cron,cronexp="1 0,22 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MengNiu/MengNiuNutritionist.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+蒙牛生活家会员中心_获取token = type=http-request,pattern=^https:\/\/mp-isv\.youzanyun\.com\/client\/member\/getMemberInfo,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MengNiu/MengNiuVip.js,requires-body=1,max-size=0
+蒙牛生活家会员中心 = type=cron,cronexp="5 0,22 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MengNiu/MengNiuVip.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% mp-isv.youzanyun.com

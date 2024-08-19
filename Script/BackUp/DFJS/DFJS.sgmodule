@@ -1,0 +1,10 @@
+#!name=东方棘市
+#!desc=东方棘市
+#!category=羊毛
+
+[Script]
+东方棘市_获取token = type=http-response,pattern=^https:\/\/ys\.shajixueyuan\.com\/api\/user\/info,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DFJS/DFJS.js,requires-body=1,max-size=0
+东方棘市 = type=cron,cronexp="43 11,21 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DFJS/DFJS.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% ys.shajixueyuan.com

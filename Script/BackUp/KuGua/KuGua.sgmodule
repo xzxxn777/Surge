@@ -1,0 +1,9 @@
+#!name=酷瓜好物
+#!desc=酷瓜好物
+#!category=羊毛
+
+[Script]
+酷瓜好物_获取token = type=http-response,pattern=^https:\/\/www\.kugua\.com\/wxapp\/openidLogin,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/KuGua/KuGua.js,requires-body=1,max-size=0
+酷瓜好物 = type=cron,cronexp="50 0,10 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/KuGua/KuGua.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+[MITM]
+hostname = %APPEND% www.kugua.com

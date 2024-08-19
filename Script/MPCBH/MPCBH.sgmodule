@@ -1,0 +1,10 @@
+#!name=毛铺草本荟
+#!desc=毛铺草本荟
+#!category=羊毛
+
+[Script]
+毛铺草本荟_获取token = type=http-response,pattern=^https:\/\/mpb\.jingjiu\.com\/proxy-he\/api\/user,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MPCBH/MPCBH.js,requires-body=1,max-size=0
+毛铺草本荟 = type=cron,cronexp="27 7,17 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/MPCBH/MPCBH.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% mpb.jingjiu.com

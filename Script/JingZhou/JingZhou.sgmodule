@@ -1,0 +1,6 @@
+#!name=竟舟
+#!desc=竟舟
+#!category=羊毛
+
+[Script]
+竟舟 = type=cron,cronexp="1 6,12 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JingZhou/JingZhou.js,script-update-interval=0,timeout=3600,wake-system=1

@@ -1,0 +1,6 @@
+#!name=融磐安
+#!desc=融磐安
+#!category=羊毛
+
+[Script]
+融磐安 = type=cron,cronexp="10 10,16 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RongPanAn/RongPanAn.js,script-update-interval=0,timeout=3600,wake-system=1

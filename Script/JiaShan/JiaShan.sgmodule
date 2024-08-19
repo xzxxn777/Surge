@@ -1,0 +1,6 @@
+#!name=in嘉善
+#!desc=in嘉善
+#!category=羊毛
+
+[Script]
+in嘉善 = type=cron,cronexp="31 9,19 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JiaShan/JiaShan.js,script-update-interval=0,timeout=3600,wake-system=1

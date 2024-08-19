@@ -1,0 +1,10 @@
+#!name=三得利
+#!desc=三得利
+#!category=羊毛
+
+[Script]
+三得利_获取token = type=http-response,pattern=^https:\/\/xiaodian\.miyatech\.com\/api\/user\/member\/info,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/SDL/SDL.js,requires-body=1,max-size=0
+三得利 = type=cron,cronexp="19 8,19 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/SDL/SDL.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% xiaodian.miyatech.com

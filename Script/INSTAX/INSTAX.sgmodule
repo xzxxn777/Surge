@@ -1,0 +1,10 @@
+#!name=富士instax玩拍由我俱乐部
+#!desc=富士instax玩拍由我俱乐部
+#!category=羊毛
+
+[Script]
+富士instax玩拍由我俱乐部_获取token = type=http-response,pattern=^https:\/\/instax\.app\.xcxd\.net\.cn\/api\/me,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/INSTAX/INSTAX.js,requires-body=1,max-size=0
+富士instax玩拍由我俱乐部 = type=cron,cronexp="10 10,16,22 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/INSTAX/INSTAX.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% instax.app.xcxd.net.cn

@@ -1,0 +1,10 @@
+#!name=喜茶
+#!desc=喜茶
+#!category=羊毛
+
+[Script]
+喜茶_获取token = type=http-response,pattern=^https:\/\/go\.heytea\.com\/api\/service-member\/vip\/member-exp\/account-info,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HeyTea/HeyTea.js,requires-body=1,max-size=0
+喜茶 = type=cron,cronexp="10 0,8 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HeyTea/HeyTea.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% go.heytea.com

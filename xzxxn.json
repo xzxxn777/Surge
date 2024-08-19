@@ -1,0 +1,1073 @@
+{
+  "id": "xzxxn777",
+  "name": "雪之下雪乃",
+  "author": "@xzxxn777",
+  "icon": "https://raw.githubusercontent.com/xzxxn777/Surge/main/xzxxn.JPG",
+  "repo": "https://github.com/xzxxn777/Surge",
+  "apps": [
+    {
+      "id": "TaiPingTong",
+      "name": "太平通兑换",
+      "keys": [
+        "TaiPingTong_Acc",
+        "TaiPingTong_GIFTID"
+      ],
+      "settings": [
+        {
+          "id": "TaiPingTong_Acc",
+          "name": "兑换账号",
+          "val": "0",
+          "type": "text",
+          "desc": "默认第一个用户兑换，第二个填1，以此类推"
+        },
+        {
+          "id": "TaiPingTong_GIFTID",
+          "name": "商品id",
+          "val": "144",
+          "type": "text",
+          "desc": "京东E卡：1元66 2元169 5元120 10元121 20元122 50元144,默认兑换50"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TaiPingTong/TaiPingTong_Receive.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TaiPingTong/TaiPingTong.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TaiPingTong/TaiPingTong.png"
+      ]
+    },
+    {
+      "id": "QieHuang",
+      "name": "茄皇兑换",
+      "keys": [
+        "QieHuang_Acc",
+        "QieHuang_GiftId"
+      ],
+      "settings": [
+        {
+          "id": "QieHuang_Acc",
+          "name": "兑换账号",
+          "val": "1",
+          "type": "text",
+          "desc": "默认第一个用户兑换，第二个填2，以此类推"
+        },
+        {
+          "id": "QieHuang_GiftId",
+          "name": "商品id",
+          "val": "112",
+          "type": "text",
+          "desc": "运行脚本查看"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongYi/QieHuang_Exchange.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongYi/QieHuang.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongYi/QieHuang.png"
+      ]
+    },
+    {
+      "id": "WYYX",
+      "name": "网易严选兑换",
+      "keys": [
+        "WYYX_Acc",
+        "WYYX_Name"
+      ],
+      "scripts": [
+        {
+          "name": "网易严选兑换-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WYYX/WYYX_Exchange.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "WYYX_Acc",
+          "name": "兑换账号",
+          "val": "0",
+          "type": "text",
+          "desc": "默认第一个用户兑换，第二个填1，以此类推"
+        },
+        {
+          "id": "WYYX_Name",
+          "name": "商品名称",
+          "val": "",
+          "type": "text",
+          "desc": "运行脚本查看"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WYYX/WYYX_Exchange.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WYYX/WYYX.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WYYX/WYYX.png"
+      ]
+    },
+    {
+      "id": "YongXin",
+      "name": "富连e充兑换",
+      "keys": [
+        "YongXin_ExchangeNum"
+      ],
+      "settings": [
+        {
+          "id": "YongXin_ExchangeNum",
+          "name": "兑换次数",
+          "val": "0",
+          "type": "text",
+          "desc": "默认不兑换"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YongXin/YongXin.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YongXin/YongXin.jpg",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YongXin/YongXin.jpg"
+      ]
+    },
+    {
+      "id": "RedBull",
+      "name": "红牛会员俱乐部兑换",
+      "keys": [
+        "RedBull_Acc",
+        "RedBull_GiftId"
+      ],
+      "scripts": [
+        {
+          "name": "红牛会员俱乐部兑换-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RedBull/RedBull_Exchange.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "RedBull_Acc",
+          "name": "兑换账号",
+          "val": "0",
+          "type": "text",
+          "desc": "默认第一个用户兑换，第二个填1，以此类推"
+        },
+        {
+          "id": "RedBull_GiftId",
+          "name": "商品id",
+          "val": "",
+          "type": "text",
+          "desc": "运行脚本查看"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RedBull/RedBull_Exchange.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RedBull/RedBull.jpg",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RedBull/RedBull.jpg"
+      ]
+    },
+    {
+      "id": "Cheryfs",
+      "name": "好奇车生活兑换",
+      "keys": [
+        "Cheryfs_Acc",
+        "Cheryfs_GIFTID"
+      ],
+      "scripts": [
+        {
+          "name": "好奇车生活兑换-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/Cheryfs/Cheryfs_Exchange.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "Cheryfs_Acc",
+          "name": "兑换账号",
+          "val": "0",
+          "type": "text",
+          "desc": "默认第一个用户兑换，第二个填1，以此类推"
+        },
+        {
+          "id": "Cheryfs_GIFTID",
+          "name": "商品id",
+          "val": "",
+          "type": "text",
+          "desc": "运行脚本查看"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/Cheryfs/Cheryfs_Exchange.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/Cheryfs/Cheryfs.jpg",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/Cheryfs/Cheryfs.jpg"
+      ]
+    },
+    {
+      "id": "IQOO",
+      "name": "IQOO社区兑换",
+      "keys": [
+        "IQOO_Acc",
+        "IQOO_GiftId"
+      ],
+      "scripts": [
+        {
+          "name": "IQOO社区兑换-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/IQOO/IQOO_Exchange.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "IQOO_Acc",
+          "name": "兑换账号",
+          "val": "0",
+          "type": "text",
+          "desc": "默认第一个用户兑换，第二个填1，以此类推"
+        },
+        {
+          "id": "IQOO_GiftId",
+          "name": "商品id",
+          "val": "",
+          "type": "text",
+          "desc": "运行脚本查看"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/IQOO/IQOO_Exchange.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/IQOO/IQOO.jpg",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/IQOO/IQOO.jpg"
+      ]
+    },
+    {
+      "id": "ZTE",
+      "name": "中兴",
+      "keys": [
+        "ZTE",
+        "ZTE_Community"
+      ],
+      "scripts": [
+        {
+          "name": "中兴手机商城-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZTE/ZTE.js"
+        },
+        {
+          "name": "中兴社区-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZTE/ZTE_Community.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "ZTE",
+          "name": "中兴手机商城账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        },
+        {
+          "id": "ZTE_Community",
+          "name": "中兴社区账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZTE/ZTE.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZTE/ZTE.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZTE/ZTE.png"
+      ]
+    },
+    {
+      "id": "HaiTian",
+      "name": "海天美味馆兑换",
+      "keys": [
+        "HaiTian_Acc",
+        "HaiTian_GiftId"
+      ],
+      "scripts": [
+        {
+          "name": "海天美味馆兑换-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiTian/HaiTian_Exchange.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "HaiTian_Acc",
+          "name": "兑换账号",
+          "val": "0",
+          "type": "text",
+          "desc": "默认第一个用户兑换，第二个填1，以此类推"
+        },
+        {
+          "id": "HaiTian_GiftId",
+          "name": "商品id",
+          "val": "",
+          "type": "text",
+          "desc": "运行脚本查看"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiTian/HaiTian_Exchange.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiTian/HaiTian.jpg",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiTian/HaiTian.jpg"
+      ]
+    },
+    {
+      "id": "XiShiYan",
+      "name": "西施眼",
+      "keys": [
+        "XiShiYan"
+      ],
+      "scripts": [
+        {
+          "name": "西施眼-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XiShiYan/XiShiYan.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "XiShiYan",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XiShiYan/XiShiYan.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XiShiYan/XiShiYan.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XiShiYan/XiShiYan.png"
+      ]
+    },
+    {
+      "id": "WangChao",
+      "name": "望潮",
+      "keys": [
+        "WangChao"
+      ],
+      "scripts": [
+        {
+          "name": "望潮-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "WangChao",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WangChao/WangChao.png"
+      ]
+    },
+    {
+      "id": "XinJiangBei",
+      "name": "新江北",
+      "keys": [
+        "XinJiangBei"
+      ],
+      "scripts": [
+        {
+          "name": "新江北-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XinJiangBei/XinJiangBei.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "XinJiangBei",
+          "name": "账号密码姓名支付宝账号",
+          "val": "",
+          "type": "text",
+          "desc": "格式:账号1&密码1&支付宝姓名1&支付宝账号1 账号2&密码2&支付宝姓名2&支付宝账号2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XinJiangBei/XinJiangBei.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XinJiangBei/XinJiangBei.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XinJiangBei/XinJiangBei.png"
+      ]
+    },
+    {
+      "id": "TongLu",
+      "name": "潇洒桐庐",
+      "keys": [
+        "TongLu"
+      ],
+      "scripts": [
+        {
+          "name": "潇洒桐庐-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongLu/TongLu.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "TongLu",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongLu/TongLu.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongLu/TongLu.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongLu/TongLu.png"
+      ]
+    },
+    {
+      "id": "ZSWY",
+      "name": "掌上武义",
+      "keys": [
+        "ZSWY"
+      ],
+      "scripts": [
+        {
+          "name": "掌上武义-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZSWY/ZSWY.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "ZSWY",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZSWY/ZSWY.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZSWY/ZSWY.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZSWY/ZSWY.png"
+      ]
+    },
+    {
+      "id": "CommonNews",
+      "name": "通用新闻app",
+      "keys": [
+        "Common_Phone",
+        "Common_Type",
+        "Common_smsCode",
+        "Common_Password"
+      ],
+      "scripts": [
+        {
+          "name": "发送验证码（填手机号, 选择app, 保存, 执行）",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CommonNews/SendSms.js"
+        },
+        {
+          "name": "用验证码登录（填手机号, 选择app, 验证码, 密码, 保存, 执行 ⚠️ 执行后 记得刷新）",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CommonNews/ResetPassword.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "Common_Phone",
+          "name": "手机号",
+          "val": "",
+          "type": "text",
+          "desc": "手机号"
+        },
+        {
+          "id": "Common_Type",
+          "name": "app",
+          "val": "",
+          "type": "selects",
+          "items": [
+            {
+              "key": "XiShiYan",
+              "label": "西施眼"
+            },
+            {
+              "key": "WangChao",
+              "label": "望潮"
+            },
+            {
+              "key": "XinJiangBei",
+              "label": "新江北"
+            },
+            {
+              "key": "TongLu",
+              "label": "潇洒桐庐"
+            },
+            {
+              "key": "ZSWY",
+              "label": "掌上武义"
+            },
+            {
+              "key": "YueCheng",
+              "label": "今日越城"
+            },
+            {
+              "key": "DaChao",
+              "label": "大潮"
+            },
+            {
+              "key": "RongPanAn",
+              "label": "融磐安"
+            },
+            {
+              "key": "LanJingLing",
+              "label": "兰精灵"
+            },
+            {
+              "key": "AiHaiYan",
+              "label": "爱海盐"
+            },
+            {
+              "key": "QingJiao",
+              "label": "青椒"
+            },
+            {
+              "key": "JingZhou",
+              "label": "竟舟"
+            }
+          ],
+          "desc": "选择app"
+        },
+        {
+          "id": "Common_smsCode",
+          "name": "验证码",
+          "val": "",
+          "type": "text",
+          "desc": "验证码"
+        },
+        {
+          "id": "Common_Password",
+          "name": "密码",
+          "val": "",
+          "type": "text",
+          "desc": "密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CommonNews/SendSms.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/xzxxn.JPG",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/xzxxn.JPG"
+      ]
+    },
+    {
+      "id": "QingDaoNews",
+      "name": "青岛新闻",
+      "keys": [
+        "QingDaoNews"
+      ],
+      "scripts": [
+        {
+          "name": "青岛新闻-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingDaoNews/QingDaoNews.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "QingDaoNews",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingDaoNews/QingDaoNews.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingDaoNews/QingDaoNews.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingDaoNews/QingDaoNews.png"
+      ]
+    },
+    {
+      "id": "FengXin",
+      "name": "丰信客户端",
+      "keys": [
+        "FengXin"
+      ],
+      "scripts": [
+        {
+          "name": "丰信客户端-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FengXin/FengXin.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "FengXin",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FengXin/FengXin.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FengXin/FengXin.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FengXin/FengXin.png"
+      ]
+    },
+    {
+      "id": "TKZX",
+      "name": "泰康在线兑换",
+      "keys": [
+        "TKZX_Acc",
+        "TKZX_GiftId"
+      ],
+      "scripts": [
+        {
+          "name": "泰康在线兑换-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TKZX/TKZX_Exchange.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "TKZX_Acc",
+          "name": "兑换账号",
+          "val": "0",
+          "type": "text",
+          "desc": "默认第一个用户兑换，第二个填1，以此类推"
+        },
+        {
+          "id": "TKZX_GiftId",
+          "name": "商品id",
+          "val": "",
+          "type": "text",
+          "desc": "运行脚本查看"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TKZX/TKZX_Exchange.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TKZX/TKZX.PNG",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TKZX/TKZX.PNG"
+      ]
+    },
+    {
+      "id": "FTEJ",
+      "name": "福田e家",
+      "keys": [
+        "FTEJ"
+      ],
+      "scripts": [
+        {
+          "name": "福田e家-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FTEJ/FTEJ.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "FTEJ",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FTEJ/FTEJ.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FTEJ/FTEJ.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FTEJ/FTEJ.png"
+      ]
+    },
+    {
+      "id": "YongPai",
+      "name": "甬派",
+      "keys": [
+        "YongPai"
+      ],
+      "scripts": [
+        {
+          "name": "甬派-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YongPai/YongPai.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "YongPai",
+          "name": "账号密码姓名支付宝账号设备id",
+          "val": "",
+          "type": "text",
+          "desc": "格式:账号1&密码1&支付宝姓名1&支付宝账号1&设备id1 账号2&密码2&支付宝姓名2&支付宝账号2&设备id2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YongPai/YongPai.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YongPai/YongPai.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YongPai/YongPai.png"
+      ]
+    },
+    {
+      "id": "YueCheng",
+      "name": "今日越城",
+      "keys": [
+        "YueCheng"
+      ],
+      "scripts": [
+        {
+          "name": "今日越城-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YueCheng/YueCheng.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "YueCheng",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YueCheng/YueCheng.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YueCheng/YueCheng.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YueCheng/YueCheng.png"
+      ]
+    },
+    {
+      "id": "DaChao",
+      "name": "大潮",
+      "keys": [
+        "DaChao"
+      ],
+      "scripts": [
+        {
+          "name": "大潮-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DaChao/DaChao.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "DaChao",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DaChao/DaChao.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DaChao/DaChao.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DaChao/DaChao.png"
+      ]
+    },
+    {
+      "id": "AiLuQiao",
+      "name": "爱路桥",
+      "keys": [
+        "AiLuQiao"
+      ],
+      "scripts": [
+        {
+          "name": "爱路桥-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AiLuQiao/AiLuQiao.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "AiLuQiao",
+          "name": "uid",
+          "val": "",
+          "type": "text",
+          "desc": "格式:uid1 uid2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AiLuQiao/AiLuQiao.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AiLuQiao/AiLuQiao.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AiLuQiao/AiLuQiao.png"
+      ]
+    },
+    {
+      "id": "ZSJD",
+      "name": "掌上金东",
+      "keys": [
+        "ZSJD"
+      ],
+      "scripts": [
+        {
+          "name": "掌上金东-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZSJD/ZSJD.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "ZSJD",
+          "name": "accountId&token",
+          "val": "",
+          "type": "text",
+          "desc": "格式:accountId&token accountId&token"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZSJD/ZSJD.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZSJD/ZSJD.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/ZSJD/ZSJD.png"
+      ]
+    },
+    {
+      "id": "RongPanAn",
+      "name": "融磐安",
+      "keys": [
+        "RongPanAn"
+      ],
+      "scripts": [
+        {
+          "name": "融磐安-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RongPanAn/RongPanAn.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "RongPanAn",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:手机号&密码 手机号&密码"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RongPanAn/RongPanAn.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RongPanAn/RongPanAn.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/RongPanAn/RongPanAn.png"
+      ]
+    },
+    {
+      "id": "LanJingLing",
+      "name": "兰精灵",
+      "keys": [
+        "LanJingLing"
+      ],
+      "scripts": [
+        {
+          "name": "兰精灵-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/LanJingLing/LanJingLing.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "LanJingLing",
+          "name": "账号密码姓名支付宝账号",
+          "val": "",
+          "type": "text",
+          "desc": "格式:账号1&密码1&支付宝姓名1&支付宝账号1 账号2&密码2&支付宝姓名2&支付宝账号2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/LanJingLing/LanJingLing.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/LanJingLing/LanJingLing.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/LanJingLing/LanJingLing.png"
+      ]
+    },
+    {
+      "id": "AiHaiYan",
+      "name": "爱海盐",
+      "keys": [
+        "AiHaiYan"
+      ],
+      "scripts": [
+        {
+          "name": "爱海盐-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AiHaiYan/AiHaiYan.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "AiHaiYan",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:账号1&密码1 账号2&密码2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AiHaiYan/AiHaiYan.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AiHaiYan/AiHaiYan.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AiHaiYan/AiHaiYan.png"
+      ]
+    },
+    {
+      "id": "JiaShan",
+      "name": "in嘉善",
+      "keys": [
+        "JiaShan"
+      ],
+      "scripts": [
+        {
+          "name": "in嘉善-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JiaShan/JiaShan.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "JiaShan",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:账号1&密码1 账号2&密码2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JiaShan/JiaShan.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JiaShan/JiaShan.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JiaShan/JiaShan.png"
+      ]
+    },
+    {
+      "id": "QingJiao",
+      "name": "青椒",
+      "keys": [
+        "QingJiao"
+      ],
+      "scripts": [
+        {
+          "name": "青椒-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingJiao/QingJiao.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "QingJiao",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:账号1&密码1 账号2&密码2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingJiao/QingJiao.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingJiao/QingJiao.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingJiao/QingJiao.png"
+      ]
+    },
+    {
+      "id": "DuJia",
+      "name": "读嘉",
+      "keys": [
+        "DuJia"
+      ],
+      "scripts": [
+        {
+          "name": "读嘉-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DuJia/DuJia.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "DuJia",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:账号1&密码1 账号2&密码2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DuJia/DuJia.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DuJia/DuJia.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DuJia/DuJia.png"
+      ]
+    },
+    {
+      "id": "JingZhou",
+      "name": "竟舟",
+      "keys": [
+        "JingZhou"
+      ],
+      "scripts": [
+        {
+          "name": "竟舟-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JingZhou/JingZhou.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "JingZhou",
+          "name": "账号密码",
+          "val": "",
+          "type": "text",
+          "desc": "格式:账号1&密码1 账号2&密码2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JingZhou/JingZhou.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JingZhou/JingZhou.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/JingZhou/JingZhou.png"
+      ]
+    },
+    {
+      "id": "CiXiao",
+      "name": "慈晓",
+      "keys": [
+        "CiXiao"
+      ],
+      "scripts": [
+        {
+          "name": "慈晓-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CiXiao/CiXiao.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "CiXiao",
+          "name": "账号token",
+          "val": "",
+          "type": "text",
+          "desc": "格式:账号1&token1 账号2&token2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CiXiao/CiXiao.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CiXiao/CiXiao.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CiXiao/CiXiao.png"
+      ]
+    }
+  ]
+}

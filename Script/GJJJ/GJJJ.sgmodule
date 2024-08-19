@@ -1,0 +1,10 @@
+#!name=顾家家居
+#!desc=顾家家居
+#!category=羊毛
+
+[Script]
+顾家家居_获取token = type=http-request,pattern=^https:\/\/mc\.kukahome\.com\/club-server\/member\/automaticLogin,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/GJJJ/GJJJ.js,requires-body=1,max-size=0
+顾家家居 = type=cron,cronexp="19 9,17 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/GJJJ/GJJJ.js,script-update-interval=0,timeout=3600,wake-system=1
+
+[MITM]
+hostname = %APPEND% mc.kukahome.com

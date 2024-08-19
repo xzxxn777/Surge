@@ -1,0 +1,11 @@
+#!name=网易严选
+#!desc=网易严选
+#!category=羊毛
+
+[Script]
+网易严选_获取cookie = type=http-request,pattern=^https:\/\/act\.you\.163\.com\/act-attendance\/task\/list,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WYYX/WYYX.js,requires-body=1,max-size=0
+网易严选 = type=cron,cronexp="45 0,11,21 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WYYX/WYYX.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+网易严选-兑换时间 = type=cron,cronexp="50 9 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WYYX/WYYX_MONITOR.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% act.you.163.com

@@ -1,0 +1,10 @@
+#!name=古井贡酒
+#!desc=古井贡酒
+#!category=羊毛
+
+[Script]
+古井贡酒_获取token = type=http-response,pattern=^https:\/\/scrm\.gujing\.com\/gujing_scrm\/wxclient\/member\/info,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/GuJing/GuJing.js,requires-body=1,max-size=0
+古井贡酒 = type=cron,cronexp="5 8,12,18,20 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/GuJing/GuJing.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% scrm.gujing.com

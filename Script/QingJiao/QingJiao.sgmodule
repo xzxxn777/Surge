@@ -1,0 +1,6 @@
+#!name=青椒
+#!desc=青椒
+#!category=羊毛
+
+[Script]
+青椒 = type=cron,cronexp="1 8,18 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingJiao/QingJiao.js,script-update-interval=0,timeout=3600,wake-system=1

@@ -1,0 +1,10 @@
+#!name=舞推
+#!desc=舞推
+#!category=羊毛
+
+[Script]
+舞推_获取token = type=http-response,pattern=^https:\/\/mini-prog-wt-pro\.singworld\.net\/api\/person\/getUserInfoV1,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WuTui/WuTui.js,requires-body=1,max-size=0
+舞推 = type=cron,cronexp="56 12,18 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/WuTui/WuTui.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% mini-prog-wt-pro.singworld.net

@@ -1,0 +1,11 @@
+#!name=习酒
+#!desc=习酒
+#!category=羊毛
+
+[Script]
+习酒_获取token = type=http-response,pattern=^https:\/\/xcx\.exijiu\.com\/anti-channeling\/public\/index.php\/api\/v2\/Member\/getJifenShopMemberInfo,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XiJiu/XiJiu.js,requires-body=1,max-size=0
+习酒 = type=cron,cronexp="35 0-23/1 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XiJiu/XiJiu.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+君品荟 = type=cron,cronexp="11 7,17 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XiJiu/JunPinHui.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% xcx.exijiu.com

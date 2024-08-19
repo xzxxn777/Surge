@@ -1,0 +1,10 @@
+#!name=臭宝乐园
+#!desc=臭宝乐园
+#!category=羊毛
+
+[Script]
+臭宝乐园_获取token = type=http-response,pattern=^https:\/\/cb-bags-slb\.weinian\.com\.cn\/wnuser\/v1\/memberUser\/getMemberUser,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CBLY/CBLY.js,requires-body=1,max-size=0
+臭宝乐园 = type=cron,cronexp="9 9,21 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CBLY/CBLY.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% cb-bags-slb.weinian.com.cn

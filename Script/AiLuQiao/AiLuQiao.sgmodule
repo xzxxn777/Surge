@@ -1,0 +1,6 @@
+#!name=爱路桥
+#!desc=爱路桥
+#!category=羊毛
+
+[Script]
+爱路桥 = type=cron,cronexp="1,10 8,16 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AiLuQiao/AiLuQiao.js,script-update-interval=0,timeout=3600,wake-system=1

@@ -1,0 +1,6 @@
+#!name=西施眼
+#!desc=西施眼
+#!category=羊毛
+
+[Script]
+西施眼 = type=cron,cronexp="6 8,14,20 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/XiShiYan/XiShiYan.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc

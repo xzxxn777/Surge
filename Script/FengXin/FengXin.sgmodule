@@ -1,0 +1,6 @@
+#!name=丰信客户端
+#!desc=丰信客户端
+#!category=羊毛
+
+[Script]
+丰信客户端 = type=cron,cronexp="28 9,21 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FengXin/FengXin.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc

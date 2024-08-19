@@ -1,0 +1,10 @@
+#!name=广汽丰田
+#!desc=广汽丰田
+#!category=羊毛
+
+[Script]
+广汽丰田_获取token = type=http-response,pattern=^https:\/\/gw\.nevapp\.gtmc\.com\.cn\/ha\/iam\/api\/sec\/oauth\/token,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/GQFT/GQFT.js,requires-body=1,max-size=0
+广汽丰田 = type=cron,cronexp="33 6,16,23 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/GQFT/GQFT.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+
+[MITM]
+hostname = %APPEND% gw.nevapp.gtmc.com.cn
