@@ -5,7 +5,8 @@
 const $ = new Env('富士instax玩拍由我俱乐部');
 let INSTAX = ($.isNode() ? JSON.parse(process.env.INSTAX) : $.getjson("INSTAX")) || [];
 let comments = ['冲呀','不错','赞','顶']
-let lotteryId = 44
+let lotteryId = ''
+let signId = ''
 let token=''
 let notice = ''
 !(async () => {
@@ -23,8 +24,28 @@ async function main() {
         userId = item.userId;
         token = item.token;
         console.log(`用户：${id}开始任务`)
+        console.log('获取id')
+        if (!signId || !lotteryId) {
+            let speciaPages = await commonGet(`/special-page/special-pages/2?limit=20&offset=1`);
+            let regex = /\/signin\/index\?id=(\d+)/;
+            let match = JSON.stringify(speciaPages).match(regex);
+            if (match) {
+                signId = match[1];
+            }
+            regex = /\/turntable\/index\?id=(\d+)/;
+            match = JSON.stringify(speciaPages).match(regex);
+            if (match) {
+                lotteryId = match[1];
+            }
+        }
+        if (!id || !lotteryId) {
+            console.log("获取id失败")
+            continue
+        }
+        console.log(`签到id：${signId}`)
+        console.log(`抽奖id：${lotteryId}`)
         console.log('开始签到')
-        let sign = await commonPost(`/user/${userId}/sign-activity/23/sign`);
+        let sign = await commonPost(`/user/${userId}/sign-activity/${signId}/sign`);
         if (sign.code == 401) {
             await sendMsg(`用户：${id}\ntoken已过期，请重新获取`);
             continue
@@ -48,7 +69,7 @@ async function main() {
         console.log("————————————")
         console.log("互动有奖")
         let articles = await commonGet(`/forum/feeds?filters={"examine_status":"pass","status":"!0"}&relations=user&sorts=-status,type&limit=20&offset=1`);
-        for (let article of articles.data.items) {
+        for (let article of articles?.data?.items) {
             console.log(`分享文章`)
             let share = await commonPost(`/user/${userId}/forum/feeds/${article.id}/share`);
             console.log(share.data)
