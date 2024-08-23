@@ -4,7 +4,7 @@
  * export COLORFUL_RAFFLE='true' //开启抽奖
  */
 const $ = new Env('七彩虹商城')
-const baseUrl = 'shopapitest.skycolorful.com'
+const baseUrl = 'shop.skycolorful.com:45677'
 const COLORFUL = ($.isNode() ? (process.env.COLORFUL ? JSON.parse(process.env.COLORFUL) : undefined) : $.getjson("COLORFUL")) || [],
     COLORFUL_RAFFLE = ($.isNode() ? process.env.COLORFUL_RAFFLE : $.getjson("COLORFUL_RAFFLE")) || false;
 let token = '', refreshToken = ''
@@ -30,13 +30,15 @@ async function main() {
         token = item.token;
         refreshToken = item.refreshToken
         let refreshLogin= await commonPost('/User/RefreshLoginTime',{"phone":""})
-        if (refreshLogin.Code == 401) {
+        if (refreshLogin.Code != 0) {
             if (!item.body){
+                console.log(`用户：${id}\ntoken已过期，请重新获取`);
                 await sendMsg(`用户：${id}\ntoken已过期，请重新获取`);
                 continue
             }
           let login=  await commonPost('/User/DecryptPhoneNumber',JSON.parse(item.body))
-            if (login.Code == 401) {
+            if (login.Code != 0) {
+                console.log(`用户：${id}\ntoken已过期，请重新获取`);
                 await sendMsg(`用户：${id}\ntoken已过期，请重新获取`);
                 continue
             }
