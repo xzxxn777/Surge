@@ -3,4 +3,4 @@
 #!category=羊毛
 
 [Script]
-潇洒桐庐 = type=cron,cronexp="32 10,11,18 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongLu/TongLu.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+潇洒桐庐 = type=cron,cronexp="32 10,11,18 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TongLu/TongLu.js,script-update-interval=0,timeout=3600,wake-system=1

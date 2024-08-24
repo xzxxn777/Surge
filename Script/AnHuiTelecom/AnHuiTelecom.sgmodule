@@ -4,7 +4,7 @@
 
 [Script]
 安徽电信_获取token = type=http-response,pattern=^https:\/\/wx\.ah\.189\.cn\/hd\/ahwxboot\/personCenter\/centerIndex\?,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AnHuiTelecom/AnHuiTelecom.js,requires-body=1,max-size=0
-安徽电信 = type=cron,cronexp="1 10,18 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AnHuiTelecom/AnHuiTelecom.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+安徽电信 = type=cron,cronexp="1 10,18 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/AnHuiTelecom/AnHuiTelecom.js,script-update-interval=0,timeout=3600,wake-system=1
 
 [MITM]
 hostname = %APPEND% wx.ah.189.cn

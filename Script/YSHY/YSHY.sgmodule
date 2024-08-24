@@ -4,7 +4,7 @@
 
 [Script]
 仰韶会员_获取token = type=http-response,pattern=^https:\/\/hy\.51pt\.top\/app\/ys\/mine\/getMemberInfo,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YSHY/YSHY.js,requires-body=1,max-size=0
-仰韶会员 = type=cron,cronexp="20 10,22 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YSHY/YSHY.js,script-update-interval=0,timeout=3600,wake-system=1,engine=jsc
+仰韶会员 = type=cron,cronexp="20 10,22 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YSHY/YSHY.js,script-update-interval=0,timeout=3600,wake-system=1
 
 [MITM]
 hostname = %APPEND% hy.51pt.top
