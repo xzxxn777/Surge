@@ -143,6 +143,19 @@ async function main() {
                         console.log('浏览成功')
                     }
                 }
+                if (task.task_key == 'SHARE_PAGE_TASK') {
+                    let share = await commonGet(`/lucky/task/share/page/code/${activityId}?pageUrl=${task.link}`)
+                    if (share) {
+                        let success = await helpPost(`/lucky/task/share/page/code/success/${share.share_code}`)
+                        if (success) {
+                            console.log(success.message)
+                        } else {
+                            console.log(`分享成功`)
+                        }
+                    } else {
+                        console.log(share.message)
+                    }
+                }
             } else {
                 console.log('今日已完成')
             }
