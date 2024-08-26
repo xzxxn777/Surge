@@ -46,10 +46,11 @@ async function main() {
         $.msg($.name, '【提示】请先设置商品id');
         return
     }
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 3; i++) {
         time = Math.floor(Date.now() / 1e3)
         let exchange = await commonPost('/v3/exchange', {"userId": id, "id": IQOO_GiftId, "addressId": defaultId, "imei": ""}, getSign('POST', '/api/v3/exchange', {"userId": id, "id": IQOO_GiftId, "addressId": defaultId, "imei": ""}));
         console.log(exchange)
+        await $.wait(10000)
     }
 }
 
