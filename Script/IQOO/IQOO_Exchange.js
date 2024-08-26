@@ -8,7 +8,7 @@ const $ = new Env('IQOO社区兑换')
 const crypto = createCryptoJS()
 const IQOO = ($.isNode() ? JSON.parse(process.env.IQOO) : $.getjson("IQOO")) || [];
 const IQOO_Acc = ($.isNode() ? process.env.IQOO_Acc : $.getdata("IQOO_Acc")) || 0;
-const IQOO_GiftId = ($.isNode() ? process.env.IQOO_GiftId : $.getdata("IQOO_GiftId")) || 600148;
+const IQOO_GiftId = ($.isNode() ? process.env.IQOO_GiftId : $.getdata("IQOO_GiftId")) || 0;
 let time = ''
 let token = ''
 let xVisitor = ''
@@ -41,7 +41,13 @@ async function main() {
         $.msg($.name, `用户：${id}`, `请先添加默认地址`);
         return
     }
-    for (let i = 0; i < 10; i++) {
+    if (IQOO_GiftId == 0) {
+        console.log('【提示】请先设置商品id')
+        $.msg($.name, '【提示】请先设置商品id');
+        return
+    }
+    for (let i = 0; i < 30; i++) {
+        time = Math.floor(Date.now() / 1e3)
         let exchange = await commonPost('/v3/exchange', {"userId": id, "id": IQOO_GiftId, "addressId": defaultId, "imei": ""}, getSign('POST', '/api/v3/exchange', {"userId": id, "id": IQOO_GiftId, "addressId": defaultId, "imei": ""}));
         console.log(exchange)
     }
