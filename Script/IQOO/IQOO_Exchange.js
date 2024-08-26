@@ -26,7 +26,7 @@ async function main() {
     time = Math.floor(Date.now() / 1e3)
     let goodsList = await commonGet('/v3/goods.list?scope=0&page=1&perPage=1000&filter[goodsType]=0&filter[saleStatus]=2', getSign('GET', '/api/v3/goods.list', {"filter[goodsType]": 0, "filter[saleStatus]": 2, "page": 1, "perPage": 1000, "scope": 0}));
     for (const goods of goodsList.Data.list) {
-        console.log(`商品：${goods.goods_name} id：${goods.id} 库存：${goods.goods_stock} 需要酷币：${goods.goods_score}`)
+        console.log(`商品：${goods.goods_name} id：${goods.id} 库存：${goods.goods_stock} 需要酷币：${goods.goods_score} 开始时间：${goods.list_at}`)
     }
     let address = await commonGet(`/v3/user.address.list?filter[userId]=${id}&perPage=10&page=1`, getSign('GET', '/api/v3/user.address.list', {"filter[userId]": id, "page": 1, "perPage": 10}));
     let defaultId = ''
