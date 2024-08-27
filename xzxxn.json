@@ -284,7 +284,8 @@
       "name": "海天美味馆兑换",
       "keys": [
         "HaiTian_Acc",
-        "HaiTian_GiftId"
+        "HaiTian_GiftId",
+        "HaiTian_Goods"
       ],
       "scripts": [
         {
@@ -303,9 +304,16 @@
         {
           "id": "HaiTian_GiftId",
           "name": "商品id",
-          "val": "",
+          "val": "0",
           "type": "text",
           "desc": "运行脚本查看"
+        },
+        {
+          "id": "HaiTian_Goods",
+          "name": "查看商品列表",
+          "val": "false",
+          "type": "boolean",
+          "desc": "默认关闭，开启后运行脚本查看"
         }
       ],
       "author": "@xzxxn777",

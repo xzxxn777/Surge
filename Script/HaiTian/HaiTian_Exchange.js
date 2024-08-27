@@ -3,11 +3,13 @@
  * export HaiTian='[{"id":"1","token":"1","hadayToken":"1","uuid":"1"},{"id":"2","token":"2","hadayToken":"2","uuid":"2"}]'
  * export HaiTian_Acc='0'//兑换第一个账号
  * export HaiTian_GiftId='0'//运行脚本查看
+ * export HaiTian_Goods='true '//查看商品列表
  */
 const $ = new Env('海天美味馆兑换')
 const HaiTian = ($.isNode() ? JSON.parse(process.env.HaiTian) : $.getjson("HaiTian")) || [];
 const HaiTian_Acc = ($.isNode() ? process.env.HaiTian_Acc : $.getdata("HaiTian_Acc")) || 0;
 const HaiTian_GiftId = ($.isNode() ? process.env.HaiTian_GiftId : $.getdata("HaiTian_GiftId")) || 0;
+const HaiTian_Goods = ($.isNode() ? process.env.HaiTian_Goods : $.getdata("HaiTian_Goods")) || false;
 let token = ''
 let uuid = ''
 !(async () => {
@@ -16,20 +18,38 @@ let uuid = ''
 
 async function main() {
     console.log('作者：@xzxxn777\n频道：https://t.me/xzxxn777\n群组：https://t.me/xzxxn7777\n自用机场推荐：https://xn--diqv0fut7b.com\n')
+    id = HaiTian[HaiTian_Acc].id;
+    token = HaiTian[HaiTian_Acc].token;
+    uuid = HaiTian[HaiTian_Acc].uuid;
+    if (HaiTian_Goods) {
+        let tagList = await commonGet('/point/goods/tag/list')
+        for (const tag of tagList.data) {
+            console.log(`分类：${tag.tag_name}`);
+            let goodsList = await commonGet(`/point/goods/list?sort=&tag_code=${tag.code}&page_no=1&total=100&page_size=100`)
+            for (const goods of goodsList.data) {
+                console.log(`商品：${goods.goods_name} 需要积分：${goods.need_point} 剩余库存：${goods.enable_quantity} 开始时间：${goods.advance_time ? new Date(goods.advance_time * 1000).toLocaleString() : 0} id：${goods.goods_id}`);
+            }
+        }
+    }
     if (HaiTian_GiftId == 0) {
         $.msg($.name, '【提示】请先设置要兑换的商品id');
         return;
     }
-    id = HaiTian[HaiTian_Acc].id;
-    token = HaiTian[HaiTian_Acc].token;
-    uuid = HaiTian[HaiTian_Acc].uuid;
-    let goodsList = await commonGet('/point/goods/list?sort=&tag_code=zs5z&page_no=1&total=79&page_size=10')
-    for (const goods of goodsList.data) {
-        console.log(`商品：${goods.goods_name} 需要积分：${goods.need_point}，id：${goods.goods_id}`);
+    let addresses = await commonGet('/members/addresses')
+    if (addresses.length == 0) {
+        $.msg($.name, '【提示】请先添加收货地址');
+        return;
     }
-    for (let i = 0; i < 30; i++) {
-        let exchange = await commonPost('/point-mall/cart/buy?point_goods_id=340&num=1&way=POINT_BUY_NOW')
-        console.log(exchange)
+    let buy = await commonPost(`/point-mall/cart/buy?point_goods_id=${HaiTian_GiftId}&num=1&way=POINT_BUY_NOW`)
+    let check = await commonGet(`/point-mall/cart/checked?way=POINT_BUY_NOW`)
+    for (let i = 0; i < 10; i++) {
+        let create = await commonPost(`/point-mall/cart/create?way=POINT_BUY_NOW&address_id=${addresses[0].addr_id}&remark=&need_ship_address=false`)
+        if (create.sn) {
+            let pay = await commonPost(`/point-mall/order/point/pay/${create.sn}`)
+            console.log(pay.message)
+        } else {
+            console.log(create.message)
+        }
     }
 }
 
