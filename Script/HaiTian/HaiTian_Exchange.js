@@ -9,7 +9,7 @@ const $ = new Env('海天美味馆兑换')
 const HaiTian = ($.isNode() ? JSON.parse(process.env.HaiTian) : $.getjson("HaiTian")) || [];
 const HaiTian_Acc = ($.isNode() ? process.env.HaiTian_Acc : $.getdata("HaiTian_Acc")) || 0;
 const HaiTian_GiftId = ($.isNode() ? process.env.HaiTian_GiftId : $.getdata("HaiTian_GiftId")) || 0;
-const HaiTian_Goods = ($.isNode() ? process.env.HaiTian_Goods : $.getdata("HaiTian_Goods")) || 'false';
+const HaiTian_Goods = ($.isNode() ? process.env.HaiTian_Goods : $.getdata("HaiTian_Goods")) === 'true' || false;
 let token = ''
 let uuid = ''
 !(async () => {
@@ -21,7 +21,7 @@ async function main() {
     id = HaiTian[HaiTian_Acc].id;
     token = HaiTian[HaiTian_Acc].token;
     uuid = HaiTian[HaiTian_Acc].uuid;
-    if (HaiTian_Goods == 'true') {
+    if (HaiTian_Goods) {
         let tagList = await commonGet('/point/goods/tag/list')
         for (const tag of tagList.data) {
             console.log(`分类：${tag.tag_name}`);

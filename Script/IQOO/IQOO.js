@@ -6,7 +6,7 @@
 const $ = new Env('IQOO社区')
 const crypto = createCryptoJS()
 const IQOO = ($.isNode() ? JSON.parse(process.env.IQOO) : $.getjson("IQOO")) || [];
-const IQOO_Create = ($.isNode() ? process.env.IQOO_Create : $.getdata("IQOO_Create")) || false;
+const IQOO_Create = ($.isNode() ? process.env.IQOO_Create : $.getdata("IQOO_Create")) === 'true' || false;
 let time = ''
 let token = ''
 let xVisitor = ''
