@@ -67,6 +67,7 @@
 | 竟舟 | [JingZhou](https://github.com/xzxxn777/Surge/blob/main/Script/JingZhou/JingZhou.js) | ✅(2024/08/15) | ✅️ |
 | 慈晓 | [CiXiao](https://github.com/xzxxn777/Surge/blob/main/Script/CiXiao/CiXiao.js) | ✅(2024/08/17) | ✅️ |
 | 日清食品体验馆-会员日盲盒兑换 | [RQSP_Exchange](https://github.com/xzxxn777/Surge/blob/main/Script/RQSP/RQSP_Exchange.js) | ✅(2024/08/27) | ✅️ |
+| Rokid AR | [Rokid](https://github.com/xzxxn777/Surge/blob/main/Script/Rokid/Rokid.js) | ✅(2024/08/28) | ✅️ |
 
 
 ------
