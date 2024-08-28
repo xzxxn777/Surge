@@ -149,10 +149,14 @@ async function commonPost(url,body = {}) {
             try {
                 if (err) {
                     if (data) {
-                        data = JSON.parse(data);
-                        if (data.code == 422) {
-                            await $.wait(2000)
-                            resolve(data);
+                        try {
+                            data = JSON.parse(data);
+                            if (data.code == 422) {
+                                await $.wait(2000)
+                                resolve(data);
+                            }
+                        } catch (e) {
+                            resolve('');
                         }
                     } else {
                         console.log(`${JSON.stringify(err)}`)
