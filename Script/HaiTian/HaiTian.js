@@ -10,7 +10,7 @@ let refreshToken = ''
 let hadayToken = ''
 let uuid = ''
 let notice = ''
-let activityId = 'jfcj0727'
+let activityId = 'jfcj0827'
 !(async () => {
     if (typeof $request != "undefined") {
         await getToken();
@@ -135,7 +135,7 @@ async function main() {
                 }
                 if (task.task_key == 'BROWSE_PAGE_TASK') {
                     let start = await commonGet(`/lucky/task/browse/page/start/${activityId}?pageUrl=${task.link}`)
-                    await $.wait(10000)
+                    await $.wait(20000)
                     let end = await commonGet(`/lucky/task/browse/page/end/${activityId}?pageUrl=${task.link}`)
                     if (end) {
                         console.log(end.message)
@@ -164,9 +164,14 @@ async function main() {
             let luckyDraw = await commonGet(`/lucky/activity/extract?activityCode=${activityId}`)
             if (luckyDraw.lucky_record_vo) {
                 console.log(`抽奖获得：${luckyDraw.lucky_record_vo.prize_name}`)
+                if (luckyDraw.lucky_record_vo.prize_type != 2) {
+                    await sendMsg(`用户：${id} 抽奖获得: ${luckyDraw.lucky_record_vo.prize_name}`);
+                }
             } else if (luckyDraw.message) {
                 console.log(luckyDraw.message)
                 break
+            } else {
+                console.log('谢谢参与')
             }
         }
         console.log("查询积分")
@@ -241,7 +246,10 @@ async function commonGet(url) {
                     }
                 } else {
                     await $.wait(2000)
-                    resolve(JSON.parse(data));
+                    if(data) {
+                        data = JSON.parse(data)
+                    }
+                    resolve(data);
                 }
             } catch (e) {
                 $.logErr(e, resp)
