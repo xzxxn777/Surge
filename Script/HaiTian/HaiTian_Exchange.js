@@ -35,15 +35,20 @@ async function main() {
         $.msg($.name, '【提示】请先设置要兑换的商品id');
         return;
     }
-    let addresses = await commonGet('/members/addresses')
-    if (addresses.length == 0) {
-        $.msg($.name, '【提示】请先添加收货地址');
-        return;
-    }
+    // let addresses = await commonGet('/members/addresses')
+    // if (addresses.length == 0) {
+    //     $.msg($.name, '【提示】请先添加默认收货地址');
+    //     return;
+    // }
     let buy = await commonPost(`/point-mall/cart/buy?point_goods_id=${HaiTian_GiftId}&num=1&way=POINT_BUY_NOW`)
     let check = await commonGet(`/point-mall/cart/checked?way=POINT_BUY_NOW`)
+    let checkoutParams = await commonGet(`/point-mall/checkout-params`)
+    if (!checkoutParams.address_id) {
+        $.msg($.name, '【提示】请先添加默认收货地址');
+        return;
+    }
     for (let i = 0; i < 10; i++) {
-        let create = await commonPost(`/point-mall/cart/create?way=POINT_BUY_NOW&address_id=${addresses[0].addr_id}&remark=&need_ship_address=false`)
+        let create = await commonPost(`/point-mall/cart/create?way=POINT_BUY_NOW&address_id=${checkoutParams.address_id}&remark=&need_ship_address=false`)
         if (create.sn) {
             let pay = await commonPost(`/point-mall/order/point/pay/${create.sn}`)
             console.log(pay.message)
