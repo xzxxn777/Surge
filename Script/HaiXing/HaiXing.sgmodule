@@ -1,0 +1,6 @@
+#!name=海星
+#!desc=海星
+#!category=羊毛
+
+[Script]
+海星 = type=cron,cronexp="18 6,15 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiXing/HaiXing.js,script-update-interval=0,timeout=3600,wake-system=1

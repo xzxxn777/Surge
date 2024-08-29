@@ -1076,6 +1076,35 @@
         "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CiXiao/CiXiao.png",
         "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/CiXiao/CiXiao.png"
       ]
+    },
+    {
+      "id": "HaiXing",
+      "name": "海星",
+      "keys": [
+        "HaiXing"
+      ],
+      "scripts": [
+        {
+          "name": "海星-手动执行",
+          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiXing/HaiXing.js"
+        }
+      ],
+      "settings": [
+        {
+          "id": "HaiXing",
+          "name": "账号token",
+          "val": "",
+          "type": "text",
+          "desc": "格式:账号1&token1 账号2&token2"
+        }
+      ],
+      "author": "@xzxxn777",
+      "repo": "https://github.com/xzxxn777/Surge",
+      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiXing/HaiXing.js",
+      "icons": [
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiXing/HaiXing.png",
+        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/HaiXing/HaiXing.png"
+      ]
     }
   ]
 }
