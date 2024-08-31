@@ -4,8 +4,8 @@
  */
 const $ = new Env('健达福利社');
 let JDFLS = ($.isNode() ? JSON.parse(process.env.JDFLS) : $.getjson("JDFLS")) || [];
-let activityId = '230309eSgKaUHr2t'
-let lotteryId = 'ffffffff90617c32000000002d97817f'
+let activityId = ''
+let lotteryId = ''
 let token=''
 let projectId = ''
 let notice = ''
@@ -25,6 +25,21 @@ async function main() {
         projectId = item.projectId;
         token = item.token;
         console.log(`用户：${id}开始任务`)
+        if (!activityId || !lotteryId) {
+            console.log('获取activityId和lotteryId')
+            let getPage = await commonGet('/hammond/theme/page/get');
+            let data = getPage.data;
+            for (const task of JSON.parse(JSON.parse(data).data).strategy.taskList) {
+                if (task.name == '每日签到') {
+                    activityId = task.jumpPage.id;
+                    console.log(`activityId: ${activityId}`)
+                }
+                if (task.name == '福利大转盘抽奖') {
+                    lotteryId = task.jumpPage.id;
+                    console.log(`lotteryId: ${lotteryId}`)
+                }
+            }
+        }
         console.log('开始签到')
         let sign = await commonPost(`/kinder/interaction/signin/record/create`,{"activityId":activityId});
         if (!sign) {
@@ -87,6 +102,45 @@ async function getCookie() {
         $.msg($.name, `🎉新增用户${newData.id}成功!`, ``);
     }
     $.setjson(JDFLS, "JDFLS");
+}
+
+async function commonGet(url) {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://mole.ferrero.com.cn/boss/boss${url}`,
+            headers: {
+                'Connection': 'keep-alive',
+                'content-type': 'application/json;charset=UTF-8',
+                'xweb_xhr': '1',
+                'PROJECT-ID': projectId,
+                'KUMI-TOKEN': token,
+                'PLATFORM': 'KUMI_KINDER',
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.7(0x13080712) XWEB/1191',
+                'accept': '*/*',
+                'Sec-Fetch-Site': 'cross-site',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Dest': 'empty',
+                'Referer': `https://servicewechat.com/wxc412b42328595540/118/page-frame.html`,
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Accept-Language': 'zh-CN,zh;q=0.9'
+            }
+        }
+        $.get(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000)
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
 }
 
 async function commonPost(url,body = {}) {
