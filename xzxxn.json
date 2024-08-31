@@ -6,37 +6,6 @@
   "repo": "https://github.com/xzxxn777/Surge",
   "apps": [
     {
-      "id": "TaiPingTong",
-      "name": "太平通兑换",
-      "keys": [
-        "TaiPingTong_Acc",
-        "TaiPingTong_GIFTID"
-      ],
-      "settings": [
-        {
-          "id": "TaiPingTong_Acc",
-          "name": "兑换账号",
-          "val": "0",
-          "type": "text",
-          "desc": "默认第一个用户兑换，第二个填1，以此类推"
-        },
-        {
-          "id": "TaiPingTong_GIFTID",
-          "name": "商品id",
-          "val": "144",
-          "type": "text",
-          "desc": "京东E卡：1元66 2元169 5元120 10元121 20元122 50元144,默认兑换50"
-        }
-      ],
-      "author": "@xzxxn777",
-      "repo": "https://github.com/xzxxn777/Surge",
-      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TaiPingTong/TaiPingTong_Receive.js",
-      "icons": [
-        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TaiPingTong/TaiPingTong.png",
-        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/TaiPingTong/TaiPingTong.png"
-      ]
-    },
-    {
       "id": "QieHuang",
       "name": "茄皇兑换",
       "keys": [
@@ -603,35 +572,6 @@
       "icons": [
         "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingDaoNews/QingDaoNews.png",
         "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/QingDaoNews/QingDaoNews.png"
-      ]
-    },
-    {
-      "id": "FengXin",
-      "name": "丰信客户端",
-      "keys": [
-        "FengXin"
-      ],
-      "scripts": [
-        {
-          "name": "丰信客户端-手动执行",
-          "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FengXin/FengXin.js"
-        }
-      ],
-      "settings": [
-        {
-          "id": "FengXin",
-          "name": "账号密码",
-          "val": "",
-          "type": "text",
-          "desc": "格式:手机号&密码 手机号&密码"
-        }
-      ],
-      "author": "@xzxxn777",
-      "repo": "https://github.com/xzxxn777/Surge",
-      "script": "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FengXin/FengXin.js",
-      "icons": [
-        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FengXin/FengXin.png",
-        "https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/FengXin/FengXin.png"
       ]
     },
     {
