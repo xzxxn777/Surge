@@ -5,7 +5,7 @@
 const $ = new Env('君品荟');
 const JunPinHui = ($.isNode() ? process.env.JunPinHui : $.getdata("JunPinHui")) || '';
 let appkey = 'OzVFDV3c6omb';
-let actId = '20240801893';
+let actId = '';
 let Utils = undefined;
 let token = '';
 let notice = '';
@@ -52,6 +52,20 @@ async function main() {
         //抽奖
         console.log("————————————")
         console.log("开始抽奖")
+        if (!actId) {
+            console.log('获取actId')
+            let getData = await cannonPost('/api/page/getData',{"params":null,"pageId":"89","sellerId":null});
+            let regex = /raffle\?from=raffle&actId=(\d+)/;
+            let match = JSON.stringify(getData).match(regex);
+            if (match) {
+                actId = match[1];
+                console.log(`actId: ${actId}`)
+            }
+        }
+        if (!actId) {
+            console.log("获取actId失败")
+            continue
+        }
         let time = (new Date).valueOf();
         let sign = getSign(time,{"wxToken":token,"actId":actId})
         let getId = await drawPost(`/activity/user/get/by/token?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"wxToken":token,"actId":actId}}})
@@ -97,6 +111,46 @@ async function main() {
     if (notice) {
         await sendMsg(notice);
     }
+}
+
+async function cannonPost(url,body = {}) {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://cannon.exijiu.com${url}`,
+            headers : {
+                'Connection': 'keep-alive',
+                'dataType': 'json',
+                'Channel': 'miniapp',
+                'X-access-token': token,
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF WindowsWechat(0x63090a13) XWEB/9129',
+                'Content-Type': 'application/json',
+                'Accept': '*/*',
+                'Origin': 'https://mall.exijiu.com',
+                'Sec-Fetch-Site': 'same-site',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Dest': 'empty',
+                'Referer': 'https://mall.exijiu.com/',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Accept-Language': 'zh-CN,zh;q=0.9'
+            },
+            body: JSON.stringify(body),
+        }
+        $.post(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(4000);
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
 }
 
 async function commonPost(url,body = {}) {
