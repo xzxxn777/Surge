@@ -55,7 +55,7 @@ async function main() {
         if (!actId) {
             console.log('获取actId')
             let getData = await cannonPost('/api/page/getData',{"params":null,"pageId":"89","sellerId":null});
-            let regex = /raffle\?from=raffle&actId=(\d+)/;
+            let regex = /actId=([a-zA-Z0-9]+)/;
             let match = JSON.stringify(getData).match(regex);
             if (match) {
                 actId = match[1];
