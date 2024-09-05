@@ -30,6 +30,7 @@ async function main() {
     for (const item of YiLi) {
         token = item.token;
         openId = item.openId;
+        yiliToken = item.yiliToken;
         console.log(`用户：${openId}开始任务`)
         let ticketInfo = await commonGet(`/fragment/ticket/ticket-info?openId=${openId}`)
         if (ticketInfo.code != 200) {
