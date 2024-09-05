@@ -8,6 +8,7 @@ const YiLi = ($.isNode() ? JSON.parse(process.env.YiLi) : $.getjson("YiLi")) || 
 const YiLi_Open = ($.isNode() ? process.env.YiLi_Open : $.getdata("YiLi_Open")) === 'true' || false;
 let token = ''
 let openId = ''
+let YiLi_Code = '举杯邀月伊利情浓'
 let notice = ''
 !(async () => {
     if (typeof $request != "undefined") {
@@ -32,6 +33,9 @@ async function main() {
             let seePage = await commonGet(`/fragment/ticket/see-page?openId=${openId}`)
             console.log(`浏览：${seePage.message}`)
         }
+        let authorize = await commonGet(`/developer/oauth2/buyer/authorize?app_key=zdcade261b48eb4c5e`)
+        let inputCode = await commonGet(`/fragment/ticket/input-code?code=${YiLi_Code}&authorizationCode=${authorize.data}&openId=${openId}`)
+        console.log(`口令兑换：${inputCode.message}`)
         let ticketGet = await commonGet(`/fragment/ticket/get?openId=${openId}`)
         console.log(`拥有抽卡次数：${ticketGet.data}次`)
         for (let i = 0; i < ticketGet.data; i++) {
