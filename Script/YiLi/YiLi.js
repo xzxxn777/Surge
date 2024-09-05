@@ -48,7 +48,7 @@ async function main() {
         }
         let authorize = await yiLiGet(`/developer/oauth2/buyer/authorize?app_key=zdcade261b48eb4c5e`)
         if (authorize.data) {
-            let inputCode = await commonGet(`/fragment/ticket/input-code?code=${YiLi_Code}&authorizationCode=${authorize.data}&openId=${openId}`,'aes')
+            let inputCode = await commonGet(`/fragment/ticket/input-code?code=${encodeURIComponent(YiLi_Code)}&authorizationCode=${authorize.data}&openId=${openId}`,'aes')
             console.log(`口令兑换：${inputCode.message}`)
         } else {
             console.log(authorize?.error?.msg)
