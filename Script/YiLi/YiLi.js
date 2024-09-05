@@ -1,6 +1,7 @@
 /**
  * cron "5 0,18 * * *" YiLi.js
  * export YiLi='[{"openId": "1", "token": "1"},{"openId": "2", "token": "2"}]'
+ * export YiLi_Open='true'//翻牌
  */
 const $ = new Env('伊利-中秋')
 const YiLi = ($.isNode() ? JSON.parse(process.env.YiLi) : $.getjson("YiLi")) || [];
