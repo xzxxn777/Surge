@@ -4,8 +4,7 @@
 
 [Script]
 伊利_获取token = type=http-response,pattern=^https:\/\/msmarket\.msx\.digitalyili\.com\/gateway\/api\/auth\/account\/user\/info,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YiLi/YiLi.js,requires-body=1,max-size=0
-伊利-中秋_获取token = type=http-request,pattern=^https:\/\/wx-camp-180-shuangjie-api\.mscampapi\.digitalyili\.com\/fragment\/ticket\/ticket-info,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YiLi/YiLi.js,requires-body=1,max-size=0
 伊利-中秋 = type=cron,cronexp="5 0,18 * * *",script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/YiLi/YiLi.js,script-update-interval=0,timeout=3600,wake-system=1
 
 [MITM]
-hostname = %APPEND% wx-camp-180-shuangjie-api.mscampapi.digitalyili.com, msmarket.msx.digitalyili.com
+hostname = %APPEND% msmarket.msx.digitalyili.com

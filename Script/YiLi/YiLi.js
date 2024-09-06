@@ -1,24 +1,24 @@
 /**
  * cron "5 0,18 * * *" YiLi.js
- * export YiLi='[{"openId": "1", "token": "1", "yiliToken": "1"},{"openId": "2", "token": "2", "yiliToken": "1"}]'//yiliToken是域名msmarket.msx.digitalyili.com的access-token
+ * export YiLi='[{"mobile": "1", "openId": "1", "unionId": "1", "nickName": "1", "avatarUrl": "1", "yiliToken":"1"},{"mobile": "2", "openId": "2", "unionId": "2", "nickName": "2", "avatarUrl": "2", "yiliToken":"2"}]'//yiliToken是域名msmarket.msx.digitalyili.com的access-token
  * export YiLi_Open='true'//翻牌
  */
 const $ = new Env('伊利-中秋')
 const YiLi = ($.isNode() ? JSON.parse(process.env.YiLi) : $.getjson("YiLi")) || [];
 const YiLi_Open = ($.isNode() ? process.env.YiLi_Open : $.getdata("YiLi_Open")) === 'true' || false;
 let Utils = undefined;
+let mobile = ''
 let token = ''
+let avatarUrl = ''
+let nickName = ''
 let yiliToken = ''
 let openId = ''
+let unionId = ''
 let YiLi_Code = ''
 let notice = ''
 !(async () => {
     if (typeof $request != "undefined") {
-        if ($request.url.includes("msmarket.msx.digitalyili.com")) {
-            await getYiLiCookie();
-        } else {
-            await getCookie();
-        }
+        await getYiLiCookie();
     } else {
         await main();
     }
@@ -28,16 +28,29 @@ async function main() {
     console.log('作者：@xzxxn777\n频道：https://t.me/xzxxn777\n群组：https://t.me/xzxxn7777\n自用机场推荐：https://xn--diqv0fut7b.com\n')
     Utils = await loadUtils();
     for (const item of YiLi) {
-        token = item.token;
+        mobile = item.mobile;
+        unionId = item.unionId;
+        nickName = item.nickName;
+        avatarUrl = item.avatarUrl;
         openId = item.openId;
         yiliToken = item.yiliToken;
-        console.log(`用户：${openId}开始任务`)
-        let ticketInfo = await commonGet(`/fragment/ticket/ticket-info?openId=${openId}`)
-        if (ticketInfo.code != 200) {
-            console.log(ticketInfo.message)
-            await sendMsg(`用户：${openId}\ntoken已过期，请重新获取`);
+        console.log(`用户：${mobile}开始任务`)
+        let login = await commonPost('/v2/wechat/applet/set-user-info', {
+            "headImg": avatarUrl,
+            "phoneNum": mobile,
+            "nickName": nickName,
+            "openId": openId,
+            "unionId": unionId,
+            "ciphertext": Utils.md5(unionId + 'ui@op9889;as98gh12c3b1&!jiasdasdjlkyf98r4y3ujfnakhjrf098')
+        })
+        if (login.code != 200) {
+            console.log(login.message)
+            await sendMsg(`用户：${mobile}\nyiliToken已过期，请重新获取`);
             continue
         }
+        console.log(`登录成功`)
+        token = login.data.token;
+        let ticketInfo = await commonGet(`/fragment/ticket/ticket-info?openId=${openId}`)
         if (!ticketInfo.data.sign) {
             let sign = await commonGet(`/fragment/ticket/sign?openId=${openId}`)
             console.log(`签到：${sign.message}`)
@@ -53,7 +66,7 @@ async function main() {
                 console.log(`口令兑换：${inputCode.message}`)
             } else {
                 console.log(authorize?.error?.msg)
-                await sendMsg(`用户：${openId}\nyiliToken已过期，请重新获取`);
+                await sendMsg(`用户：${mobile}\nyiliToken已过期，请重新获取`);
             }
         }
         let ticketGet = await commonGet(`/fragment/ticket/get?openId=${openId}`)
@@ -77,62 +90,29 @@ async function main() {
     }
 }
 
-async function getCookie() {
-    const token = $request.headers["Token"] || $request.headers["token"];
-    if (!token) {
-        return
-    }
-    const url = $request.url;
-    let urlStr = url.split('?')[1];
-    let result = {};
-    let paramsArr = urlStr.split('&')
-    for(let i = 0,len = paramsArr.length;i < len;i++){
-        let arr = paramsArr[i].split('=')
-        result[arr[0]] = arr[1];
-    }
-    const openId = result.openId;
-    const newData = {"openId": openId, "token": token, "yiliToken": ""};
-    const index = YiLi.findIndex(e => e.openId == newData.openId);
-    if (index !== -1) {
-        if (YiLi[index].token == newData.token) {
-            return
-        } else {
-            YiLi[index].token = newData.token;
-            console.log(newData.token)
-            $.msg($.name, `🎉用户${newData.openId}更新token成功!`, ``);
-        }
-    } else {
-        YiLi.push(newData)
-        console.log(newData.token)
-        $.msg($.name, `🎉新增用户${newData.openId}成功!`, ``);
-    }
-    $.setjson(YiLi, "YiLi");
-}
-
 async function getYiLiCookie() {
-    const token = $request.headers["access-token"];
-    if (!token) {
+    const yiliToken = $request.headers["access-token"];
+    if (!yiliToken) {
         return
     }
     const body = $.toObj($response.body);
     if (!body || !body.data) {
         return
     }
-    const openId = body.data.openId;
-    const newData = {"openId": openId, "token": "", "yiliToken":token};
-    const index = YiLi.findIndex(e => e.openId == newData.openId);
+    const newData = {"mobile": body.data.mobile, "openId": body.data.openId, "unionId": body.data.unionId, "nickName": body.data.nickName, "avatarUrl": body.data.avatarUrl, "yiliToken":yiliToken};
+    const index = YiLi.findIndex(e => e.mobile == newData.mobile);
     if (index !== -1) {
-        if (YiLi[index].token == newData.token) {
+        if (YiLi[index].yiliToken == newData.yiliToken) {
             return
         } else {
-            YiLi[index].yiliToken = newData.yiliToken;
+            YiLi[index] = newData;
             console.log(newData.yiliToken)
-            $.msg($.name, `🎉用户${newData.openId}更新yiliToken成功!`, ``);
+            $.msg($.name, `🎉用户${newData.mobile}更新yiliToken成功!`, ``);
         }
     } else {
         YiLi.push(newData)
-        console.log(newData.token)
-        $.msg($.name, `🎉新增用户${newData.openId}成功!`, ``);
+        console.log(newData.yiliToken)
+        $.msg($.name, `🎉新增用户${newData.mobile}成功!`, ``);
     }
     $.setjson(YiLi, "YiLi");
 }
@@ -162,6 +142,49 @@ async function yiLiGet(url) {
             }
         }
         $.get(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000)
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function commonPost(url, body) {
+    let params = getParams();
+    return new Promise(resolve => {
+        const options = {
+            url: `https://wx-camp-180-shuangjie-api.mscampapi.digitalyili.com${url}`,
+            headers : {
+                'content-type': 'application/json',
+                'xweb_xhr': '1',
+                'timestamp': params.timestamp,
+                'signature': params.signature,
+                'uniquecode': params.uniquecode,
+                'access_token': token,
+                'token': token,
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.7(0x13080712) XWEB/1191',
+                'app-version': '1.1.1',
+                'accept': '*/*',
+                'Sec-Fetch-Site': 'cross-site',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Dest': 'empty',
+                'Referer': `https://servicewechat.com/wx06af0ef532292cd3/533/page-frame.html`,
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Accept-Language': 'zh-CN,zh;q=0.9',
+            },
+            body: JSON.stringify(body)
+        }
+        $.post(options, async (err, resp, data) => {
             try {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
