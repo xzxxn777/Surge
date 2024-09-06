@@ -3,7 +3,7 @@ const got = require('got');
 const timeout = 15000;
 
 const push_config = {
-  HITOKOTO: true, // 启用一言（随机句子）
+  HITOKOTO: false, // 启用一言（随机句子）
 
   BARK_PUSH: '', // bark IP 或设备码，例：https://api.day.app/DxHcxxxxxRxxxxxxcm/
   BARK_ARCHIVE: '', // bark 推送是否存档
