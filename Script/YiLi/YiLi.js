@@ -79,9 +79,11 @@ async function main() {
         for (let card of cardInfo.data) {
             console.log(`卡片：${card.fragmentName} 数量：${card.num}`)
             if (card.num > 0 && YiLi_Open) {
-                let openPrize = await commonGet(`/fragmentActivity/open-prize?fragmentId=${card.fragmentId}&activityId=1&openId=${openId}`)
-                console.log(`翻卡获得：${openPrize.data.prizeName}`)
-                notice += `用户${openId} 翻卡获得：${openPrize.data.prizeName}\n`
+                for (let i = 0; i < card.num; i++) {
+                    let openPrize = await commonGet(`/fragmentActivity/open-prize?fragmentId=${card.fragmentId}&activityId=1&openId=${openId}`)
+                    console.log(`翻卡获得：${openPrize.data.prizeName}`)
+                    notice += `用户${mobile} 翻卡获得：${openPrize.data.prizeName}\n`
+                }
             }
         }
     }
