@@ -189,7 +189,7 @@ function extracted(id, token, refreshToken) {
         COLORFUL[index].token = token;
         COLORFUL[index].refreshToken = refreshToken;
         console.log(JSON.stringify(COLORFUL[index]))
-        $.msg($.name, `🎉用户${id}更新token成功!`, ``);
+        // $.msg($.name, `🎉用户${id}更新token成功!`, ``);
         $.setjson(COLORFUL, "COLORFUL");
     }
 }
