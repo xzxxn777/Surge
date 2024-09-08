@@ -55,6 +55,25 @@ async function main() {
             console.log('任务已完成')
         }
         console.log("————————————")
+        console.log("抽奖")
+        let userMains = await commonPost('/BlzLonglineActivity/userMains',{})
+        if (userMains.data.today_play_free_num_can == 1) {
+            let userDrawGets = await commonPost('/BlzLonglineActivity/userDrawGets',{"use_type": "free"})
+            let userDraws = await commonPost('/BlzLonglineActivity/userDraws',{"user_record_id": userDrawGets.data.user_record_id})
+            console.log(`抽奖获得：${userDraws.data.award.AwardName}`)
+            if (userDraws.data.award.AwardName != '毛铺5积分' && userDraws.data.award.AwardName != '20元电商限时优惠券') {
+                notice += `用户：${id} 抽奖获得：${userDraws.data.award.AwardName}\n`
+            }
+        }
+        if (userMains.data.today_play_share_num_can == 1) {
+            let userDrawGets = await commonPost('/BlzLonglineActivity/userDrawGets',{"use_type": "share"})
+            let userDraws = await commonPost('/BlzLonglineActivity/userDraws',{"user_record_id": userDrawGets.data.user_record_id})
+            console.log(`抽奖获得：${userDraws.data.award.AwardName}`)
+            if (userDraws.data.award.AwardName != '毛铺5积分' && userDraws.data.award.AwardName != '20元电商限时优惠券') {
+                notice += `用户：${id} 抽奖获得：${userDraws.data.award.AwardName}\n`
+            }
+        }
+        console.log("————————————")
         console.log("查询积分")
         let userCenterStats = await commonGet('/FlanUser/userCenterStats')
         console.log(`拥有积分：${userCenterStats.data.num_point}\n`)
