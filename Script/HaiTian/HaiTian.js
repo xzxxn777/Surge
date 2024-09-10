@@ -85,6 +85,7 @@ async function main() {
             if (sign.is_sign) {
                 console.log('签到成功')
             } else {
+                await sendMsg(`用户：${id}\n请手动进入小程序解除限制`)
                 console.log(sign.message)
             }
         }
@@ -134,9 +135,9 @@ async function main() {
                     }
                 }
                 if (task.task_key == 'BROWSE_PAGE_TASK') {
-                    let start = await commonGet(`/lucky/task/browse/page/start/${activityId}?pageUrl=${task.link}`)
+                    let start = await commonGet(`/lucky/task/browse/page/start/${activityId}?pageUrl=${encodeURIComponent(task.link)}`)
                     await $.wait(20000)
-                    let end = await commonGet(`/lucky/task/browse/page/end/${activityId}?pageUrl=${task.link}`)
+                    let end = await commonGet(`/lucky/task/browse/page/end/${activityId}?pageUrl=${encodeURIComponent(task.link)}`)
                     if (end) {
                         console.log(end.message)
                     } else {
@@ -144,7 +145,7 @@ async function main() {
                     }
                 }
                 if (task.task_key == 'SHARE_PAGE_TASK') {
-                    let share = await commonGet(`/lucky/task/share/page/code/${activityId}?pageUrl=${task.link}`)
+                    let share = await commonGet(`/lucky/task/share/page/code/${activityId}?pageUrl=${encodeURIComponent(task.link)}`)
                     if (share) {
                         let success = await helpPost(`/lucky/task/share/page/code/success/${share.share_code}`)
                         if (success) {
