@@ -77,6 +77,7 @@ async function main() {
                 continue
             }
         }
+        activityInfo = await commonGet('/sign/activity/code?activityCode=')
         let memberInfo = await commonGet(`/sign/activity/member/info?activityCode=${activityInfo.activity_code}`)
         if (memberInfo.is_sign) {
             console.log('今日已签到')
