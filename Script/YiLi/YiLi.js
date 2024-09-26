@@ -3,7 +3,7 @@
  * export YiLi='[{"mobile": "1", "openId": "1", "unionId": "1", "nickName": "1", "avatarUrl": "1", "yiliToken":"1"},{"mobile": "2", "openId": "2", "unionId": "2", "nickName": "2", "avatarUrl": "2", "yiliToken":"2"}]'//yiliToken是域名msmarket.msx.digitalyili.com的access-token
  * export YiLi_Open='true'//翻牌
  */
-const $ = new Env('伊利-中秋')
+const $ = new Env('伊利-国庆')
 const YiLi = ($.isNode() ? JSON.parse(process.env.YiLi) : $.getjson("YiLi")) || [];
 const YiLi_Open = ($.isNode() ? process.env.YiLi_Open : $.getdata("YiLi_Open")) === 'true' || false;
 let Utils = undefined;
@@ -76,15 +76,15 @@ async function main() {
         let ticketGet = await commonGet(`/fragment/ticket/get?openId=${openId}`)
         console.log(`拥有抽卡次数：${ticketGet.data}次`)
         for (let i = 0; i < ticketGet.data; i++) {
-            let lottery = await commonGet(`/fragmentActivity/lottery?activityId=1&openId=${openId}`)
+            let lottery = await commonGet(`/fragmentActivity/lottery?activityId=2&openId=${openId}`)
             console.log(`抽卡获得：${lottery.data.fragmentName}`)
         }
-        let cardInfo = await commonGet(`/fragmentActivity/fragment?activityId=1&openId=${openId}`)
+        let cardInfo = await commonGet(`/fragmentActivity/fragment?activityId=2&openId=${openId}`)
         for (let card of cardInfo.data) {
             console.log(`卡片：${card.fragmentName} 数量：${card.num}`)
             if (card.num > 0 && YiLi_Open) {
                 for (let i = 0; i < card.num; i++) {
-                    let openPrize = await commonGet(`/fragmentActivity/open-prize?fragmentId=${card.fragmentId}&activityId=1&openId=${openId}`)
+                    let openPrize = await commonGet(`/fragmentActivity/open-prize?fragmentId=${card.fragmentId}&activityId=2&openId=${openId}`)
                     console.log(`翻卡获得：${openPrize.data.prizeName}`)
                     notice += `用户${mobile} 翻卡获得：${openPrize.data.prizeName}\n`
                 }
