@@ -23,7 +23,7 @@ async function main() {
     console.log(`用户：${phone}开始任务`)
     let goodsList = await commonGet(`/integral-mall/goods/list?category_id=245730211930880&page=1&size=10`);
     for (const goods of goodsList.data.list) {
-        if (goods.goods_name.includes('盲盒')) {
+        if (goods.goods_name.includes('盲盒') || goods.goods_name.includes('大礼包')) {
             for (let i = 0; i < 20; i++) {
                 let exchange = await commonPost(`/integral-mall/user/exchange-goods`, {"id":goods.id});
                 console.log(exchange)
