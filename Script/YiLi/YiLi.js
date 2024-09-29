@@ -16,7 +16,7 @@ let openId = ''
 let unionId = ''
 let type = '2'
 let type1 = '2'
-let YiLi_Code = ''
+let YiLi_Code = [];
 let notice = ''
 !(async () => {
     if (typeof $request != "undefined") {
@@ -63,11 +63,11 @@ async function main() {
             let seePage = await commonGet(`/fragment/ticket/see-page?openId=${openId}`)
             console.log(`浏览：${seePage.message}`)
         }
-        if (YiLi_Code) {
+        for (let code of YiLi_Code) {
             let authorize = await yiLiGet(`/developer/oauth2/buyer/authorize?app_key=zdcade261b48eb4c5e`)
             if (authorize.data) {
-                let inputCode = await commonGet(`/fragment/ticket/input-code?code=${encodeURIComponent(YiLi_Code)}&authorizationCode=${authorize.data}&openId=${openId}`)
-                console.log(`口令兑换：${inputCode.message}`)
+                let inputCode = await commonGet(`/fragment/ticket/input-code?code=${encodeURIComponent(code)}&authorizationCode=${authorize.data}&openId=${openId}`)
+                console.log(`口令：${code} 兑换：${inputCode.message}`)
             } else {
                 console.log(authorize?.error?.msg)
                 await sendMsg(`用户：${mobile}\nyiliToken已过期，请重新获取`);
@@ -82,8 +82,8 @@ async function main() {
         let cardInfo = await commonGet(`/fragmentActivity/fragment?activityId=2&openId=${openId}`)
         for (let card of cardInfo.data) {
             console.log(`卡片：${card.fragmentName} 数量：${card.num}`)
-            if (card.num > 0 && YiLi_Open) {
-                for (let i = 0; i < card.num; i++) {
+            if (card.num > 1 && YiLi_Open) {
+                for (let i = 1; i < card.num; i++) {
                     let openPrize = await commonGet(`/fragmentActivity/open-prize?fragmentId=${card.fragmentId}&activityId=2&openId=${openId}`)
                     console.log(`翻卡获得：${openPrize.data.prizeName}`)
                     notice += `用户${mobile} 翻卡获得：${openPrize.data.prizeName}\n`
