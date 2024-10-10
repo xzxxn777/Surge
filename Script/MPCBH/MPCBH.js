@@ -74,17 +74,17 @@ async function main() {
             }
         }
         console.log("————————————")
-        console.log("中秋")
-        userMains = await commonPost('/BlzFestivalZhongqiuActivity/userMains',{})
+        console.log("国庆")
+        userMains = await commonPost('/BlzFestivalGuoqingActivity/userMains',{})
         if (userMains.data.today_play_free_num_can == 1) {
-            let userDrawGets = await commonPost('/BlzFestivalZhongqiuActivity/userDrawGets',{"use_type": "free"})
+            let userDrawGets = await commonPost('/BlzFestivalGuoqingActivity/userDrawGets',{"use_type": "free"})
             console.log(`抽奖获得：${userDrawGets.data.award.AwardName}`)
             if (userDrawGets.data.award.AwardName != '毛铺10积分' && userDrawGets.data.award.AwardName != '20元电商限时优惠券') {
                 notice += `用户：${id} 抽奖获得：${userDrawGets.data.award.AwardName}\n`
             }
         }
         if (userMains.data.today_play_share_num_can == 1) {
-            let userDrawGets = await commonPost('/BlzFestivalZhongqiuActivity/userDrawGets',{"use_type": "share"})
+            let userDrawGets = await commonPost('/BlzFestivalGuoqingActivity/userDrawGets',{"use_type": "share"})
             console.log(`抽奖获得：${userDrawGets.data.award.AwardName}`)
             if (userDrawGets.data.award.AwardName != '毛铺10积分' && userDrawGets.data.award.AwardName != '20元电商限时优惠券') {
                 notice += `用户：${id} 抽奖获得：${userDrawGets.data.award.AwardName}\n`
