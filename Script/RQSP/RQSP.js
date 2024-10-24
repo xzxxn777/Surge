@@ -40,6 +40,10 @@ async function main() {
         let spuList = await commonGet(`/goods/spu-list?category_id=${categoryList.data.list[0].id}&page=1&size=10`);
         let add = await commonPost(`/store-cart/add`,{"sku_id":spuList.data.list[0].default_sku_id,"number":1});
         console.log(add.message)
+        if (add.code != 200) {
+            let add = await commonPost(`/store-cart/add`,{"sku_id":spuList.data.list[1].default_sku_id,"number":1});
+            console.log(add.message)
+        }
         console.log("————————————")
         console.log("分享商城")
         let share  = await commonPost(`/activity-center/luck-draw/add-draw-num`,{"key":"share"});

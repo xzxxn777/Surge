@@ -4,6 +4,7 @@
  */
 const $ = new Env('尊享金陵')
 const ZXJL = ($.isNode() ? JSON.parse(process.env.ZXJL) : $.getjson("ZXJL")) || [];
+let Utils = undefined;
 window = {};
 let signOperatingId = '164511358962376'
 let cardNumber = ''
@@ -21,6 +22,7 @@ let notice = ''
 
 async function main() {
     console.log('作者：@xzxxn777\n频道：https://t.me/xzxxn777\n群组：https://t.me/xzxxn7777\n自用机场推荐：https://xn--diqv0fut7b.com\n')
+    Utils = await loadUtils();
     for (const item of ZXJL) {
         id = item.id;
         token = item.token;
@@ -107,7 +109,10 @@ async function jinlingPost(url,body) {
                     'Connection': 'Keep-Alive',
                     'Accept': '*/*',
                     'wxToken': token,
+                    'stime': rsaEncrypt(Date.now()),
                     'xweb_xhr': '1',
+                    'aesIv': '',
+                    'aesKey': '',
                     'Content-Type': 'application/json',
                     'Accept': '*/*',
                     'Sec-Fetch-Site': 'cross-site',
@@ -118,7 +123,7 @@ async function jinlingPost(url,body) {
                     'Accept-Language': 'zh-CN,zh;q=0.9',
                     'User-Agent': 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.8(0x13080812) XWEB/1216',
                 },
-            body: JSON.stringify(body)
+            body: JSON.stringify({"enc":true,"data":rsaEncrypt(JSON.stringify(body))})
         }
         $.post(options, async (err, resp, data) => {
             try {
@@ -127,7 +132,11 @@ async function jinlingPost(url,body) {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     await $.wait(2000)
-                    resolve(JSON.parse(data));
+                    if (typeof JSON.parse(data) == 'string') {
+                        resolve(JSON.parse(JSON.parse(data)));
+                    } else {
+                        resolve(JSON.parse(data));
+                    }
                 }
             } catch (e) {
                 $.logErr(e, resp)
@@ -146,7 +155,10 @@ async function loginPost() {
                 'Connection': 'Keep-Alive',
                 'Accept': '*/*',
                 'wxToken': token,
+                'stime': rsaEncrypt(Date.now()),
                 'xweb_xhr': '1',
+                'aesIv': '',
+                'aesKey': '',
                 'Content-Type': 'application/json',
                 'Accept': '*/*',
                 'Sec-Fetch-Site': 'cross-site',
@@ -157,7 +169,7 @@ async function loginPost() {
                 'Accept-Language': 'zh-CN,zh;q=0.9',
                 'User-Agent': 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.8(0x13080812) XWEB/1216',
             },
-            body: JSON.stringify({"cardNumber":cardNumber,"pointNum":point,"redirectUrl":""})
+            body: JSON.stringify({"enc":true,"data":rsaEncrypt(JSON.stringify({"cardNumber":cardNumber,"pointNum":point,"redirectUrl":""}))})
         }
         $.post(options, async (err, resp, data) => {
             try {
@@ -166,7 +178,11 @@ async function loginPost() {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     await $.wait(2000)
-                    resolve(JSON.parse(data));
+                    if (typeof JSON.parse(data) == 'string') {
+                        resolve(JSON.parse(JSON.parse(data)));
+                    } else {
+                        resolve(JSON.parse(data));
+                    }
                 }
             } catch (e) {
                 $.logErr(e, resp)
@@ -340,6 +356,33 @@ function formatCookies(cookieString) {
         return keyValue.trim();
     });
     return formattedCookies.join(';');
+}
+
+function rsaEncrypt(data) {
+    const publicKey = "-----BEGIN PUBLIC KEY-----MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAp08lXy4vlpifYrJF8XODmN6fHgtPU+2ZJiiOChg1nx+lBQPr3naDkFS3s5iRHfBo0352rzcvhlHotzwGwzWPQse5OuDe4SgDzKG2TgDLam1AXh0qljNL8vwXoritxnlXMsJuRpW9x7mbqhf+c0JNSiwuAUzj51XsnLece87YOfOLjpIWW5JrXEUAEUj1sLjVTkjloGxir6HYV69dlcq/D6SHKwFEgOW+RRfb6fhLdsXB7QAcMJkie3xIjSGa+Acpx78QlWhu6xK9IGi4IBAP4+Ti+mcGzXc3KiuI+SlbgpWcpjaTWmSITHtFFGw9+SAhZQztuShvAIxTFQYOi8vF9r8Pfn6299ivxxniKkxC2dTuFTPCBI2+ye/94cy4COUmIBg2sxZhhKMvaUSQwF1VSrYK6Ljw+yaNXA7EJ61mBUpN3ZmmzuMi86NKd9AaUCoTEyn4OxjFHhUhc4/Ut3eKi963x2JHW0yQDV15SdJ3SoCBxYQGf9h0ZYKTU58REMjige3WfsBOSuk5IoksaQYbYQe2d9N/OoCYj3UF7xVo5a2A/pvlxR9z9sY6GCdxcarUYhTPPL+oYwabsDpWbggxdTWEtHCXLNmFDX9ZoBZY8R5NH4qbhMumX0GLwDgIctZqH3fooO76tuw5t19oJWTPHv1y2xzVRzcE7AnrjfJFJHcCAwEAAQ==-----END PUBLIC KEY-----";
+    const encryptor = new (Utils.loadJSEncrypt());
+    encryptor.setPublicKey(publicKey);
+    return encryptor.encrypt(data);
+}
+
+async function loadUtils() {
+    let code = $.getdata('Utils_Code') || '';
+    if (code && Object.keys(code).length) {
+        console.log(`✅ ${$.name}: 缓存中存在Utils代码, 跳过下载`)
+        eval(code)
+        return creatUtils();
+    }
+    console.log(`🚀 ${$.name}: 开始下载Utils代码`)
+    return new Promise(async (resolve) => {
+        $.getScript(
+            'https://mirror.ghproxy.com/https://raw.githubusercontent.com/xzxxn777/Surge/main/Utils/Utils.js'
+        ).then((fn) => {
+            $.setdata(fn, "Utils_Code")
+            eval(fn)
+            console.log(`✅ Utils加载成功, 请继续`)
+            resolve(creatUtils())
+        })
+    })
 }
 
 async function sendMsg(message) {
