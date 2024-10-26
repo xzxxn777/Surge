@@ -713,10 +713,10 @@
       "settings": [
         {
           "id": "DaChao",
-          "name": "账号密码",
+          "name": "账号密码wxToken",
           "val": "",
           "type": "text",
-          "desc": "格式:手机号&密码 手机号&密码"
+          "desc": "格式:账号1&密码1&token1 账号2&密码2&token2"
         }
       ],
       "author": "@xzxxn777",
