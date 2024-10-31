@@ -82,12 +82,12 @@ async function main() {
         iv = CryptoJS.enc.Utf8.parse('51C1A11FFB006C10');
         key = CryptoJS.enc.Utf8.parse('12A63EDBA74F77CF');
         console.log("登录")
-        let login = await loginPost(`/user/account/thi/login?appId=M001&deviceId=${generateUUID().replace(/-/g, '')}tsp2`,`password=${encrypt(key,iv,password)}&mobile=${phone}&version=1`)
+        let login = await loginPost(`/user/account/mp/login?appId=M001&deviceId=${generateUUID().replace(/-/g, '')}tsp2`,`password=${encodeURIComponent(encrypt(key,iv,password))}&mobile=${encodeURIComponent(encrypt(key,iv,phone))}&version=1`)
         console.log('登录结果：' + login.status)
         if (login.status != 'SUCCEED') {
             continue
         }
-        token = login.accountVo.token;
+        token = login.accountVo.grayToken;
         aid = login.accountVo.cid;
         console.log("开始签到")
         let sign = await commonPost('/fawcshop/collect-public/v1/score/addScore',{"scoreType":"2"})
@@ -117,7 +117,7 @@ async function main() {
                 continue
             }
             if (task.taskCode == 'PT-APP_comment') {
-                let postList = await commonGet('/fawcshop/cms/api/front/content/v2/queryUnionContentPostList?pageNo=1&pageSize=10&menuType=1')
+                let postList = await commonGet('/fawcshop/cms/api/front/content/v3/queryUnionContentPostList?pageNo=1&pageSize=10&menuType=1')
                 let contentId = ''
                 while(!contentId) {
                     let index = Math.floor(Math.random() * postList?.data?.data?.length);
@@ -125,14 +125,11 @@ async function main() {
                     if (!contentId) {
                         continue
                     }
-                    let commentList = await commonGet(`/fawcshop/collect-sns/v1/dynamicTopic/getCommentDetailsInfoListNew?commentType=8500&contentId=${contentId}&pageNo=1&pageSize=10&commentDetailsId=&orderByRule=RULE10`)
-                    index = Math.floor(Math.random() * commentList?.data?.result?.length);
-                    let comment = commentList?.data?.result[index]?.commentContext || commentList?.data?.result[index]?.parent?.commentContext;
-                    if (comment) {
-                        console.log(`获取评论：${comment}`)
-                        let addComment = await commentPost('/fawcshop/collect-sns/v1/dynamicTopic/saveCommentDetailsRevision',{"commentContext":comment,"commentType":"8500","contentId":contentId,"parentId":"0","fileString":[]})
-                        console.log(addComment.msg)
-                    }
+                    let commentList = ['红旗，让理想飞扬','红旗加油，红旗棒！','红旗，遥遥领先！','支持红旗，加油！']
+                    let comment = commentList[Math.floor(Math.random() * commentList.length)];
+                    console.log(`获取评论：${comment}`)
+                    let addComment = await commentPost('/fawcshop/collect-sns/v1/dynamicTopic/saveCommentDetailsRevision',{"commentContext":comment,"commentType":"8500","contentId":contentId,"parentId":"0","fileString":[]})
+                    console.log(addComment.msg)
                 }
             }
             if (task.taskCode == 'PT-APP_share') {
@@ -157,10 +154,14 @@ async function loginPost(url,body) {
             url: `https://36.48.68.102${url}`,
             headers : {
                 'signt': Date.now(),
-                'simAudit': 'SUCCEED ',
+                'devModel': '21091116AC',
+                'simAudit': 'SUCCEED',
+                'os': 'android',
+                'appVer': '5.0.3',
                 'appkey': '7261076202',
                 'nonce': generateUUID().replace(/-/g, ''),
-                'token': '',
+                'appVerCode': '2024092917',
+                'manufacturer': 'Xiaomi',
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Connection': 'Keep-Alive',
                 'Accept-Encoding': 'gzip',
@@ -201,7 +202,7 @@ async function commonPost(url,body) {
                 'aid': aid,
                 'platform': '2',
                 'o35xzbbp': 'qjzsuioa',
-                'version': '5.0.0',
+                'version': '5.0.3',
                 'X-Feature': 'sprint3-demo',
                 'anonymousId': 'f33b8c0033deea93',
                 'timestamp': params.timestamp,
@@ -246,7 +247,7 @@ async function commentPost(url,body) {
                 'Authorization': token,
                 'aid': aid,
                 'platform': '2',
-                'version': '5.0.0',
+                'version': '5.0.3',
                 'Accept': '*/*',
                 'Origin': 'https://hqapp.faw.cn',
                 'X-Requested-With': 'com.sunao.qm.qm_android',
@@ -290,7 +291,7 @@ async function commonGet(url) {
                 'aid': aid,
                 'platform': '2',
                 'o35xzbbp': 'qjzsuioa',
-                'version': '5.0.0',
+                'version': '5.0.3',
                 'X-Feature': 'sprint3-demo',
                 'anonymousId': 'f33b8c0033deea93',
                 'tenantId': '03001001',
@@ -326,8 +327,8 @@ function getParams(body) {
     sortedKeys.forEach(key => {
         sortedData[key] = body[key];
     });
-    iv = CryptoJS.enc.Utf8.parse('do78hojtrjrszqvs');
-    key = CryptoJS.enc.Utf8.parse('rnt69cfvwbtr7yss');
+    iv = CryptoJS.enc.Utf8.parse('do78coatrjrtzqvs');
+    key = CryptoJS.enc.Utf8.parse('rnt69xfvwktr7yss');
     let signature = encrypt(key,iv,`${JSON.stringify(sortedData)}${timestamp}${nonce}`)
     return {"timestamp":timestamp,"nonce":nonce,"signature":signature}
 }
