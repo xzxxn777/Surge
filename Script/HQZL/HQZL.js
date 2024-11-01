@@ -151,7 +151,7 @@ async function main() {
 async function loginPost(url,body) {
     return new Promise(resolve => {
         const options = {
-            url: `https://36.48.68.102${url}`,
+            url: `https://58.244.119.104${url}`,
             headers : {
                 'signt': Date.now(),
                 'devModel': '21091116AC',
