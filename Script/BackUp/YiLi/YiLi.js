@@ -308,7 +308,7 @@ async function sendMsg(message) {
         try {
             notify = require('./sendNotify');
         } catch (e) {
-            notify = require("../sendNotify");
+            notify = require("../../sendNotify");
         }
         await notify.sendNotify($.name, message);
     } else {
