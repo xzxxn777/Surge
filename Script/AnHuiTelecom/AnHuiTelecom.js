@@ -23,10 +23,10 @@ async function main() {
         console.log('开始签到')
         let sign = await commonPost('/hd/ahwxboot/qdylNew/qd')
         console.log(sign.msg)
-        let list = await commonGet('/AhdxTjyl/myGoldNew.do?code=051dqZ000iD1fS1mIt0008I2m71dqZ0k')
+        let list = await commonGet('/hd/ahwxboot/exchange/myGoldNew?code=011Bre000cf18T1fT4400u93wu2Bre0d')
         for (const item of list.data.bigList['权益金']) {
             console.log(`商品：${item.cpname} id：${item.aid} 所需星钻：${item.xzneed}`)
-            let exchange = await commonGet(`/AhdxTjyl/dhGoldNew.do?cpstatus=${item.cpstatus}&cpname=${item.cpname}&cztype=2&aid=${item.aid}`)
+            let exchange = await commonGet(`/hd/ahwxboot/exchange/dhGoldNew?cpstatus=${item.cpstatus}&cpname=${item.cpname}&cztype=2&aid=${item.aid}`)
             console.log(exchange.msg)
             if (exchange.code == 1) {
                 await sendMsg(`用户：${id} 兑换成功: ${item.cpname}`);
