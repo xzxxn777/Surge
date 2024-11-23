@@ -133,11 +133,7 @@ async function main() {
                     for (let i = 0; i < count; i++) {
                         time = Math.floor(Date.now() / 1e3)
                         let view = await commonGet(`/v3/view.count?threadId=${threadId}&type=0`, getSign('GET', '/api/v3/view.count', {"threadId": threadId, "type": 0}));
-                        if (view.Meta) {
-                            for (const item of view.Meta.tips) {
-                                console.log(item.message)
-                            }
-                        }
+                        console.log(view.Message)
                     }
                 }
             }
@@ -159,7 +155,7 @@ async function main() {
                         //取消点赞
                         time = Math.floor(Date.now() / 1e3)
                         let unLike = await commonPost('/v3/posts.update',{"id":threadId,"postId":postId,"data":{"attributes":{"isLiked":false}}},getSign('POST','/api/v3/posts.update',{"id":threadId,"postId":postId,"data":{"attributes":{"isLiked":false}}}));
-                        console.log(unLike)
+                        console.log(`取消点赞：${unLike.Message}`)
                     }
                 }
             }
