@@ -6,7 +6,7 @@
 const $ = new Env('七彩虹商城')
 const baseUrl = 'shop.skycolorful.com:45677'
 const COLORFUL = ($.isNode() ? (process.env.COLORFUL ? JSON.parse(process.env.COLORFUL) : undefined) : $.getjson("COLORFUL")) || [],
-    COLORFUL_RAFFLE = ($.isNode() ? process.env.COLORFUL_RAFFLE : $.getjson("COLORFUL_RAFFLE")) === 'true' || false;
+    COLORFUL_RAFFLE = ($.isNode() ? process.env.COLORFUL_RAFFLE : $.getjson("COLORFUL_RAFFLE")) === true || false;
 let token = '', refreshToken = ''
 let notice = ''
 !(async () => {
