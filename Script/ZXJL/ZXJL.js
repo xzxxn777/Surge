@@ -212,9 +212,14 @@ async function cookieGet(url) {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     await $.wait(2000)
-                    cookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
-                    if (cookie instanceof Array) {
-                        cookie = cookie.join(';')
+                    if ($.isNode()) {
+                        let cookieArr = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
+                        for (let i = 0; i < cookieArr.length; i++) {
+                            cookie += cookieArr[i].split(';')[0] + ';'
+                        }
+                    } else {
+                        cookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
+                        cookie = formatCookies(cookie);
                     }
                     resolve(cookie);
                 }
@@ -344,6 +349,15 @@ function rsaEncrypt(data) {
     const encryptor = new (Utils.loadJSEncrypt());
     encryptor.setPublicKey(publicKey);
     return encryptor.encrypt(data);
+}
+
+function formatCookies(cookieString) {
+    const cookies = cookieString.split(', ');
+    const formattedCookies = cookies.map(cookie => {
+        const keyValue = cookie.split(';')[0];
+        return keyValue.trim();
+    });
+    return formattedCookies.join(';');
 }
 
 async function loadUtils() {
