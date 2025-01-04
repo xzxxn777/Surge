@@ -77,7 +77,7 @@ async function getCookie() {
     }
     const phone = body.data.telephone;
     const id = body.data.id;
-    const token = body.data.wxToken;
+    const token = $request.headers['wxToken'];
     const newData = {"phone": phone, "id": id, "token": token};
     const index = ZXJL.findIndex(e => e.phone == newData.phone);
     if (index !== -1) {
