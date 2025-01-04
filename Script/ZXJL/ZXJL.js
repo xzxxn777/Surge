@@ -71,7 +71,7 @@ async function main() {
 }
 
 async function getCookie() {
-    const body = $.toObj($response.body);
+    const body = $.toObj($.toObj($response.body));
     if (!body.data || !body.data.telephone) {
         return
     }
