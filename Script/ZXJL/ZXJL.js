@@ -1,16 +1,13 @@
 /**
  * cron "18 8,17 * * *" ZXJL.js
- * export ZXJL='[{"id": "1", "token": "1"},{"id": "2", "token": "2"}]'
+ * export ZXJL='[{"phone": "1", "id": "1", "token": "1"},{"phone": "2", "id": "2", "token": "2"}]'
  */
 const $ = new Env('尊享金陵')
 const ZXJL = ($.isNode() ? JSON.parse(process.env.ZXJL) : $.getjson("ZXJL")) || [];
 let Utils = undefined;
 window = {};
 let signOperatingId = '164511358962376'
-let cardNumber = ''
-let point = ''
-let token = ''
-let cookie = ''
+let phone = '',id = '',token = '',point = '',cookie = '';
 let notice = ''
 !(async () => {
     if (typeof $request != "undefined") {
@@ -24,21 +21,18 @@ async function main() {
     console.log('作者：@xzxxn777\n频道：https://t.me/xzxxn777\n群组：https://t.me/xzxxn7777\n自用机场推荐：https://xn--diqv0fut7b.com\n')
     Utils = await loadUtils();
     for (const item of ZXJL) {
+        phone = item.phone;
         id = item.id;
         token = item.token;
-        console.log(`用户：${id}开始任务`)
-        console.log('获取cardNumber')
-        let getCardNumber = await jinlingPost('/app/member/v1/getMemberBasic',{"telephone":id,"getType":""})
+        console.log(`用户：${phone}开始任务`)
+        let getCardNumber = await jinlingPost('/app/member/v1/getMemberBasic',{"telephone":phone,"getType":""})
         if (!getCardNumber.success) {
             console.log(getCardNumber.message)
-            await sendMsg(`用户：${id}\n需要重新进入小程序`);
+            await sendMsg(`用户：${phone}\ntoken已失效，请重新获取`);
             continue
         }
-        cardNumber = getCardNumber.data.cardInfo.cardNumber;
-        console.log(cardNumber)
         point = getCardNumber.data.walletInfo.pointTotal;
         console.log(`当前积分：${point}`)
-        console.log("————————————")
         console.log("开始签到")
         let login = await loginPost()
         let location = login.data;
@@ -66,10 +60,10 @@ async function main() {
         }
         console.log("————————————")
         console.log("查询积分")
-        getCardNumber = await jinlingPost('/app/member/v1/getMemberBasic',{"telephone":id,"getType":""})
+        getCardNumber = await jinlingPost('/app/member/v1/getMemberBasic',{"telephone":phone,"getType":""})
         point = getCardNumber.data.walletInfo.pointTotal;
         console.log(`拥有积分：${point}\n`)
-        notice += `用户：${id} 拥有积分: ${point}\n`
+        notice += `用户：${phone} 拥有积分: ${point}\n`
     }
     if (notice) {
         await sendMsg(notice);
@@ -81,22 +75,23 @@ async function getCookie() {
     if (!body.data || !body.data.telephone) {
         return
     }
-    const id = body.data.telephone;
+    const phone = body.data.telephone;
+    const id = body.data.id;
     const token = body.data.wxToken;
-    const newData = {"id": id, "token": token};
-    const index = ZXJL.findIndex(e => e.id == newData.id);
+    const newData = {"phone": phone, "id": id, "token": token};
+    const index = ZXJL.findIndex(e => e.phone == newData.phone);
     if (index !== -1) {
-        if (ZXJL[index].token == newData.token) {
+        if (ZXJL[index].token == newData.token && ZXJL[index].id == newData.id) {
             return
         } else {
             ZXJL[index] = newData;
             console.log(newData.token)
-            $.msg($.name, `🎉用户${newData.id}更新token成功!`, ``);
+            $.msg($.name, `🎉用户${newData.phone}更新token成功!`, ``);
         }
     } else {
         ZXJL.push(newData)
         console.log(newData.token)
-        $.msg($.name, `🎉新增用户${newData.id}成功!`, ``);
+        $.msg($.name, `🎉新增用户${newData.phone}成功!`, ``);
     }
     $.setjson(ZXJL, "ZXJL");
 }
@@ -169,7 +164,7 @@ async function loginPost() {
                 'Accept-Language': 'zh-CN,zh;q=0.9',
                 'User-Agent': 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.8(0x13080812) XWEB/1216',
             },
-            body: JSON.stringify({"enc":true,"data":rsaEncrypt(JSON.stringify({"cardNumber":cardNumber,"pointNum":point,"redirectUrl":""}))})
+            body: JSON.stringify({"enc":true,"data":rsaEncrypt(JSON.stringify({"id":id,"pointNum":point,"redirectUrl":""}))})
         }
         $.post(options, async (err, resp, data) => {
             try {
@@ -217,14 +212,9 @@ async function cookieGet(url) {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     await $.wait(2000)
-                    if ($.isNode()) {
-                        let cookieArr = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
-                        for (let i = 0; i < cookieArr.length; i++) {
-                            cookie += cookieArr[i].split(';')[0] + ';'
-                        }
-                    } else {
-                        cookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
-                        cookie = formatCookies(cookie);
+                    cookie = resp.headers['set-cookie'] || resp.headers['Set-Cookie'];
+                    if (cookie instanceof Array) {
+                        cookie = cookie.join(';')
                     }
                     resolve(cookie);
                 }
@@ -347,15 +337,6 @@ async function commonGet(url) {
             }
         })
     })
-}
-
-function formatCookies(cookieString) {
-    const cookies = cookieString.split(', ');
-    const formattedCookies = cookies.map(cookie => {
-        const keyValue = cookie.split(';')[0];
-        return keyValue.trim();
-    });
-    return formattedCookies.join(';');
 }
 
 function rsaEncrypt(data) {
