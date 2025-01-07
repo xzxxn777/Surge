@@ -1,6 +1,6 @@
 /**
  * cron "18 8,17 * * *" ZXJL.js
- * export ZXJL='[{"phone": "1", "id": "1", "token": "1"},{"phone": "2", "id": "2", "token": "2"}]'
+ * export ZXJL='[{"phone": "1", "token": "1"},{"phone": "2", "token": "2"}]'
  */
 const $ = new Env('尊享金陵')
 const ZXJL = ($.isNode() ? JSON.parse(process.env.ZXJL) : $.getjson("ZXJL")) || [];
@@ -22,7 +22,6 @@ async function main() {
     Utils = await loadUtils();
     for (const item of ZXJL) {
         phone = item.phone;
-        id = item.id;
         token = item.token;
         console.log(`用户：${phone}开始任务`)
         let getCardNumber = await jinlingPost('/app/member/v1/getMemberBasic',{"telephone":phone,"getType":""})
@@ -32,6 +31,7 @@ async function main() {
             continue
         }
         point = getCardNumber.data.walletInfo.pointTotal;
+        id = getCardNumber.data.id;
         console.log(`当前积分：${point}`)
         console.log("开始签到")
         let login = await loginPost()
@@ -76,12 +76,11 @@ async function getCookie() {
         return
     }
     const phone = body.data.telephone;
-    const id = body.data.id;
     const token = $request.headers['wxToken'];
-    const newData = {"phone": phone, "id": id, "token": token};
+    const newData = {"phone": phone, "token": token};
     const index = ZXJL.findIndex(e => e.phone == newData.phone);
     if (index !== -1) {
-        if (ZXJL[index].token == newData.token && ZXJL[index].id == newData.id) {
+        if (ZXJL[index].token == newData.token) {
             return
         } else {
             ZXJL[index] = newData;
@@ -370,7 +369,7 @@ async function loadUtils() {
     console.log(`🚀 ${$.name}: 开始下载Utils代码`)
     return new Promise(async (resolve) => {
         $.getScript(
-            'https://mirror.ghproxy.com/https://raw.githubusercontent.com/xzxxn777/Surge/main/Utils/Utils.js'
+            'https://github.moeyy.xyz/https://raw.githubusercontent.com/xzxxn777/Surge/main/Utils/Utils.js'
         ).then((fn) => {
             $.setdata(fn, "Utils_Code")
             eval(fn)
