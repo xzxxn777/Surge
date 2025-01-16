@@ -64,7 +64,7 @@ async function main() {
             switch (point.Name) {
                 case '社区签到':
                     let sign = await commonPost('/User/Sign')
-                    console.log(`${sign.Code} ${sign.Message}  ${sign.Data?.Point}`)
+                    console.log(`社区签到：${sign.Code} ${sign.Message}  ${sign.Data?.Point}`)
                     break;
                 case '会员信息完善':
                     await commonGet('/User/EditInfo')
@@ -73,7 +73,7 @@ async function main() {
                         "Nickname": userInfo.Data.NickName,
                         "Sex": 1
                     })
-                    console.log(`${data.Code} ${data.Message} `)
+                    console.log(`会员信息完善：${data.Code} ${data.Message} `)
                     break;
                 case '购物有礼':
                     break;
@@ -88,9 +88,12 @@ async function main() {
                             "Pictures": [],
                             "Source": 30
                         };
-                        console.log(body1)
                         let data = await commonPost('/Bbs/Posting', body1)
-                        console.log(`${data.Code} ${data.Message} `)
+                        if (data.Code === 0) {
+                            console.log(`社区内容发布：成功`)
+                        } else {
+                            console.log(`社区内容发布失败：${data.Message}`)
+                        }
                         await $.wait(Math.floor(Math.random() * 5000 + 10000));
                     }
 
@@ -109,15 +112,24 @@ async function main() {
                                     "Content": hitokotoData2.hitokoto,
                                     "Pictures": []
                                 };
-                                console.log(body)
                                 let data3 = await commonPost('/Bbs/PostReply', body)
-                                console.log(data3)
+                                if (data3.Code === 0) {
+                                    console.log(`社区内容评论：成功`)
+                                } else {
+                                    console.log(`社区内容评论失败：${data3.Message}`)
+                                }
                                 await $.wait(Math.floor(Math.random() * 5000 + 10000));
                             }
                         }
                         for (let i = 0; i < 5; i++) {
                             let like = await commonPost('/Bbs/Like', {"postId":PostingList?.Data?.DataList[Math.floor(Math.random() * 20)].Id,"postReplyId":"0"})
-                            console.log(`点赞：${JSON.stringify(like)}`)
+                            if (like.Code === 0) {
+                                console.log(`社区内容点赞：成功`)
+                            } else {
+                                console.log(`社区内容点赞失败：${like.Message}`)
+                            }
+                            await $.wait(Math.floor(Math.random() * 5000 + 10000));
+
                         }
                     }
                     break;
@@ -138,7 +150,14 @@ async function main() {
                     }
                     for (let i = 0; i < luckyDrawInfo.Data.ResidueCount; i++) {
                         let luckyDraw = await commonPost(`/LuckyDraw/Do`, {key: activity.ActivityKey})
-                        console.log(luckyDraw)
+                        if (luckyDraw.Code == 0) {
+                            console.log(`抽奖获得：${luckyDraw?.Data?.Name}`)
+                            if (!luckyDraw?.Data?.Name.includes('积分')) {
+                                await sendMsg(`用户：${id} 抽奖获得：${luckyDraw?.Data?.Name}`)
+                            }
+                        } else {
+                            console.log(`抽奖失败：${luckyDraw.Message}`)
+                        }
                         await $.wait(2000)
                     }
                 }
