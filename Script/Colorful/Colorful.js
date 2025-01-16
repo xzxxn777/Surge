@@ -145,7 +145,7 @@ async function main() {
                 console.log(`活动：${activity.Name} ${activity.StatusDescription} ${activity.TypeDescription}`)
                 if (activity.Type == 1 && activity.Status == 1) {
                     let luckyDrawInfo = await commonGet(`/LuckyDraw/GetLuckyDraw?Key=${activity.ActivityKey}`)
-                    if (luckyDrawInfo.Data.Expend > 200) {
+                    if (luckyDrawInfo.Data.LuckyDraw.Expend > 200) {
                         continue
                     }
                     for (let i = 0; i < luckyDrawInfo.Data.ResidueCount; i++) {
