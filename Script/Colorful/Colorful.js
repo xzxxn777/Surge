@@ -54,6 +54,8 @@ async function main() {
             await sendMsg(`用户：${id}\ntoken已过期，请重新获取`);
             continue
         }
+        let sign = await commonPost('/User/SignV2')
+        console.log(`签到：${sign.Message}`)
         for (const point of taskPoint.Data?.DataList) {
             console.log(`${point.Name} ${point.Title} ${point.PerPoint}`)
             if ((point.DayMaxPointTotal === point.DayGetPointTotal && point.LinkType==1)|| ( point.PerPoint === point.DayGetPointTotal && point.LinkType==2)) {
@@ -113,6 +115,10 @@ async function main() {
                                 await $.wait(Math.floor(Math.random() * 5000 + 10000));
                             }
                         }
+                        for (let i = 0; i < 5; i++) {
+                            let like = await commonPost('/Bbs/Like', {"postId":PostingList?.Data?.DataList[Math.floor(Math.random() * 20)].Id,"postReplyId":"0"})
+                            console.log(`点赞：${JSON.stringify(like)}`)
+                        }
                     }
                     break;
                 default :
@@ -127,6 +133,9 @@ async function main() {
                 console.log(`活动：${activity.Name} ${activity.StatusDescription} ${activity.TypeDescription}`)
                 if (activity.Type == 1 && activity.Status == 1) {
                     let luckyDrawInfo = await commonGet(`/LuckyDraw/GetLuckyDraw?Key=${activity.ActivityKey}`)
+                    if (luckyDrawInfo.Data.Expend > 200) {
+                        continue
+                    }
                     for (let i = 0; i < luckyDrawInfo.Data.ResidueCount; i++) {
                         let luckyDraw = await commonPost(`/LuckyDraw/Do`, {key: activity.ActivityKey})
                         console.log(luckyDraw)
