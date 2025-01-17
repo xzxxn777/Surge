@@ -21,118 +21,122 @@ async function main() {
     }
     let arr = FTEJ.split(" ");
     for (const item of arr) {
-        phone = item.split("&")[0]
-        password = item.split("&")[1]
-        console.log(`用户：${phone}开始任务`)
-        console.log('皮卡生活登录')
-        let pkLogin = await pkLoginPost('/ehomes-new/pkHome/api/user/getLoginMember2nd', {"memberId":"","memberID":"","mobile":"","token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-10110000,"name":phone,"password":password,"position":"","deviceId":"","deviceBrand":"","brandName":"","deviceType":"0","versionCode":"21","versionName":"V1.1.10"})
-        console.log(pkLogin.msg)
-        if (pkLogin.code != 200) {
-            continue
-        }
-        uid = pkLogin.data.uid;
-        memberComplexCode = pkLogin.data.memberComplexCode;
-        memberId = pkLogin.data.user.memberNo;
-        token = pkLogin.data.token;
-        console.log('开始签到')
-        let pkSign = await pkPost('/ehomes-new/pkHome/api/bonus/signActivity2nd', {"memberId":memberComplexCode,"memberID":memberId,"mobile":phone,"token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-10110000})
-        if (pkSign.data.integral) {
-            console.log(`签到成功，获得${pkSign.data.integral}积分`)
-        } else {
-            console.log(pkSign.data.msg)
-        }
-        // console.log("————————————")
-        // console.log("开始任务")
-        // console.log('关注')
-        // let currentPostList = await pkPost('/ehomes-new/pkHomeForum/api/post/currentPostList',{"memberId":memberId,"memberID":memberId,"mobile":phone,"token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-20220000,"pageNum":1,"pageSize":10})
-        // let index = Math.floor(Math.random() * currentPostList.data.length);
-        // let navyId = currentPostList.data[index].navyId;
-        // let follow2nd = await pkPost('/ehomes-new/pkHomeForum/api/post/follow2nd',{"memberId":memberComplexCode,"memberID":memberId,"mobile":phone,"token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-20220000,"navyId":navyId})
-        // if (follow2nd.code == 200) {
-        //     console.log(`关注成功`)
-        //     let notFollow = await pkPost('/ehomes-new/pkHomeForum/api/post/notFollow',{"memberId":memberComplexCode,"memberID":memberId,"mobile":phone,"token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-20220000,"followId":follow2nd.data.followId})
-        //     if (notFollow.code == 200) {
-        //         console.log(`取关成功`)
-        //     } else {
-        //         console.log(notFollow.msg)
-        //     }
-        // } else {
-        //     console.log(follow2nd.msg)
-        // }
-        console.log("————————————")
-        console.log('福田e家登录')
-        let login = await loginPost('/ehomes-new/homeManager/getLoginMember', {"password":password,"version_name":"7.3.23","version_auth":"","device_id":"","device_model":"","ip":"","name":phone,"version_code":"316","deviceSystemVersion":"11","device_type":"0"})
-        if (login.code != 200) {
-            console.log(login.msg)
-            continue
-        }
-        console.log('登陆成功')
-        uid = login.data.uid;
-        memberComplexCode = login.data.memberComplexCode;
-        memberId = login.data.memberID;
-        console.log('开始签到')
-        if(login.data.signIn== "未签到"){
-            let sign = await commonPost('/ehomes-new/homeManager/api/bonus/signActivity2nd', {"memberId":memberComplexCode,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1})
-            console.log(`签到成功，获得${sign.data.integral}积分`)
-        } else {
-            console.log(login.data.signIn)
-        }
-        console.log("————————————")
-        console.log("开始任务")
-        let taskList = await commonPost('/ehomes-new/homeManager/api/Member/getTaskList', {"memberId":memberId,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1})
-        for (const task of taskList.data) {
-            console.log(`任务：${task.ruleName}`)
-            if (task.isComplete == "1") {
-                console.log('任务已完成')
+        try {
+            phone = item.split("&")[0]
+            password = item.split("&")[1]
+            console.log(`用户：${phone}开始任务`)
+            console.log('皮卡生活登录')
+            let pkLogin = await pkLoginPost('/ehomes-new/pkHome/api/user/getLoginMember2nd', {"memberId":"","memberID":"","mobile":"","token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-10110000,"name":phone,"password":password,"position":"","deviceId":"","deviceBrand":"","brandName":"","deviceType":"0","versionCode":"21","versionName":"V1.1.10"})
+            console.log(pkLogin.msg)
+            if (pkLogin.code != 200) {
+                continue
+            }
+            uid = pkLogin.data.uid;
+            memberComplexCode = pkLogin.data.memberComplexCode;
+            memberId = pkLogin.data.user.memberNo;
+            token = pkLogin.data.token;
+            console.log('开始签到')
+            let pkSign = await pkPost('/ehomes-new/pkHome/api/bonus/signActivity2nd', {"memberId":memberComplexCode,"memberID":memberId,"mobile":phone,"token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-10110000})
+            if (pkSign.data.integral) {
+                console.log(`签到成功，获得${pkSign.data.integral}积分`)
             } else {
-                if (task.ruleId == "33") {
-                    let addIntegralForShare = await loginPost('/ehomes-new/homeManager/api/bonus/addIntegralForShare', {"safeEnc":Date.now()-20220000,"activity":"","tel":phone,"id":task.ruleId,"source":"APP","memberId":memberComplexCode})
-                    if (addIntegralForShare.code == 200) {
-                        console.log(`分享成功，获得${addIntegralForShare.data.integral}积分`)
-                    } else {
-                        console.log(addIntegralForShare.msg)
+                console.log(pkSign.data.msg)
+            }
+            // console.log("————————————")
+            // console.log("开始任务")
+            // console.log('关注')
+            // let currentPostList = await pkPost('/ehomes-new/pkHomeForum/api/post/currentPostList',{"memberId":memberId,"memberID":memberId,"mobile":phone,"token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-20220000,"pageNum":1,"pageSize":10})
+            // let index = Math.floor(Math.random() * currentPostList.data.length);
+            // let navyId = currentPostList.data[index].navyId;
+            // let follow2nd = await pkPost('/ehomes-new/pkHomeForum/api/post/follow2nd',{"memberId":memberComplexCode,"memberID":memberId,"mobile":phone,"token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-20220000,"navyId":navyId})
+            // if (follow2nd.code == 200) {
+            //     console.log(`关注成功`)
+            //     let notFollow = await pkPost('/ehomes-new/pkHomeForum/api/post/notFollow',{"memberId":memberComplexCode,"memberID":memberId,"mobile":phone,"token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-20220000,"followId":follow2nd.data.followId})
+            //     if (notFollow.code == 200) {
+            //         console.log(`取关成功`)
+            //     } else {
+            //         console.log(notFollow.msg)
+            //     }
+            // } else {
+            //     console.log(follow2nd.msg)
+            // }
+            console.log("————————————")
+            console.log('福田e家登录')
+            let login = await loginPost('/ehomes-new/homeManager/getLoginMember', {"password":password,"version_name":"7.3.23","version_auth":"","device_id":"","device_model":"","ip":"","name":phone,"version_code":"316","deviceSystemVersion":"11","device_type":"0"})
+            if (login.code != 200) {
+                console.log(login.msg)
+                continue
+            }
+            console.log('登陆成功')
+            uid = login.data.uid;
+            memberComplexCode = login.data.memberComplexCode;
+            memberId = login.data.memberID;
+            console.log('开始签到')
+            if(login.data.signIn== "未签到"){
+                let sign = await commonPost('/ehomes-new/homeManager/api/bonus/signActivity2nd', {"memberId":memberComplexCode,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1})
+                console.log(`签到成功，获得${sign?.data?.integral}积分`)
+            } else {
+                console.log(login?.data?.signIn)
+            }
+            console.log("————————————")
+            console.log("开始任务")
+            let taskList = await commonPost('/ehomes-new/homeManager/api/Member/getTaskList', {"memberId":memberId,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1})
+            for (const task of taskList.data) {
+                console.log(`任务：${task.ruleName}`)
+                if (task.isComplete == "1") {
+                    console.log('任务已完成')
+                } else {
+                    if (task.ruleId == "33") {
+                        let addIntegralForShare = await loginPost('/ehomes-new/homeManager/api/bonus/addIntegralForShare', {"safeEnc":Date.now()-20220000,"activity":"","tel":phone,"id":task.ruleId,"source":"APP","memberId":memberComplexCode})
+                        if (addIntegralForShare.code == 200) {
+                            console.log(`分享成功，获得${addIntegralForShare.data.integral}积分`)
+                        } else {
+                            console.log(addIntegralForShare.msg)
+                        }
                     }
-                }
-                if (task.ruleId == "130") {
-                    let recommendPostList = await commonPost('/ehomes-new/ehomesCommunity/api/post/recommendPostList',{"memberId":memberId,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1,"position":"1","pageNumber":"1","pageSize":9})
-                    let index = Math.floor(Math.random() * recommendPostList.data.length);
-                    let memberIdeds = recommendPostList.data[index].memberId;
-                    let follow2nd = await commonPost('/ehomes-new/ehomesCommunity/api/post/follow2nd', {"memberId":memberComplexCode,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1,"behavior":"1","memberIdeds":memberIdeds,"navyId":"null"})
-                    if (follow2nd.code == 200) {
-                        console.log(`关注成功`)
-                    } else {
-                        console.log(follow2nd.msg)
+                    if (task.ruleId == "130") {
+                        let recommendPostList = await commonPost('/ehomes-new/ehomesCommunity/api/post/recommendPostList',{"memberId":memberId,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1,"position":"1","pageNumber":"1","pageSize":9})
+                        let index = Math.floor(Math.random() * recommendPostList.data.length);
+                        let memberIdeds = recommendPostList.data[index].memberId;
+                        let follow2nd = await commonPost('/ehomes-new/ehomesCommunity/api/post/follow2nd', {"memberId":memberComplexCode,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1,"behavior":"1","memberIdeds":memberIdeds,"navyId":"null"})
+                        if (follow2nd.code == 200) {
+                            console.log(`关注成功`)
+                        } else {
+                            console.log(follow2nd.msg)
+                        }
+                        follow2nd = await commonPost('/ehomes-new/ehomesCommunity/api/post/follow2nd', {"memberId":memberComplexCode,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1,"behavior":"2","memberIdeds":memberIdeds,"navyId":"null"})
+                        if (follow2nd.code == 200) {
+                            console.log(`取关成功`)
+                        } else {
+                            console.log(follow2nd.msg)
+                        }
                     }
-                    follow2nd = await commonPost('/ehomes-new/ehomesCommunity/api/post/follow2nd', {"memberId":memberComplexCode,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1,"behavior":"2","memberIdeds":memberIdeds,"navyId":"null"})
-                    if (follow2nd.code == 200) {
-                        console.log(`取关成功`)
-                    } else {
-                        console.log(follow2nd.msg)
-                    }
-                }
-                if (task.ruleId == "125") {
-                    let topicList = await loginPost('/ehomes-new/ehomesCommunity/api/post/topicList', {"memberId":memberId,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1})
-                    let index = Math.floor(Math.random() * topicList.data.top.length);
-                    let topicId = topicList.data.top[index].topicId;
-                    let text = await textGet();
-                    if (!text || text.length < 10) {
-                        text = '如果觉得没有朋友，就去找喜欢的人表白，对方会提出和你做朋友的。'
-                    }
-                    console.log(`文本：${text}`)
-                    let addJson2nd = await commonPost('/ehomes-new/ehomesCommunity/api/post/addJson2nd',{"memberId":memberComplexCode,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1,"content":text,"postType":1,"topicIdList":[topicId],"uploadFlag":3,"title":"","urlList":[]})
-                    if (addJson2nd.code == 200) {
-                        console.log(`发帖成功`)
-                    } else {
-                        console.log(addJson2nd.msg)
+                    if (task.ruleId == "125") {
+                        let topicList = await loginPost('/ehomes-new/ehomesCommunity/api/post/topicList', {"memberId":memberId,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1})
+                        let index = Math.floor(Math.random() * topicList.data.top.length);
+                        let topicId = topicList.data.top[index].topicId;
+                        let text = await textGet();
+                        if (!text || text.length < 10) {
+                            text = '如果觉得没有朋友，就去找喜欢的人表白，对方会提出和你做朋友的。'
+                        }
+                        console.log(`文本：${text}`)
+                        let addJson2nd = await commonPost('/ehomes-new/ehomesCommunity/api/post/addJson2nd',{"memberId":memberComplexCode,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1,"content":text,"postType":1,"topicIdList":[topicId],"uploadFlag":3,"title":"","urlList":[]})
+                        if (addJson2nd.code == 200) {
+                            console.log(`发帖成功`)
+                        } else {
+                            console.log(addJson2nd.msg)
+                        }
                     }
                 }
             }
+            console.log("————————————")
+            console.log("查询积分")
+            let findMemberPointsInfo = await commonPost('/ehomes-new/homeManager/api/Member/findMemberPointsInfo',{"memberId":memberId,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1})
+            console.log(`拥有积分: ${findMemberPointsInfo?.data?.pointValue}\n`)
+            notice += `用户：${phone} 拥有积分: ${findMemberPointsInfo?.data?.pointValue}\n`
+        } catch (e) {
+            console.log(e)
         }
-        console.log("————————————")
-        console.log("查询积分")
-        let findMemberPointsInfo = await commonPost('/ehomes-new/homeManager/api/Member/findMemberPointsInfo',{"memberId":memberId,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1})
-        console.log(`拥有积分: ${findMemberPointsInfo.data.pointValue}\n`)
-        notice += `用户：${phone} 拥有积分: ${findMemberPointsInfo.data.pointValue}\n`
     }
     if (notice) {
         await sendMsg(notice);
@@ -264,7 +268,7 @@ async function pkPost(url,body) {
 async function textGet() {
     return new Promise(resolve => {
         const options = {
-            url: `https://api.btstu.cn/yan/api.php`,
+            url: `https://www.yuanxiapi.cn/api/yiyan`,
             headers : {
             }
         }

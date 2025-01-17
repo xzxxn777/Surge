@@ -30,16 +30,16 @@ async function main() {
         console.log("开始签到")
         time = Math.floor(Date.now() / 1e3)
         let sign = await commonPost('/v3/sign',{"from":""},getSign('POST','/api/v3/sign',{"from":""}));
-        if (sign.Code == -4011) {
-            await sendMsg(`用户：${id}\ntoken已过期，请重新获取`);
-            continue
-        }
         if (sign.Code == 0) {
             for (const item of sign.Meta.tips) {
                 console.log(item.message)
             }
+        } else if (sign.Code == -13006) {
+            console.log(sign.Message)
         } else {
             console.log(sign.Message)
+            await sendMsg(`用户：${id}\ntoken已过期，请重新获取`);
+            continue
         }
         //幸运抽奖
         console.log("————————————")
@@ -301,7 +301,7 @@ async function commonPost(url,body,signature) {
 async function textGet() {
     return new Promise(resolve => {
         const options = {
-            url: `https://api.btstu.cn/yan/api.php`,
+            url: `https://www.yuanxiapi.cn/api/yiyan`,
             headers : {
             }
         }
