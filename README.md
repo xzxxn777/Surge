@@ -63,6 +63,7 @@
 | 中兴社区 | [ZTE_Community](https://github.com/xzxxn777/Surge/blob/main/Script/ZTE/ZTE_Community.js) | ✅(2024/11/01) | ✅️ |
 | 尊享金陵 | [ZXJL](https://github.com/xzxxn777/Surge/blob/main/Script/ZXJL/ZXJL.js) | ✅(2024/11/01) | ✅️ |
 | 伊利-春节 | [YiLi](https://github.com/xzxxn777/Surge/blob/main/Script/YiLi/YiLi.js) | ✅(2024/12/15) | ✅️ |
+| 新江北 | [XinJiangBei](https://github.com/xzxxn777/Surge/blob/main/Script/XinJiangBei/XinJiangBei.js) | ✅(2025/01/18) | ✅️ |
 
 
 ------
