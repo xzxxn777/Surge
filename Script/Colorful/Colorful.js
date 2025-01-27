@@ -54,13 +54,15 @@ async function main() {
             await sendMsg(`用户：${id}\ntoken已过期，请重新获取`);
             continue
         }
-        let sign = await commonPost('/User/SignV2')
+        let sign = await commonPost('/User/Sign')
+        console.log(`社区签到：${sign.Code} ${sign.Message}  ${sign.Data?.Point}`)
+        sign = await commonPost('/User/SignV2')
         console.log(`签到：${sign.Message}`)
         for (const point of taskPoint.Data?.DataList) {
             console.log(`${point.Name} ${point.Title} ${point.PerPoint}`)
-            if ((point.DayMaxPointTotal === point.DayGetPointTotal && point.LinkType==1)|| ( point.PerPoint === point.DayGetPointTotal && point.LinkType==2)) {
-                continue
-            }
+            // if ((point.DayMaxPointTotal === point.DayGetPointTotal && point.LinkType==1)|| ( point.PerPoint === point.DayGetPointTotal && point.LinkType==2)) {
+            //     continue
+            // }
             switch (point.Name) {
                 case '社区签到':
                     let sign = await commonPost('/User/Sign')
