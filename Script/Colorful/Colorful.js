@@ -4,7 +4,7 @@
  * export COLORFUL_RAFFLE='true' //开启抽奖
  */
 const $ = new Env('七彩虹商城')
-const baseUrl = 'shop.skycolorful.com:45677'
+const baseUrl = 'shop.skycolorful.com'
 const COLORFUL = ($.isNode() ? (process.env.COLORFUL ? JSON.parse(process.env.COLORFUL) : undefined) : $.getjson("COLORFUL")) || [],
     COLORFUL_RAFFLE = ($.isNode() ? process.env.COLORFUL_RAFFLE : $.getjson("COLORFUL_RAFFLE")) === true || false;
 let token = '', refreshToken = ''
