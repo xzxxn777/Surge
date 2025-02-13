@@ -1,0 +1,11 @@
+#!name=叮咚买菜
+#!desc=叮咚买菜每日自动签到
+#!system=ios
+
+[Script]
+叮咚买菜签到 = type=cron,cronexp="5 0,9 * * *",timeout=360,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DingDong/DingDong.js
+
+叮咚买菜_获取cookie = type=http-request,pattern=^https?:\/\/maicai\.api\.ddxq\.mobi\/point\/home\?api_version,script-path=https://raw.githubusercontent.com/xzxxn777/Surge/main/Script/DingDong/DingDong.js
+
+[MITM]
+hostname = %APPEND% maicai.api.ddxq.mobi
