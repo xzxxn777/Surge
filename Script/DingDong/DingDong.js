@@ -197,7 +197,10 @@ async function main() {
 
         }
     }
-    await sendMsg(notice);
+    if (notice!==''){
+        await sendMsg(notice);
+    }
+
 }
 async function sendMsg(message) {
     $.msg(message)
