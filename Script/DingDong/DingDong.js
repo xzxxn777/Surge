@@ -203,7 +203,7 @@ async function main() {
 
 }
 async function sendMsg(message) {
-    $.msg(message)
+    $.log(message)
     if ($.isNode()) {
         let notify = ''
         try {
