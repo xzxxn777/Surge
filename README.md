@@ -65,6 +65,7 @@
 | 伊利-春节 | [YiLi](https://github.com/xzxxn777/Surge/blob/main/Script/YiLi/YiLi.js) | ✅(2024/12/15) | ✅️ |
 | 新江北 | [XinJiangBei](https://github.com/xzxxn777/Surge/blob/main/Script/XinJiangBei/XinJiangBei.js) | ✅(2025/01/18) | ✅️ |
 | 鲸才招聘 | [JingCai](https://github.com/xzxxn777/Surge/blob/main/Script/JingCai/JingCai.js) | ✅(2025/01/19) | ✅️ |
+| 叮咚买菜 | [DingDong](https://github.com/xzxxn777/Surge/blob/main/Script/DingDong/DingDong.js) | ✅(2025/02/13) | ✅️ |
 
 
 ------
