@@ -6,7 +6,7 @@
  */
 const $ = new Env('叮咚买菜')
 const DINGDONG = ($.isNode() ? (process.env.DINGDONG ? JSON.parse(process.env.DINGDONG) : undefined) : $.getjson("DINGDONG")) || []
-const DINGDONG_RAFFLE = ($.isNode() ? process.env.DINGDONG_RAFFLE : $.getjson("DINGDONG_RAFFLE")) || "close";
+const DINGDONG_RAFFLE = ($.isNode() ? process.env.DINGDONG_RAFFLE : $.getdata("DINGDONG_RAFFLE")) || "close";
 let cookie = ''
 let notice = ''
 !(async () => {
@@ -140,6 +140,9 @@ async function main() {
                     "seconds": missionItem.seconds,
                     "pageId": missionItem.pageId,
                     "time": new Date().getTime(),
+                    "cityCode":signBody.city_number,
+                    "s_id":signBody.station_id,
+                    "app_client_name": "wechat",
                     "serialNo":  new Date().getTime()+ Math.random(),
                 });
                 $.log(` ${missionItem.missionType}-${missionItem.title}:  --->${noticeData.code}  ${noticeData.msg} `);
@@ -153,13 +156,16 @@ async function main() {
             ...signBody
         });
         for (let i = 0; i < flopConsultData.data.flopBaseInfo.curRemainCount; i++) {
-         let flopTrigger = await postTask(`https://gw.api.ddxq.mobi/promocore-service/client/flop/v3/trigger`,{
-                ...signBody,
+            let body = {
                 "equityFactorDTO":flopConsultData.data.equityFactorDTO,
-                "isBridge": false
-            })
-            if (flopTrigger.data?.triggerPrize?.prizeType!="DISCOUNT_GOODS"){
-                $.log(`翻牌获得:${JSON.stringify(flopTrigger)}`);
+                "isBridge": false,
+                ...signBody,
+            };
+            let flopTrigger = await postTask(`https://gw.api.ddxq.mobi/promocore-service/client/flop/v3/trigger`,body)
+            if (flopTrigger.data?.triggerPrize?.prizeType!="BALANCE"){
+                let s = `翻牌获得:${flopTrigger.data?.triggerPrize?.userBalancePrize?.balancePrizeDTO?.balance}-${flopTrigger.data?.triggerPrize?.userBalancePrize?.expireTimeDesc}`;
+                $.log(s);
+                notice+=s
             }
             await $.wait(1000)
         }
@@ -196,11 +202,27 @@ async function main() {
             }while (true)
 
         }
+        let pointFlow = await getTask(`https://maicai.api.ddxq.mobi/point/flow?${item.signBody}&type=0&count=50&page=1`);
+        const today = new Date();
+        let dayPoint = pointFlow.data.point_list.filter(item => {
+                const createTime = new Date(item.create_time);
+                return createTime.getDate() === today.getDate() &&
+                    createTime.getMonth() === today.getMonth() &&
+                    createTime.getFullYear() === today.getFullYear();
+            }).reduce((total, item) => total + item.point, 0);
+        notice+=`\n积分:${pointFlow.data.point_total} 今日获得:${dayPoint}`
     }
     if (notice!==''){
         await sendMsg(notice);
     }
 
+}
+function isToday(dateStr) {
+    const date = new Date(dateStr);
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear();
 }
 async function sendMsg(message) {
     $.log(message)
