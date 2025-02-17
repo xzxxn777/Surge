@@ -2,7 +2,12 @@
  * cron "19 0,9 * * *" DingDong.js
  * export DINGDONG='[{uid: "", name: "", cookie: "", signBody: ""}]'
  * export DINGDONG_RAFFLE='open' //开启抽奖
- *
+ * 抓取url https://maicai.api.ddxq.mobi/point/home?api_version=x&app_client_id=x&app_version=x&app_client_name=x&station_id=x&native_version=x&city_number=x&uid=x&latitude=x&longitude=x&device_token=xxx&device_id=xxxxx&os_version=xx
+ * signBody是问号后面的全部 api_version=x&app_client_id=x&app_version=x&app_client_name=x&station_id=x&native_version=x&city_number=x&uid=x&latitude=x&longitude=x&device_token=xxx&device_id=xxxxx&os_version=xx
+ * name 随便填
+ * uid 是链接中的 uid
+ * cookie 是请求头cookie的值
+ * 再问拉黑!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 const $ = new Env('叮咚买菜')
 const DINGDONG = ($.isNode() ? (process.env.DINGDONG ? JSON.parse(process.env.DINGDONG) : undefined) : $.getjson("DINGDONG")) || []
