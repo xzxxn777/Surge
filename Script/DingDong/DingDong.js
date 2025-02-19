@@ -167,7 +167,7 @@ async function main() {
                 ...signBody,
             };
             let flopTrigger = await postTask(`https://gw.api.ddxq.mobi/promocore-service/client/flop/v3/trigger`,body)
-            if (flopTrigger.data?.triggerPrize?.prizeType!="BALANCE"){
+            if (flopTrigger.data?.triggerPrize?.prizeType == "BALANCE"){
                 let s = `翻牌获得:${flopTrigger.data?.triggerPrize?.userBalancePrize?.balancePrizeDTO?.balance}-${flopTrigger.data?.triggerPrize?.userBalancePrize?.expireTimeDesc}`;
                 $.log(s);
                 notice+=s
