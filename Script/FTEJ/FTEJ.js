@@ -71,6 +71,9 @@ async function main() {
             uid = login.data.uid;
             memberComplexCode = login.data.memberComplexCode;
             memberId = login.data.memberID;
+            console.log('活动签到')
+            let sign = await activityPost('/shareCars/c250224/sign.action',`encryptMemberId=${memberComplexCode}`)
+            console.log(sign.msg)
             console.log('开始签到')
             if(login.data.signIn== "未签到"){
                 let sign = await commonPost('/ehomes-new/homeManager/api/bonus/signActivity2nd', {"memberId":memberComplexCode,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1})
@@ -216,6 +219,43 @@ async function commonPost(url,body) {
                 'Accept-Encoding': 'gzip',
             },
             body: JSON.stringify(body)
+        }
+        $.post(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000)
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function activityPost(url,body) {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://czyl.foton.com.cn${url}`,
+            headers : {
+                'Accept': 'application/json, text/javascript, */*; q=0.01',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Sec-Fetch-Site': 'same-origin',
+                'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Sec-Fetch-Mode': 'cors',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Origin': 'https://czyl.foton.com.cn',
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) ftejIOS',
+                'Connection': 'keep-alive',
+                'Sec-Fetch-Dest': 'empty',
+            },
+            body: body
         }
         $.post(options, async (err, resp, data) => {
             try {
