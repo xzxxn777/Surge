@@ -74,6 +74,12 @@ async function main() {
             console.log('活动签到')
             let sign = await activityPost('/shareCars/c250224/sign.action',`encryptMemberId=${memberComplexCode}`)
             console.log(sign.msg)
+            let getDrawNum = await activityPost('/shareCars/c250224/getDrawNum.action',`encryptMemberId=${memberComplexCode}`)
+            console.log(`剩余抽奖次数：${getDrawNum.data.totalNum}`)
+            for (let i = 0; i < getDrawNum.data.totalNum; i++) {
+                let luckyDraw = await activityPost('/shareCars/c250224/luckyDraw.action',`encryptMemberId=${memberComplexCode}&activityNum=250224`)
+                console.log('抽奖结果：'+luckyDraw.msg)
+            }
             console.log('开始签到')
             if(login.data.signIn== "未签到"){
                 let sign = await commonPost('/ehomes-new/homeManager/api/bonus/signActivity2nd', {"memberId":memberComplexCode,"userId":uid,"userType":"61","uid":uid,"mobile":phone,"tel":phone,"phone":phone,"brandName":"","seriesName":"","token":"ebf76685e48d4e14a9de6fccc76483e3","safeEnc":Date.now()-20220000,"businessId":1})
