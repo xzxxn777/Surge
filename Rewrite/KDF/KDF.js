@@ -1,6 +1,6 @@
 /*
  * 看东方 M3U源
- * https://yukino.com/nba.m3u
+ * https://991.com/nba.m3u
  * 复制链接添加到播放器订阅即可
  *（QX / Surge / Loon 通用）
 
