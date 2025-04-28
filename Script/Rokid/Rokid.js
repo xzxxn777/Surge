@@ -43,7 +43,7 @@ async function main() {
                 let add = await commonPost('/person/reply/add',{"postId":newsList.data.list[0].postId,"content":"6"});
                 console.log(add.msg)
             }
-            if (task.creditMissionDesc == '点赞三个帖子') {
+            if (task.creditMissionDesc == '点赞任意帖子') {
                 let newsList = await commonGet('/person/post/list?pageNum=1&pageSize=10')
                 for (let i = 0; i < 3; i++) {
                     let like = await commonPost('/person/post/like',{"postId":newsList.data.list[i].postId});
