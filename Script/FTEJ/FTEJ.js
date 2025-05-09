@@ -27,20 +27,19 @@ async function main() {
             console.log(`用户：${phone}开始任务`)
             console.log('皮卡生活登录')
             let pkLogin = await pkLoginPost('/ehomes-new/pkHome/api/user/getLoginMember2nd', {"memberId":"","memberID":"","mobile":"","token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-10110000,"name":phone,"password":password,"position":"","deviceId":"","deviceBrand":"","brandName":"","deviceType":"0","versionCode":"21","versionName":"V1.1.10"})
-            console.log(pkLogin.msg)
-            if (pkLogin.code != 200) {
-                continue
-            }
-            uid = pkLogin.data.uid;
-            memberComplexCode = pkLogin.data.memberComplexCode;
-            memberId = pkLogin.data.user.memberNo;
-            token = pkLogin.data.token;
-            console.log('开始签到')
-            let pkSign = await pkPost('/ehomes-new/pkHome/api/bonus/signActivity2nd', {"memberId":memberComplexCode,"memberID":memberId,"mobile":phone,"token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-10110000})
-            if (pkSign.data.integral) {
-                console.log(`签到成功，获得${pkSign.data.integral}积分`)
-            } else {
-                console.log(pkSign.data.msg)
+            console.log(pkLogin?.msg)
+            if (pkLogin?.code == 200) {
+                uid = pkLogin.data.uid;
+                memberComplexCode = pkLogin.data.memberComplexCode;
+                memberId = pkLogin.data.user.memberNo;
+                token = pkLogin.data.token;
+                console.log('开始签到')
+                let pkSign = await pkPost('/ehomes-new/pkHome/api/bonus/signActivity2nd', {"memberId":memberComplexCode,"memberID":memberId,"mobile":phone,"token":"7fe186bb15ff4426ae84f300f05d9c8d","vin":"","safeEnc":Date.now()-10110000})
+                if (pkSign.data.integral) {
+                    console.log(`签到成功，获得${pkSign.data.integral}积分`)
+                } else {
+                    console.log(pkSign.data.msg)
+                }
             }
             // console.log("————————————")
             // console.log("开始任务")
