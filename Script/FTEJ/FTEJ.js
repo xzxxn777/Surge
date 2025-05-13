@@ -104,6 +104,32 @@ async function main() {
             uid = login.data.uid;
             memberComplexCode = login.data.memberComplexCode;
             memberId = login.data.memberID;
+            let open = await commonPost(' /ehomes-new/homeManager/api/share/corsToActicity',{
+                "memberId": memberId,
+                "userId": uid,
+                "userType": "61",
+                "uid": uid,
+                "mobile": phone,
+                "tel": phone,
+                "phone": phone,
+                "brandName": "",
+                "seriesName": "",
+                "token": "ebf76685e48d4e14a9de6fccc76483e3",
+                "safeEnc": Date.now() - 2022020200,
+                "businessId": 1,
+                "activityNumber": "open",
+                "requestType": "0",
+                "type": "5",
+                "userNumber": memberId,
+                "channel": "1",
+                "name": "",
+                "remark": "打开APP"
+            })
+            if (open.code = 200) {
+                console.log('打开app成功')
+            } else {
+                console.log(`打开app：${open.msg}`)
+            }
             // console.log('活动签到')
             // let sign = await activityPost('/shareCars/c250224/sign.action',`encryptMemberId=${memberComplexCode}`)
             // console.log(sign.msg)
