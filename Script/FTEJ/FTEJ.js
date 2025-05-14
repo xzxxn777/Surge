@@ -104,7 +104,7 @@ async function main() {
             uid = login.data.uid;
             memberComplexCode = login.data.memberComplexCode;
             memberId = login.data.memberID;
-            let open = await commonPost(' /ehomes-new/homeManager/api/share/corsToActicity',{
+            let open = await commonPost('/ehomes-new/homeManager/api/share/corsToActicity',{
                 "memberId": memberId,
                 "userId": uid,
                 "userType": "61",
@@ -125,7 +125,7 @@ async function main() {
                 "name": "",
                 "remark": "打开APP"
             })
-            if (open.code = 200) {
+            if (open.code == 200) {
                 console.log('打开app成功')
             } else {
                 console.log(`打开app：${open.msg}`)
