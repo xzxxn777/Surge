@@ -301,7 +301,7 @@ async function commonPost(url,body,signature) {
 async function textGet() {
     return new Promise(resolve => {
         const options = {
-            url: `https://www.yuanxiapi.cn/api/yiyan`,
+            url: `https://cy.91yu.cn/yz/juhe.php?msg=爱情语录`,
             headers : {
             }
         }
