@@ -32,7 +32,7 @@ async function main() {
                 "mobile": "",
                 "token": "7fe186bb15ff4426ae84f300f05d9c8d",
                 "vin": "",
-                "safeEnc": Date.now() - 1011010100,
+                "safeEnc": Date.now() - 61363891,
                 "name": phone,
                 "password": password,
                 "position": "",
@@ -56,7 +56,7 @@ async function main() {
                     "mobile": phone,
                     "token": "7fe186bb15ff4426ae84f300f05d9c8d",
                     "vin": "",
-                    "safeEnc": Date.now() - 1011010100
+                    "safeEnc": Date.now() - 61363891
                 })
                 if (pkSign.data.integral) {
                     console.log(`签到成功，获得${pkSign.data.integral}积分`)
@@ -115,7 +115,7 @@ async function main() {
                 "brandName": "",
                 "seriesName": "",
                 "token": "ebf76685e48d4e14a9de6fccc76483e3",
-                "safeEnc": Date.now() - 2022020200,
+                "safeEnc": Date.now() - 84940416,
                 "businessId": 1,
                 "activityNumber": "open",
                 "requestType": "0",
@@ -152,7 +152,7 @@ async function main() {
                     "brandName": "",
                     "seriesName": "",
                     "token": "ebf76685e48d4e14a9de6fccc76483e3",
-                    "safeEnc": Date.now() - 2022020200,
+                    "safeEnc": Date.now() - 84940416,
                     "businessId": 1
                 })
                 console.log(`签到成功，获得${sign?.data?.integral}积分`)
@@ -172,7 +172,7 @@ async function main() {
                 "brandName": "",
                 "seriesName": "",
                 "token": "ebf76685e48d4e14a9de6fccc76483e3",
-                "safeEnc": Date.now() - 2022020200,
+                "safeEnc": Date.now() - 84940416,
                 "businessId": 1
             })
             for (const task of taskList.data) {
@@ -182,7 +182,7 @@ async function main() {
                 } else {
                     if (task.ruleId == "33") {
                         let addIntegralForShare = await loginPost('/ehomes-new/homeManager/api/bonus/addIntegralForShare', {
-                            "safeEnc": Date.now() - 2022020200,
+                            "safeEnc": Date.now() - 84940416,
                             "activity": "",
                             "tel": phone,
                             "id": task.ruleId,
@@ -207,7 +207,7 @@ async function main() {
                             "brandName": "",
                             "seriesName": "",
                             "token": "ebf76685e48d4e14a9de6fccc76483e3",
-                            "safeEnc": Date.now() - 2022020200,
+                            "safeEnc": Date.now() - 84940416,
                             "businessId": 1,
                             "position": "1",
                             "pageNumber": "1",
@@ -226,7 +226,7 @@ async function main() {
                             "brandName": "",
                             "seriesName": "",
                             "token": "ebf76685e48d4e14a9de6fccc76483e3",
-                            "safeEnc": Date.now() - 2022020200,
+                            "safeEnc": Date.now() - 84940416,
                             "businessId": 1,
                             "behavior": "1",
                             "memberIdeds": memberIdeds,
@@ -248,7 +248,7 @@ async function main() {
                             "brandName": "",
                             "seriesName": "",
                             "token": "ebf76685e48d4e14a9de6fccc76483e3",
-                            "safeEnc": Date.now() - 2022020200,
+                            "safeEnc": Date.now() - 84940416,
                             "businessId": 1,
                             "behavior": "2",
                             "memberIdeds": memberIdeds,
@@ -272,7 +272,7 @@ async function main() {
                             "brandName": "",
                             "seriesName": "",
                             "token": "ebf76685e48d4e14a9de6fccc76483e3",
-                            "safeEnc": Date.now() - 2022020200,
+                            "safeEnc": Date.now() - 84940416,
                             "businessId": 1
                         })
                         let index = Math.floor(Math.random() * topicList.data.top.length);
@@ -293,7 +293,7 @@ async function main() {
                             "brandName": "",
                             "seriesName": "",
                             "token": "ebf76685e48d4e14a9de6fccc76483e3",
-                            "safeEnc": Date.now() - 2022020200,
+                            "safeEnc": Date.now() - 84940416,
                             "businessId": 1,
                             "content": text,
                             "postType": 1,
@@ -323,7 +323,7 @@ async function main() {
                 "brandName": "",
                 "seriesName": "",
                 "token": "ebf76685e48d4e14a9de6fccc76483e3",
-                "safeEnc": Date.now() - 2022020200,
+                "safeEnc": Date.now() - 84940416,
                 "businessId": 1
             })
             console.log(`拥有积分: ${findMemberPointsInfo?.data?.pointValue}\n`)
@@ -499,7 +499,7 @@ async function pkPost(url,body) {
 async function textGet() {
     return new Promise(resolve => {
         const options = {
-            url: `https://www.yuanxiapi.cn/api/yiyan`,
+            url: `https://cy.91yu.cn/yz/juhe.php?msg=爱情语录`,
             headers : {
             }
         }
