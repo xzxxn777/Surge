@@ -2,11 +2,13 @@
  * cron "25 2,20 * * *" IQOO.js
  * export IQOO='[{"id": "1", "xVisitor": "1", "token": "1"},{"id": "2", "xVisitor": "2", "token": "2"}]'
  * export IQOO_Create="true"//发帖
+ * export TEXTURL="https://api.btstu.cn/yan/api.php"
  */
 const $ = new Env('IQOO社区')
 const crypto = createCryptoJS()
 const IQOO = ($.isNode() ? JSON.parse(process.env.IQOO) : $.getjson("IQOO")) || [];
 const IQOO_Create = ($.isNode() ? process.env.IQOO_Create : $.getdata("IQOO_Create")) === 'true' || false;
+const TEXTURL = ($.isNode() ? process.env.TEXTURL : $.getdata("TEXTURL")) || 'https://api.btstu.cn/yan/api.php';
 let time = ''
 let token = ''
 let xVisitor = ''
@@ -301,7 +303,7 @@ async function commonPost(url,body,signature) {
 async function textGet() {
     return new Promise(resolve => {
         const options = {
-            url: `https://cy.91yu.cn/yz/juhe.php?msg=爱情语录`,
+            url: TEXTURL,
             headers : {
             }
         }
