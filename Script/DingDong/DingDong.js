@@ -179,33 +179,34 @@ async function main() {
         }
         // 抽奖
         if (DINGDONG_RAFFLE=="open"){
-            let consultLottery =await postTask(`https://gw.api.ddxq.mobi/promocore-service/client/lottery/v1/consultLottery`, {
-                "activityType": "SIGN_IN",
-                "bizNo": generateRandomString(8),
-                "showMsg": false,
-                "h5_source": "",
-                "time": new Date().getTime(),
-                ...signBody
-            })
+           let lottery_activityId=`AC201000000001990313316`
+                let lotteryData = await postTask(`https://gw.api.ddxq.mobi/promocore-api/client/wheel/lottery/v1/consult`,{
+                    "env": "PE",
+                    "activityId": lottery_activityId,
+                    ...signBody
+                });
+                // console.log(JSON.stringify(lotteryData))
             do {
-                let triggerLottery =await postTask(`https://gw.api.ddxq.mobi/promocore-service/client/lottery/v1/triggerLottery`, {
+
+                let triggerLottery =await postTask(`https://gw.api.ddxq.mobi/promocore-api/client/wheel/lottery/v1/trigger`, {
                     ...signBody,
-                    "h5_source": "",
-                    "time": new Date().getTime(),
-                    "activityId": consultLottery.data.lotteryBaseInfo.activityId,
-                    "bizFrom": "SIGN_IN",
-                    "bizNo": generateRandomString(8),
-                    "showMsg": false})
+                    "env":"PE",
+                    "activityId":"AC201000000001990313316"
+                })
                 if (triggerLottery.code!=0){
                     break
                 }else
-                if (triggerLottery.data?.prizeInfo["0"]?.prizeType == "COUPON"){
-                    $.log(`抽奖获得优惠卷: ${triggerLottery.data.prizeInfo["0"].userTicketPrizeInfo?.ticketPrize.name}`)
-                    notice+=`\n抽奖获得优惠卷: ${triggerLottery.data.prizeInfo["0"].userTicketPrizeInfo?.ticketPrize.name}`
-                }else if  (triggerLottery.data?.prizeInfo["0"]?.prizeType == "POINTS"){
-                    $.log(`抽奖获得积分: ${triggerLottery.data.prizeInfo["0"].pointPrizeInfo.value}`)
-                    notice+=`\n抽奖获得积分: ${triggerLottery.data.prizeInfo["0"].pointPrizeInfo.value}`
+                if (triggerLottery.data.userEquityPrize.prizeEquityTemplateDTO.prizeType == 1) {
+                    $.log(`抽奖获得积分: ${triggerLottery.data.userEquityPrize.prizeEquityTemplateDTO.pointPrizeDTO.amount}`)
+                    notice += `\n抽奖获得积分: ${triggerLottery.data.userEquityPrize.prizeEquityTemplateDTO.pointPrizeDTO.amount}`
+                }else {
+                    console.log(JSON.stringify(triggerLottery))
                 }
+                // }else if  (triggerLottery.data?.prizeInfo["0"]?.prizeType == "POINTS"){
+                //     $.log(`抽奖获得优惠卷: ${triggerLottery.data.prizeInfo["0"].userTicketPrizeInfo?.ticketPrize.name}`)
+                //     notice+=`\n抽奖获得优惠卷: ${triggerLottery.data.prizeInfo["0"].userTicketPrizeInfo?.ticketPrize.name}`
+                //
+                // }
                 await $.wait(2000)
             }while (true)
 
