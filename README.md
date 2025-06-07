@@ -72,3 +72,5 @@
 ### [一键订阅boxjs](http://boxjs.com/#/sub/add/https://raw.githubusercontent.com/xzxxn777/Surge/main/xzxxn.json)
 ### [点击直达频道](https://t.me/xzxxn777)
 ### [点击直达群组](https://t.me/xzxxn7777)
+
+[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
