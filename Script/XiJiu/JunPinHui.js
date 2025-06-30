@@ -1,20 +1,24 @@
 /**
  * cron "11 7,17 * * *" JunPinHui.js
  * export JunPinHui="账号1&密码1 账号2&密码2"
+ * export OCR_SERVER="ocr服务"
+ * export GHPROXYURL="https://ghfast.top"
  */
 const $ = new Env('君品荟');
 const JunPinHui = ($.isNode() ? process.env.JunPinHui : $.getdata("JunPinHui")) || '';
+const OCR_SERVER = ($.isNode() ? process.env.OCR_SERVER : $.getdata("OCR_SERVER")) || 'https://ddddocr.xzxxn7.live';
+const GHPROXYURL = ($.isNode() ? process.env.GHPROXYURL : $.getdata("GHPROXYURL")) || 'https://ghfast.top';
 let appkey = 'OzVFDV3c6omb';
 let actId = '';
 let Utils = undefined;
 let token = '';
 let notice = '';
 !(async () => {
+    await getNotice()
     await main();
 })().catch((e) => {$.log(e)}).finally(() => {$.done({});});
 
 async function main() {
-    console.log('作者：@xzxxn777\n频道：https://t.me/xzxxn777\n群组：https://t.me/xzxxn7777\n自用机场推荐：https://xn--diqv0fut7b.com\n')
     Utils = await loadUtils();
     if (!JunPinHui) {
         console.log("先去boxjs填写账号密码")
@@ -39,68 +43,77 @@ async function main() {
         }
         token = login.data.token;
         //签到
+        let captcha = await commonPost('/api/captcha/get',{"captchaType" : "blockPuzzle"})
+        let getXpos = await slidePost({'slidingImage': captcha.data.repData.jigsawImageBase64, 'backImage': captcha.data.repData.originalImageBase64})
+        let point = aesEncrypt({"x":getXpos.result,"y":5}, captcha.data.repData.secretKey)
+        let check = await commonPost(`/api/captcha/check`,{"captchaType":"blockPuzzle","pointJson":point,"token":captcha.data.repData.token})
+        console.log("验证滑块：" + check.success)
         console.log("开始签到")
-        let signIn = await commonPost(`/api/customer/daily/signIn`,{"channelCode":"xj_mall_wx_applet"})
-        if (signIn.data.pointValue) {
-            console.log(`签到获得：${signIn.data.pointValue}积分`)
+        let signIn = await commonPost(`/api/customer/daily/fillSignIn`,{"channelCode":"xj_mall_wx_applet"})
+        if (signIn.code == 10000) {
+            if (signIn.data.pointValue != 0) {
+                console.log(`签到获得：${signIn.data.pointValue}积分`)
+            } else {
+                console.log(signIn.data.resultDesc)
+            }
         } else {
-            console.log("今日已签到")
+            console.log(signIn.message)
         }
         //关注
         let follow = await commonPost(`/media/video/addInterest`,{"shopId":206})
         console.log(follow.success)
         //抽奖
-        console.log("————————————")
-        console.log("开始抽奖")
-        if (!actId) {
-            console.log('获取actId')
-            let getData = await cannonPost('/api/page/getData',{"params":null,"pageId":"89","sellerId":null});
-            let regex = /actId=([a-zA-Z0-9]+)/;
-            let match = JSON.stringify(getData).match(regex);
-            if (match) {
-                actId = match[1];
-                console.log(`actId: ${actId}`)
-            }
-        }
-        if (!actId) {
-            console.log("获取actId失败")
-            continue
-        }
-        let time = (new Date).valueOf();
-        let sign = getSign(time,{"wxToken":token,"actId":actId})
-        let getId = await drawPost(`/activity/user/get/by/token?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"wxToken":token,"actId":actId}}})
-        time = (new Date).valueOf();
-        sign = getSign(time,{"id":getId.data.data.id,"actId":actId})
-        let taskList = await drawPost(`/mission/completeState?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"id":getId.data.data.id,"actId":actId}}})
-        for (const task of taskList.data.data) {
-            console.log(`任务：${task.missionName}`)
-            if (task.type == "inviteJoinMember" || task.type == "payOrder") {
-                continue
-            }
-            if (task.isComplete) {
-                console.log("已完成")
-            } else {
-                time = (new Date).valueOf();
-                sign = getSign(time,{"missionType":task.type,"id":getId.data.data.id,"actId":actId})
-                let completeMission = await drawPost(`/mission/completeMission?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"missionType":task.type,"id":getId.data.data.id,"actId":actId}}})
-                if (completeMission.data.status == 200) {
-                    console.log(completeMission.data.data.remark)
-                } else {
-                    console.log(completeMission.data.msg)
-                }
-            }
-        }
-        while (true) {
-            time = (new Date).valueOf();
-            sign = getSign(time,{"id":getId.data.data.id,"actId":actId})
-            let draw = await drawPost(`/awards/draw?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"id":getId.data.data.id,"actId":actId}}})
-            if (draw.data.status == 200) {
-                console.log(`抽奖获得：${draw.data.data.awardName}`)
-            } else {
-                console.log(draw.data.msg)
-                break
-            }
-        }
+        // console.log("————————————")
+        // console.log("开始抽奖")
+        // if (!actId) {
+        //     console.log('获取actId')
+        //     let getData = await cannonPost('/api/page/getData',{"params":null,"pageId":"89","sellerId":null});
+        //     let regex = /actId=([a-zA-Z0-9]+)/;
+        //     let match = JSON.stringify(getData).match(regex);
+        //     if (match) {
+        //         actId = match[1];
+        //         console.log(`actId: ${actId}`)
+        //     }
+        // }
+        // if (actId) {
+        //     let time = (new Date).valueOf();
+        //     let sign = getSign(time,{"wxToken":token,"actId":actId})
+        //     let getId = await drawPost(`/activity/user/get/by/token?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"wxToken":token,"actId":actId}}})
+        //     time = (new Date).valueOf();
+        //     sign = getSign(time,{"id":getId.data.data.id,"actId":actId})
+        //     let taskList = await drawPost(`/mission/completeState?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"id":getId.data.data.id,"actId":actId}}})
+        //     for (const task of taskList.data.data) {
+        //         console.log(`任务：${task.missionName}`)
+        //         if (task.type == "inviteJoinMember" || task.type == "payOrder") {
+        //             continue
+        //         }
+        //         if (task.isComplete) {
+        //             console.log("已完成")
+        //         } else {
+        //             time = (new Date).valueOf();
+        //             sign = getSign(time,{"missionType":task.type,"id":getId.data.data.id,"actId":actId})
+        //             let completeMission = await drawPost(`/mission/completeMission?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"missionType":task.type,"id":getId.data.data.id,"actId":actId}}})
+        //             if (completeMission.data.status == 200) {
+        //                 console.log(completeMission.data.data.remark)
+        //             } else {
+        //                 console.log(completeMission.data.msg)
+        //             }
+        //         }
+        //     }
+        //     while (true) {
+        //         time = (new Date).valueOf();
+        //         sign = getSign(time,{"id":getId.data.data.id,"actId":actId})
+        //         let draw = await drawPost(`/awards/draw?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"id":getId.data.data.id,"actId":actId}}})
+        //         if (draw.data.status == 200) {
+        //             console.log(`抽奖获得：${draw.data.data.awardName}`)
+        //         } else {
+        //             console.log(draw.data.msg)
+        //             break
+        //         }
+        //     }
+        // } else {
+        //     console.log("获取actId失败")
+        // }
         //查询积分
         console.log("————————————")
         console.log("查询积分")
@@ -193,6 +206,32 @@ async function commonPost(url,body = {}) {
     })
 }
 
+async function slidePost(body) {
+    return new Promise(resolve => {
+        const options = {
+            url: `${OCR_SERVER}/capcode`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(body)
+        }
+        $.post(options, (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    resolve(JSON.parse(data));
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
 async function drawPost(url,body = {}) {
     return new Promise(resolve => {
         const options = {
@@ -239,6 +278,17 @@ function getSign(t,e) {
         Utils.md5(`${appkey}admjson${r}appkey${appkey}timestamp${t}6bz4j2YWIawCuBOzkxtbUpZfadpx2tlJarcw3E`.toLowerCase())
 }
 
+function aesEncrypt(e, n) {
+    let cryptojs = Utils.createCryptoJS();
+    var t = cryptojs.enc.Utf8.parse(n)
+        , i = cryptojs.enc.Utf8.parse(JSON.stringify(e))
+        , r = cryptojs.AES.encrypt(i, t, {
+        mode: cryptojs.mode.ECB,
+        padding: cryptojs.pad.Pkcs7
+    });
+    return cryptojs.enc.Base64.stringify(r.ciphertext)
+}
+
 async function loadUtils() {
     let code = $.getdata('Utils_Code') || '';
     if (code && Object.keys(code).length) {
@@ -249,12 +299,34 @@ async function loadUtils() {
     console.log(`🚀 ${$.name}: 开始下载Utils代码`)
     return new Promise(async (resolve) => {
         $.getScript(
-            'https://mirror.ghproxy.com/https://raw.githubusercontent.com/xzxxn777/Surge/main/Utils/Utils.js'
+            `${GHPROXYURL}/https://raw.githubusercontent.com/xzxxn777/Surge/main/Utils/Utils.js`
         ).then((fn) => {
             $.setdata(fn, "Utils_Code")
             eval(fn)
             console.log(`✅ Utils加载成功, 请继续`)
             resolve(creatUtils())
+        })
+    })
+}
+
+async function getNotice() {
+    return new Promise(resolve => {
+        const options = {
+            url: `https://fastly.jsdelivr.net/gh/xzxxn777/Surge@main/Utils/Notice.json`,
+        }
+        $.get(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    console.log(JSON.parse(data).notice);
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
         })
     })
 }

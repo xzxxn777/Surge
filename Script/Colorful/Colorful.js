@@ -58,11 +58,12 @@ async function main() {
         console.log(`社区签到：${sign.Code} ${sign.Message}  ${sign.Data?.Point}`)
         sign = await commonPost('/User/SignV2')
         console.log(`签到：${sign.Message}`)
-        for (const point of taskPoint.Data?.DataList) {
+        for (const point of taskPoint.Data?.ShopList) {
             console.log(`${point.Name} ${point.Title} ${point.PerPoint}`)
             // if ((point.DayMaxPointTotal === point.DayGetPointTotal && point.LinkType==1)|| ( point.PerPoint === point.DayGetPointTotal && point.LinkType==2)) {
             //     continue
             // }
+            let PostingList = undefined
             switch (point.Name) {
                 case '社区签到':
                     let sign = await commonPost('/User/Sign')
@@ -101,7 +102,7 @@ async function main() {
 
                     break;
                 case '社区内容评论':
-                    let PostingList = await commonGet('/Bbs/GetPostingList?page=1&size=20&moduleId=09539c50-6de2-4a0c-adc8-535e488a419e&phone=')
+                    PostingList = await commonGet('/Bbs/GetPostingList?page=1&size=20&moduleId=09539c50-6de2-4a0c-adc8-535e488a419e&phone=')
                     if (PostingList?.Data?.DataList) {
                         for (let i = 0; i < 3; i++) {
                             let hitokotoData2 = await hitokoto();
@@ -123,6 +124,11 @@ async function main() {
                                 await $.wait(Math.floor(Math.random() * 5000 + 10000));
                             }
                         }
+                    }
+                    break;
+                case '社区帖子点赞':
+                    PostingList = await commonGet('/Bbs/GetPostingList?page=1&size=20&moduleId=09539c50-6de2-4a0c-adc8-535e488a419e&phone=')
+                    if (PostingList?.Data?.DataList) {
                         for (let i = 0; i < 5; i++) {
                             let like = await commonPost('/Bbs/Like', {"postId":PostingList?.Data?.DataList[Math.floor(Math.random() * 20)].Id,"postReplyId":"0"})
                             if (like.Code === 0) {

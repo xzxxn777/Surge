@@ -30,20 +30,20 @@ async function main() {
                 console.log('任务已完成')
                 continue;
             }
-            if (task.creditMissionDesc == '邀请有礼分享1次海报') {
+            if (task.creditMissionDesc.includes('邀请有礼')) {
                 let share = await commonPost('/person/credit/share');
                 console.log(share.msg)
             }
-            if (task.creditMissionDesc == '分享任意帖子') {
+            if (task.creditMissionDesc.includes('分享')) {
                 let share = await commonPost('/person/credit/share?shareType=1',{});
                 console.log(share.msg)
             }
-            if (task.creditMissionDesc == '评论1次') {
+            if (task.creditMissionDesc.includes('评论')) {
                 let newsList = await commonGet('/person/post/list?pageNum=1&pageSize=10')
                 let add = await commonPost('/person/reply/add',{"postId":newsList.data.list[0].postId,"content":"6"});
                 console.log(add.msg)
             }
-            if (task.creditMissionDesc == '点赞三个帖子') {
+            if (task.creditMissionDesc.includes('点赞')) {
                 let newsList = await commonGet('/person/post/list?pageNum=1&pageSize=10')
                 for (let i = 0; i < 3; i++) {
                     let like = await commonPost('/person/post/like',{"postId":newsList.data.list[i].postId});

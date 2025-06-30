@@ -36,6 +36,7 @@ async function main() {
         console.log("开始签到")
         let login = await loginPost()
         let location = login.data;
+        location = await locationGet(location);
         cookie = ''
         cookie = await cookieGet(location);
         console.log("获取签到key")
@@ -177,6 +178,42 @@ async function loginPost() {
                     } else {
                         resolve(JSON.parse(data));
                     }
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+async function locationGet(url) {
+    return new Promise(resolve => {
+        const options = {
+            url: `${url}`,
+            headers : {
+                'upgrade-insecure-requests': '1',
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 MicroMessenger/6.8.0(0x16080000) NetType/WIFI MiniProgramEnv/Mac MacWechat/WMPF MacWechat/3.8.8(0x13080812) XWEB/1216',
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                'sec-fetch-site': 'none',
+                'sec-fetch-mode': 'navigate',
+                'sec-fetch-user': '?1',
+                'sec-fetch-dest': 'document',
+                'accept-encoding': 'gzip, deflate, br',
+                'accept-language': 'zh-CN,zh;q=0.9',
+            },
+            followRedirect: false
+        }
+        $.get(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    await $.wait(2000)
+                    let location = resp.headers['location'] || resp.headers['Location'];
+                    resolve(location);
                 }
             } catch (e) {
                 $.logErr(e, resp)
