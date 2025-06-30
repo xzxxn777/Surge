@@ -208,7 +208,7 @@ async function main() {
         console.log("开始做任务")
         let tasks = await commonGet("/garden/tasks/index");
         if (tasks) {
-            for (let task of tasks.data) {
+            for (const [key, task] of Object.entries(tasks.data)) {
                 console.log(`任务：${task.name} id：${task.id}`)
                 if (task.is_complete == 1) {
                     console.log("任务已完成")
