@@ -118,8 +118,8 @@ async function main() {
         console.log("————————————")
         console.log("查询积分")
         let getMemberInfo = await commonPost("/api/customer/accoutInter/token",{"checkLevelExist":true});
-        console.log(`拥有积分：${getMemberInfo.data.points}\n`)
-        notice += `用户：${phone} 积分：${getMemberInfo.data.points}\n`
+        console.log(`拥有积分：${getMemberInfo.data.points} 即将过期：${getMemberInfo.data.nearExpirePoints}\n`)
+        notice += `用户：${phone} 积分：${getMemberInfo.data.points} 即将过期：${getMemberInfo.data.nearExpirePoints}\n`
     }
     if (notice) {
         await sendMsg(notice);
