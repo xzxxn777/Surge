@@ -63,63 +63,63 @@ async function main() {
         let follow = await commonPost(`/media/video/addInterest`,{"shopId":206})
         console.log(follow.success)
         //抽奖
-        console.log("————————————")
-        console.log("开始抽奖")
-        if (!actId) {
-            console.log('获取actId')
-            let getData = await cannonPost('/api/page/getData',{"params":null,"pageId":"89","sellerId":null});
-            let regex = /actId=([a-zA-Z0-9]+)/;
-            let match = JSON.stringify(getData).match(regex);
-            if (match) {
-                actId = match[1];
-                console.log(`actId: ${actId}`)
-            }
-        }
-        if (actId) {
-            let time = (new Date).valueOf();
-            let sign = getSign(time,{"wxToken":token,"actId":actId})
-            let getId = await drawPost(`/activity/user/get/by/token?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"wxToken":token,"actId":actId}}})
-            time = (new Date).valueOf();
-            sign = getSign(time,{"id":getId.data.data.id,"actId":actId})
-            let taskList = await drawPost(`/mission/completeState?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"id":getId.data.data.id,"actId":actId}}})
-            for (const task of taskList.data.data) {
-                console.log(`任务：${task.missionName}`)
-                if (task.type == "inviteJoinMember" || task.type == "payOrder") {
-                    continue
-                }
-                if (task.isComplete) {
-                    console.log("已完成")
-                } else {
-                    time = (new Date).valueOf();
-                    sign = getSign(time,{"missionType":task.type,"id":getId.data.data.id,"actId":actId})
-                    let completeMission = await drawPost(`/mission/completeMission?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"missionType":task.type,"id":getId.data.data.id,"actId":actId}}})
-                    if (completeMission.data.status == 200) {
-                        console.log(completeMission.data.data.remark)
-                    } else {
-                        console.log(completeMission.data.msg)
-                    }
-                }
-            }
-            while (true) {
-                time = (new Date).valueOf();
-                sign = getSign(time,{"id":getId.data.data.id,"actId":actId})
-                let draw = await drawPost(`/awards/draw?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"id":getId.data.data.id,"actId":actId}}})
-                if (draw.data.status == 200) {
-                    console.log(`抽奖获得：${draw.data.data.awardName}`)
-                } else {
-                    console.log(draw.data.msg)
-                    break
-                }
-            }
-        } else {
-            console.log("获取actId失败")
-        }
+        // console.log("————————————")
+        // console.log("开始抽奖")
+        // if (!actId) {
+        //     console.log('获取actId')
+        //     let getData = await cannonPost('/api/page/getData',{"params":null,"pageId":"89","sellerId":null});
+        //     let regex = /actId=([a-zA-Z0-9]+)/;
+        //     let match = JSON.stringify(getData).match(regex);
+        //     if (match) {
+        //         actId = match[1];
+        //         console.log(`actId: ${actId}`)
+        //     }
+        // }
+        // if (actId) {
+        //     let time = (new Date).valueOf();
+        //     let sign = getSign(time,{"wxToken":token,"actId":actId})
+        //     let getId = await drawPost(`/activity/user/get/by/token?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"wxToken":token,"actId":actId}}})
+        //     time = (new Date).valueOf();
+        //     sign = getSign(time,{"id":getId.data.data.id,"actId":actId})
+        //     let taskList = await drawPost(`/mission/completeState?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"id":getId.data.data.id,"actId":actId}}})
+        //     for (const task of taskList.data.data) {
+        //         console.log(`任务：${task.missionName}`)
+        //         if (task.type == "inviteJoinMember" || task.type == "payOrder") {
+        //             continue
+        //         }
+        //         if (task.isComplete) {
+        //             console.log("已完成")
+        //         } else {
+        //             time = (new Date).valueOf();
+        //             sign = getSign(time,{"missionType":task.type,"id":getId.data.data.id,"actId":actId})
+        //             let completeMission = await drawPost(`/mission/completeMission?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"missionType":task.type,"id":getId.data.data.id,"actId":actId}}})
+        //             if (completeMission.data.status == 200) {
+        //                 console.log(completeMission.data.data.remark)
+        //             } else {
+        //                 console.log(completeMission.data.msg)
+        //             }
+        //         }
+        //     }
+        //     while (true) {
+        //         time = (new Date).valueOf();
+        //         sign = getSign(time,{"id":getId.data.data.id,"actId":actId})
+        //         let draw = await drawPost(`/awards/draw?mix_nick=${token}`,{"jsonRpc":"2.0","params":{"commonParameter":{"appKey":appkey,"sign":sign,"timestamp":time},"admJson":{"id":getId.data.data.id,"actId":actId}}})
+        //         if (draw.data.status == 200) {
+        //             console.log(`抽奖获得：${draw.data.data.awardName}`)
+        //         } else {
+        //             console.log(draw.data.msg)
+        //             break
+        //         }
+        //     }
+        // } else {
+        //     console.log("获取actId失败")
+        // }
         //查询积分
         console.log("————————————")
         console.log("查询积分")
         let getMemberInfo = await commonPost("/api/customer/accoutInter/token",{"checkLevelExist":true});
-        console.log(`拥有积分：${getMemberInfo.data.points}\n`)
-        notice += `用户：${phone} 积分：${getMemberInfo.data.points}\n`
+        console.log(`拥有积分：${getMemberInfo.data.points} 即将过期：${getMemberInfo.data.nearExpirePoints}\n`)
+        notice += `用户：${phone} 积分：${getMemberInfo.data.points} 即将过期：${getMemberInfo.data.nearExpirePoints}\n`
     }
     if (notice) {
         await sendMsg(notice);

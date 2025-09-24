@@ -13,3 +13,13 @@ DOMAIN-SUFFIX,xzxxn7.live
 DOMAIN-SUFFIX,beicin.eu.org
 # 智齿科技
 DOMAIN,api.sobot.com
+# 稀土掘金
+DOMAIN-SUFFIX,juejin.cn
+# 馒头
+DOMAIN-KEYWORD,m-team
+DOMAIN-KEYWORD,bjmantis
+DOMAIN,api.union.vip.com
+# 粉象生活
+DOMAIN-SUFFIX,fenxianglife.com
+# 快手
+DOMAIN-KEYWORD,kuaishou

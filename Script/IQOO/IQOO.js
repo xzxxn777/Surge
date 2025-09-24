@@ -2,11 +2,13 @@
  * cron "25 2,20 * * *" IQOO.js
  * export IQOO='[{"id": "1", "xVisitor": "1", "token": "1"},{"id": "2", "xVisitor": "2", "token": "2"}]'
  * export IQOO_Create="true"//发帖
+ * export TEXTURL="https://api.btstu.cn/yan/api.php"
  */
 const $ = new Env('IQOO社区')
 const crypto = createCryptoJS()
 const IQOO = ($.isNode() ? JSON.parse(process.env.IQOO) : $.getjson("IQOO")) || [];
 const IQOO_Create = ($.isNode() ? process.env.IQOO_Create : $.getdata("IQOO_Create")) === 'true' || false;
+const TEXTURL = ($.isNode() ? process.env.TEXTURL : $.getdata("TEXTURL")) || 'https://api.btstu.cn/yan/api.php';
 let time = ''
 let token = ''
 let xVisitor = ''
@@ -31,9 +33,7 @@ async function main() {
         time = Math.floor(Date.now() / 1e3)
         let sign = await commonPost('/v3/sign',{"from":""},getSign('POST','/api/v3/sign',{"from":""}));
         if (sign.Code == 0) {
-            for (const item of sign.Meta.tips) {
-                console.log(item.message)
-            }
+            console.log(`签到获得：${sign?.Data?.score}酷币`)
         } else if (sign.Code == -13006) {
             console.log(sign.Message)
         } else {
@@ -72,11 +72,7 @@ async function main() {
                 } else {
                     time = Math.floor(Date.now() / 1e3)
                     let create = await commonPost('/v3/posts.create',{"id":threadId,"type":0,"content":"666","source":""},getSign('POST','/api/v3/posts.create',{"id":threadId,"type":0,"content":"666","source":""}));
-                    if (create.Meta) {
-                        for (const item of create.Meta.tips) {
-                            console.log(item.message)
-                        }
-                    }
+                    console.log(create.Message)
                 }
             }
             if (task.access == '认证机型') {
@@ -86,11 +82,7 @@ async function main() {
                 } else {
                     time = Math.floor(Date.now() / 1e3)
                     let setPhone = await commonPost('/v3/set/phone.model',{"model":"V2218A","brand":"vivo","product":"iQOO 10 Pro","guideType":1},getSign('POST','/api/v3/set/phone.model',{"model":"V2218A","brand":"vivo","product":"iQOO 10 Pro","guideType":1}));
-                    if (setPhone.Meta) {
-                        for (const item of setPhone.Meta.tips) {
-                            console.log(item.message)
-                        }
-                    }
+                    console.log(setPhone.Message)
                 }
             }
         }
@@ -113,11 +105,7 @@ async function main() {
                             let body = {"title":"毒鸡汤","categoryId":27,"content":{"text":text},"position":{},"price":0,"freeWords":0,"attachmentPrice":0,"draft":0,"anonymous":0,"topicId":"","source":"","videoId":""}
                             time = Math.floor(Date.now() / 1e3)
                             let create = await commonPost('/v3/thread.create',body,getSign('POST','/api/v3/thread.create',{"title":"毒鸡汤","categoryId":27,"content":{"text":text},"position":{},"price":0,"freeWords":0,"attachmentPrice":0,"draft":0,"anonymous":0,"topicId":"","source":"","videoId":""}));
-                            if (create.Meta) {
-                                for (const item of create.Meta.tips) {
-                                    console.log(item.message)
-                                }
-                            }
+                            console.log(create.Message)
                         }
                     } else {
                         console.log('默认不发帖，发帖请设置变量IQOO_Create为true')
@@ -147,11 +135,7 @@ async function main() {
                         //点赞
                         time = Math.floor(Date.now() / 1e3)
                         let like = await commonPost('/v3/posts.update',{"id":threadId,"postId":postId,"data":{"attributes":{"isLiked":true}}},getSign('POST','/api/v3/posts.update',{"id":threadId,"postId":postId,"data":{"attributes":{"isLiked":true}}}));
-                        if (like.Meta) {
-                            for (const item of like.Meta.tips) {
-                                console.log(item.message)
-                            }
-                        }
+                        console.log(like.Message)
                         //取消点赞
                         time = Math.floor(Date.now() / 1e3)
                         let unLike = await commonPost('/v3/posts.update',{"id":threadId,"postId":postId,"data":{"attributes":{"isLiked":false}}},getSign('POST','/api/v3/posts.update',{"id":threadId,"postId":postId,"data":{"attributes":{"isLiked":false}}}));
@@ -168,11 +152,7 @@ async function main() {
                     for (let i = 0; i < count; i++) {
                         time = Math.floor(Date.now() / 1e3)
                         let share =  await commonPost('/v3/thread.share',{"threadId":threadId},getSign('POST','/api/v3/thread.share',{"threadId":threadId}));
-                        if (share.Meta) {
-                            for (const item of share.Meta.tips) {
-                                console.log(item.message)
-                            }
-                        }
+                        console.log(share.Message)
                     }
                 }
             }
@@ -301,7 +281,7 @@ async function commonPost(url,body,signature) {
 async function textGet() {
     return new Promise(resolve => {
         const options = {
-            url: `https://www.yuanxiapi.cn/api/yiyan`,
+            url: TEXTURL,
             headers : {
             }
         }
