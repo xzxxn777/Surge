@@ -120,7 +120,7 @@ async function main() {
                     console.log(`完成进度：${task.isFinal}/${parseInt(task.upper_limit)}`)
                     for (let i = 0; i < count; i++) {
                         time = Math.floor(Date.now() / 1e3)
-                        let post = await await commonPost('/v3/posts.create',body,getSign('POST','/api/v3/posts.create',{"id":threadId,"type":0,"content":"不错","source":"","attachments":[]}));
+                        let post = await await commonPost('/v3/posts.create',{"id":threadId,"type":0,"content":"不错","source":"","attachments":[]},getSign('POST','/api/v3/posts.create',{"id":threadId,"type":0,"content":"不错","source":"","attachments":[]}));
                         console.log(post.Message)
                     }
                 }
