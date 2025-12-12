@@ -112,6 +112,19 @@ async function main() {
                     }
                 }
             }
+            if(task.access == '发表评论') {
+                let count = parseInt(task.upper_limit) - task.isFinal;
+                if (count == 0) {
+                    console.log('任务已完成')
+                } else {
+                    console.log(`完成进度：${task.isFinal}/${parseInt(task.upper_limit)}`)
+                    for (let i = 0; i < count; i++) {
+                        time = Math.floor(Date.now() / 1e3)
+                        let post = await await commonPost('/v3/posts.create',body,getSign('POST','/api/v3/posts.create',{"id":threadId,"type":0,"content":"不错","source":"","attachments":[]}));
+                        console.log(post.Message)
+                    }
+                }
+            }
             if(task.access == '浏览帖子') {
                 let count = parseInt(task.upper_limit) - task.isFinal;
                 if (count == 0) {
